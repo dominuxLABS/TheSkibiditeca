@@ -1,0 +1,89 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality & Style Check
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build solution
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Run code analysis
+      run: dotnet build --no-restore --verbosity normal --configuration Release
+      env:
+        CI: true
+        
+    - name: Check naming conventions
+      run: |
+        echo "🔍 Checking naming conventions..."
+        
+        # Check Controller naming
+        echo "📋 Checking Controllers..."
+        find . -name "*Controller.cs" -path "*/Controllers/*" | while read file; do
+          filename=$(basename "$file" .cs)
+          if [[ ! "$filename" =~ Controller$ ]]; then
+            echo "❌ NAMING ERROR: $file should end with 'Controller'"
+            exit 1
+          fi
+        done
+        
+        # Check Model files are in correct folders
+        echo "📋 Checking Models organization..."
+        find . -name "*.cs" -path "*/Models/*" | while read file; do
+          if [[ "$file" == *"Controller.cs" ]]; then
+            echo "❌ STRUCTURE ERROR: Controller found in Models folder: $file"
+            exit 1
+          fi
+        done
+        
+        # Check View files
+        echo "📋 Checking Views..."
+        find . -name "*.cshtml" -path "*/Views/*" | while read file; do
+          if [[ ! "$file" =~ \.cshtml$ ]]; then
+            echo "❌ VIEW ERROR: $file should have .cshtml extension"
+            exit 1
+          fi
+        done
+        
+        echo "✅ All naming conventions are correct!"
+        
+    - name: Run tests (when available)
+      run: |
+        if find . -name "*Tests.csproj" -o -name "*.Tests.csproj" | grep -q .; then
+          echo "🧪 Running tests..."
+          dotnet test --no-build --configuration Release --logger trx --collect:"XPlat Code Coverage"
+        else
+          echo "⚠️ No test projects found, skipping tests"
+        fi
+        
+    - name: Check commit message format
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "📝 Checking commit message format..."
+        git log --format="%s" ${{ github.event.pull_request.base.sha }}..${{ github.sha }} | while read msg; do
+          if [[ ! "$msg" =~ ^(feat|fix|docs|style|refactor|test|chore|ci)(\(.+\))?: ]]; then
+            echo "❌ COMMIT FORMAT ERROR: '$msg'"
+            echo "Expected format: 'type(scope): description'"
+            echo "Types: feat, fix, docs, style, refactor, test, chore, ci"
+            exit 1
+          fi
+        done
+        echo "✅ All commit messages follow convention!"
