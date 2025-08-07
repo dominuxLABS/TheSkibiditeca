@@ -165,8 +165,8 @@ This project is licensed under the GNU Affero General Public License v3.0 - see 
 
 ## Academic Context
 
-**Course**: Applied Programming II  
-**Institution**: [University Name]  
+**Course**: Programación Aplicada II (11Q238)  
+**Institution**: Universidad Nacional de Cajamarca  
 **Academic Year**: 2025  
 
 ---
