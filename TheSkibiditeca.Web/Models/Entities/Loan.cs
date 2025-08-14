@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TheSkibiditeca.Web.Models.Enums;
 
 namespace TheSkibiditeca.Web.Models.Entities
 {
@@ -28,9 +29,9 @@ namespace TheSkibiditeca.Web.Models.Entities
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the loan status identifier.
+        /// Gets or sets the loan status.
         /// </summary>
-        public int LoanStatusId { get; set; } = 1; // Active by default
+        public LoanStatusType Status { get; set; } = LoanStatusType.Active;
 
         /// <summary>
         /// Gets or sets the loan date.
@@ -91,11 +92,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// Gets or sets the user navigation property.
         /// </summary>
         public virtual User User { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets the loan status navigation property.
-        /// </summary>
-        public virtual LoanStatus LoanStatus { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the fines associated with this loan.
