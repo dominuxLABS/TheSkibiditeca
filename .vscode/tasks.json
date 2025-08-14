@@ -33,6 +33,24 @@
 			"type": "shell",
 			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
 			"group": "build"
+		},
+		{
+			"label": "Create Simplified Migration",
+			"type": "shell",
+			"command": "dotnet ef migrations add SimplifyLoanStatusAndFineType --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		},
+		{
+			"label": "Build Project Check",
+			"type": "shell",
+			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		},
+		{
+			"label": "Final Build Verification",
+			"type": "shell",
+			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
 		}
 	]
 }
