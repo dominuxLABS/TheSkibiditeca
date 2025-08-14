@@ -17,7 +17,7 @@ namespace TheSkibiditeca.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -267,9 +267,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<DateTime>("FineDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FineTypeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
@@ -287,41 +284,11 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.HasKey("FineId");
 
-                    b.HasIndex("FineTypeId");
-
                     b.HasIndex("LoanId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Fines");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.FineType", b =>
-                {
-                    b.Property<int>("FineTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FineTypeId"));
-
-                    b.Property<decimal>("BaseAmount")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("FineTypeId");
-
-                    b.ToTable("FineTypes");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
@@ -351,9 +318,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("LoanStatusId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaxRenewals")
                         .HasColumnType("int");
 
@@ -367,6 +331,9 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -379,39 +346,9 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("LoanStatusId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Loans");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanStatus", b =>
-                {
-                    b.Property<int>("LoanStatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanStatusId"));
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("LoanStatusId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("LoanStatuses");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
@@ -644,12 +581,6 @@ namespace TheSkibiditeca.Web.Migrations
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Fine", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.FineType", "FineType")
-                        .WithMany("Fines")
-                        .HasForeignKey("FineTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.Loan", "Loan")
                         .WithMany("Fines")
                         .HasForeignKey("LoanId")
@@ -660,8 +591,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("FineType");
 
                     b.Navigation("Loan");
 
@@ -676,12 +605,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.LoanStatus", "LoanStatus")
-                        .WithMany("Loans")
-                        .HasForeignKey("LoanStatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.User", "User")
                         .WithMany("Loans")
                         .HasForeignKey("UserId")
@@ -689,8 +612,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
-
-                    b.Navigation("LoanStatus");
 
                     b.Navigation("User");
                 });
@@ -744,19 +665,9 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.FineType", b =>
-                {
-                    b.Navigation("Fines");
-                });
-
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
                     b.Navigation("Fines");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanStatus", b =>
-                {
-                    b.Navigation("Loans");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
