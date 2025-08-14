@@ -35,27 +35,6 @@ namespace TheSkibiditeca.Web.Data
             };
             context.UserTypes.AddRange(userTypes);
 
-            // Seed Loan Statuses
-            var loanStatuses = new[]
-            {
-                new LoanStatus { Name = "Active", Description = "Book is currently on loan" },
-                new LoanStatus { Name = "Returned", Description = "Book has been returned" },
-                new LoanStatus { Name = "Overdue", Description = "Book is past due date" },
-                new LoanStatus { Name = "Renewed", Description = "Loan has been renewed" },
-                new LoanStatus { Name = "Lost", Description = "Book has been reported lost" },
-            };
-            context.LoanStatuses.AddRange(loanStatuses);
-
-            // Seed Fine Types
-            var fineTypes = new[]
-            {
-                new FineType { Name = "Late Return", Description = "Fine for returning book after due date", BaseAmount = 0.50m },
-                new FineType { Name = "Damage", Description = "Fine for returning damaged book", BaseAmount = 25.00m },
-                new FineType { Name = "Lost Book", Description = "Fine for losing a book", BaseAmount = 50.00m },
-                new FineType { Name = "Processing Fee", Description = "Administrative processing fee", BaseAmount = 5.00m },
-            };
-            context.FineTypes.AddRange(fineTypes);
-
             // Seed Categories (expanded to cover the genres from the SQL data)
             var categories = new Category[]
             {
