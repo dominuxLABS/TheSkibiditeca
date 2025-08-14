@@ -55,11 +55,6 @@ namespace TheSkibiditeca.Web.Data
         public DbSet<User> Users { get; set; }
 
         /// <summary>
-        /// Gets or sets the loan statuses table.
-        /// </summary>
-        public DbSet<LoanStatus> LoanStatuses { get; set; }
-
-        /// <summary>
         /// Gets or sets the loans table.
         /// </summary>
         public DbSet<Loan> Loans { get; set; }
@@ -68,11 +63,6 @@ namespace TheSkibiditeca.Web.Data
         /// Gets or sets the reservations table.
         /// </summary>
         public DbSet<Reservation> Reservations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the fine types table.
-        /// </summary>
-        public DbSet<FineType> FineTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the fines table.
@@ -152,10 +142,6 @@ namespace TheSkibiditeca.Web.Data
                 .HasIndex(ut => ut.Name)
                 .IsUnique();
 
-            modelBuilder.Entity<LoanStatus>()
-                .HasIndex(ls => ls.Name)
-                .IsUnique();
-
             // Configure relationships with optional foreign keys
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Publisher)
@@ -189,12 +175,6 @@ namespace TheSkibiditeca.Web.Data
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Loan>()
-                .HasOne(l => l.LoanStatus)
-                .WithMany(ls => ls.Loans)
-                .HasForeignKey(l => l.LoanStatusId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // Configure Reservation relationships
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.Book)
@@ -219,12 +199,6 @@ namespace TheSkibiditeca.Web.Data
                 .HasOne(f => f.User)
                 .WithMany(u => u.Fines)
                 .HasForeignKey(f => f.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Fine>()
-                .HasOne(f => f.FineType)
-                .WithMany(ft => ft.Fines)
-                .HasForeignKey(f => f.FineTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure default values and constraints
