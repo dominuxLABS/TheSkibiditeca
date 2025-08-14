@@ -23,11 +23,18 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
+    - name: Verify analyzers
+      run: |
+        echo "🔍 Verifying code analyzers..."
+        dotnet list package | grep -E "(Microsoft.CodeAnalysis|StyleCop)"
+        
     - name: Build solution
       run: dotnet build --no-restore --configuration Release
       
     - name: Run code analysis
-      run: dotnet build --no-restore --verbosity normal --configuration Release
+      run: |
+        echo "🔍 Running code analysis..."
+        dotnet build --no-restore --verbosity normal --configuration Release --property:TreatWarningsAsErrors=true
       env:
         CI: true
         
