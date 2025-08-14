@@ -41,7 +41,7 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// <summary>
         /// Gets or sets a value indicating whether the user has been notified.
         /// </summary>
-        public bool IsNotified { get; set; } = false;
+        public bool IsNotified { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the reservation is active.
