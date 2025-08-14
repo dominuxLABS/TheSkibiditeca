@@ -12,6 +12,16 @@ namespace TheSkibiditeca.Web.Models.Entities
     public class Fine
     {
         /// <summary>
+        /// The base fine amount for overdue books.
+        /// </summary>
+        public const decimal BaseFineAmount = 5.00m;
+
+        /// <summary>
+        /// The daily increment amount for overdue fines.
+        /// </summary>
+        public const decimal DailyIncrementAmount = 1.50m;
+
+        /// <summary>
         /// Gets or sets the fine identifier.
         /// </summary>
         [Key]
@@ -26,11 +36,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// Gets or sets the user identifier.
         /// </summary>
         public int UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the fine type identifier.
-        /// </summary>
-        public int FineTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the fine amount.
@@ -87,8 +92,26 @@ namespace TheSkibiditeca.Web.Models.Entities
         public virtual User User { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the fine type navigation property.
+        /// Calculates the fine amount based on the number of days overdue.
         /// </summary>
-        public virtual FineType FineType { get; set; } = null!;
+        /// <param name="daysOverdue">The number of days overdue.</param>
+        /// <returns>The calculated fine amount.</returns>
+        public static decimal CalculateFineAmount(int daysOverdue)
+        {
+            if (daysOverdue <= 0)
+            {
+                return 0m;
+            }
+
+            return BaseFineAmount + (DailyIncrementAmount * daysOverdue);
+        }
+
+        /// <summary>
+        /// Updates the fine amount based on the current days overdue.
+        /// </summary>
+        public void UpdateFineAmount()
+        {
+            this.Amount = CalculateFineAmount(this.DaysOverdue);
+        }
     }
 }
