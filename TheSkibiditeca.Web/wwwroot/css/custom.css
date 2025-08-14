@@ -1,0 +1,36 @@
+﻿.btn-custom {
+    background: #31323c;
+    border-color: #31323c;
+    color: #bfe0d1
+}
+
+.btn-custom:hover {
+    background: #1e202c;
+    border-color: #1e202c;
+}
+
+.btn-outline-custom {
+    background: transparent;
+    border-color: #31323c;
+}
+
+.btn-outline-custom:hover {
+    background: #1e202c;
+    border-color: #1e202c;
+}
+
+.btn-custom-1 {
+    background: #60519b;
+    border-color: #60519b;
+    color: white
+}
+
+  .btn-custom-1:hover {
+      background: #504482;
+      border-color: #504482;
+      color: white
+  }
+
+  .bg-black-custom {
+      background:#31323c;
+  }
