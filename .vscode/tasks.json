@@ -8,13 +8,20 @@
 			"problemMatcher": [
 				"$msCompile"
 			],
-			"group": "build"
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		},
 		{
-			"label": "Create Initial Migration",
+			"label": "Run Project",
 			"type": "shell",
-			"command": "dotnet ef migrations add InitialCreate --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
+			"command": "dotnet run --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build",
+			"dependsOn": "Build Project"
 		},
 		{
 			"label": "Install EF Tools",
@@ -23,34 +30,36 @@
 			"group": "build"
 		},
 		{
-			"label": "Create Initial Migration",
+			"label": "Add Migration",
 			"type": "shell",
-			"command": "dotnet ef migrations add InitialCreate --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"command": "dotnet ef migrations add ${input:migrationName} --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
 			"group": "build"
 		},
 		{
-			"label": "Final Build Check",
+			"label": "Update Database",
 			"type": "shell",
-			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"command": "dotnet ef database update --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
 			"group": "build"
 		},
 		{
-			"label": "Create Simplified Migration",
+			"label": "Clean",
 			"type": "shell",
-			"command": "dotnet ef migrations add SimplifyLoanStatusAndFineType --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"command": "dotnet clean ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
 			"group": "build"
 		},
 		{
-			"label": "Build Project Check",
+			"label": "Restore",
 			"type": "shell",
-			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"command": "dotnet restore ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
 			"group": "build"
-		},
+		}
+	],
+	"inputs": [
 		{
-			"label": "Final Build Verification",
-			"type": "shell",
-			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
+			"id": "migrationName",
+			"description": "Nombre de la migración",
+			"default": "NewMigration",
+			"type": "promptString"
 		}
 	]
 }
