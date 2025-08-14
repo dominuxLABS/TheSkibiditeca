@@ -152,5 +152,71 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// </summary>
         [NotMapped]
         public string AuthorNames => string.Join(", ", this.BookAuthors.Select(ba => ba.Author?.FullName));
+
+        /// <summary>
+        /// Gets all authors associated with this book.
+        /// </summary>
+        /// <returns>A collection of authors for this book.</returns>
+        public IEnumerable<Author> GetAuthors()
+        {
+            return this.BookAuthors
+                .Where(ba => ba.Author != null)
+                .Select(ba => ba.Author!)
+                .OrderBy(a => a.LastName)
+                .ThenBy(a => a.FirstName);
+        }
+
+        /// <summary>
+        /// Gets authors by role (e.g., "Author", "Editor", "Translator").
+        /// </summary>
+        /// <param name="role">The role to filter by.</param>
+        /// <returns>A collection of authors with the specified role.</returns>
+        public IEnumerable<Author> GetAuthorsByRole(string role)
+        {
+            return this.BookAuthors
+                .Where(ba => ba.Role.Equals(role, StringComparison.OrdinalIgnoreCase) && ba.Author != null)
+                .Select(ba => ba.Author!)
+                .OrderBy(a => a.LastName)
+                .ThenBy(a => a.FirstName);
+        }
+
+        /// <summary>
+        /// Gets the primary authors (those with "Author" role).
+        /// </summary>
+        /// <returns>A collection of primary authors.</returns>
+        public IEnumerable<Author> GetPrimaryAuthors()
+        {
+            return this.GetAuthorsByRole("Author");
+        }
+
+        /// <summary>
+        /// Gets authors' full names as a formatted string.
+        /// </summary>
+        /// <param name="separator">The separator to use between names. Default is ", ".</param>
+        /// <returns>A formatted string of author names.</returns>
+        public string GetAuthorsDisplayString(string separator = ", ")
+        {
+            var authors = this.GetAuthors();
+            return string.Join(separator, authors.Select(a => a.FullName));
+        }
+
+        /// <summary>
+        /// Checks if a specific author is associated with this book.
+        /// </summary>
+        /// <param name="authorId">The author identifier to check.</param>
+        /// <returns>True if the author is associated with this book; otherwise, false.</returns>
+        public bool HasAuthor(int authorId)
+        {
+            return this.BookAuthors.Any(ba => ba.AuthorId == authorId);
+        }
+
+        /// <summary>
+        /// Gets the count of authors associated with this book.
+        /// </summary>
+        /// <returns>The number of authors.</returns>
+        public int GetAuthorCount()
+        {
+            return this.BookAuthors.Count(ba => ba.Author != null);
+        }
     }
 }
