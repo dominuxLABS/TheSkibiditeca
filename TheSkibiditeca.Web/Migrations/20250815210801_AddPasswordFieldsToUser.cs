@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// Copyright (c) dominuxLABS. All rights reserved.
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,7 +18,7 @@ namespace TheSkibiditeca.Web.Migrations
                 type: "nvarchar(500)",
                 maxLength: 500,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
 
             migrationBuilder.AddColumn<string>(
                 name: "PasswordSalt",
@@ -24,7 +26,7 @@ namespace TheSkibiditeca.Web.Migrations
                 type: "nvarchar(500)",
                 maxLength: 500,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
         }
 
         /// <inheritdoc />
