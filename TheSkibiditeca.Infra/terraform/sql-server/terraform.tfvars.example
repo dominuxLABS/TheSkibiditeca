@@ -1,0 +1,146 @@
+# Copyright (c) dominuxLABS. All rights reserved.
+
+# =============================================================================
+# ARCHIVO DE EJEMPLO PARA VARIABLES DE TERRAFORM
+# =============================================================================
+# Copie este archivo como terraform.tfvars y configure los valores apropiados
+# NUNCA commit terraform.tfvars al repositorio (contiene credenciales)
+
+# =============================================================================
+# CONFIGURACIÓN DE PROXMOX
+# =============================================================================
+
+# URL de la API de Proxmox VE
+# Formato: https://IP_O_HOSTNAME:8006/api2/json
+proxmox_api_url = "https://192.168.1.100:8006/api2/json"
+
+# Usuario de Proxmox (puede ser root@pam o un usuario específico)
+proxmox_user = "root@pam"
+
+# Contraseña del usuario de Proxmox
+# IMPORTANTE: Use una contraseña segura
+proxmox_password = "su-password-de-proxmox"
+
+# Omitir verificación TLS (para entornos de desarrollo)
+# En producción, configure certificados válidos y cambie a false
+proxmox_tls_insecure = true
+
+# =============================================================================
+# CONFIGURACIÓN DE LA MÁQUINA VIRTUAL
+# =============================================================================
+
+# Nombre de la VM que se creará
+vm_name = "sql-server-theskibiditeca"
+
+# Nodo de Proxmox donde desplegar la VM
+# Use: pvesh get /nodes para ver los nodos disponibles
+vm_target_node = "pve-node1"
+
+# Template base (debe existir en Proxmox)
+# Debe ser un template de Ubuntu 20.04+ o Debian 11+
+vm_template = "ubuntu-20.04-server-template"
+
+# Recursos de hardware
+vm_cores  = 4      # Núcleos de CPU
+vm_memory = 4096   # RAM en MB (4GB)
+vm_disk_size = "50G"  # Tamaño del disco
+
+# Pool de almacenamiento
+# Use: pvesh get /storage para ver los pools disponibles
+vm_storage = "local-lvm"
+
+# =============================================================================
+# CONFIGURACIÓN DE RED
+# =============================================================================
+
+# Bridge de red
+# Use: pvesh get /nodes/NODO/network para ver los bridges disponibles
+vm_network_bridge = "vmbr0"
+
+# Configuración IP estática
+vm_ip_address = "192.168.1.50"    # IP de la VM de SQL Server
+vm_gateway    = "192.168.1.1"     # Gateway de la red
+vm_network_mask = 24              # Máscara de red (/24 = 255.255.255.0)
+
+# Servidores DNS
+vm_dns_servers = ["8.8.8.8", "8.8.4.4"]
+
+# =============================================================================
+# CONFIGURACIÓN DE SQL SERVER
+# =============================================================================
+
+# Versión de SQL Server (2019 o 2022)
+sql_server_version = "2022"
+
+# Contraseña del usuario SA
+# IMPORTANTE: Use una contraseña compleja que cumpla con los requisitos de SQL Server
+# - Al menos 8 caracteres
+# - Mayúsculas, minúsculas, números y símbolos
+sql_sa_password = "MiPasswordSuperSeguro123!"
+
+# Nombre de la base de datos de la aplicación
+sql_database_name = "TheSkibiditeca"
+
+# =============================================================================
+# CONFIGURACIÓN DE ACCESO
+# =============================================================================
+
+# Usuario administrador de Linux
+vm_admin_user = "ubuntu"
+
+# Contraseña del administrador (opcional, por defecto usa la del SA)
+# vm_admin_password = "Password123!"
+
+# Clave SSH pública (opcional, para acceso sin contraseña)
+# ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... tu-clave-publica"
+
+# =============================================================================
+# EJEMPLOS DE CONFIGURACIÓN PARA DIFERENTES ENTORNOS
+# =============================================================================
+
+# --- DESARROLLO ---
+# vm_cores = 2
+# vm_memory = 2048
+# vm_disk_size = "30G"
+
+# --- PRUEBAS ---
+# vm_cores = 4
+# vm_memory = 4096
+# vm_disk_size = "50G"
+
+# --- PRODUCCIÓN ---
+# vm_cores = 8
+# vm_memory = 8192
+# vm_disk_size = "100G"
+
+# =============================================================================
+# NOTAS IMPORTANTES
+# =============================================================================
+
+# 1. Template Requirements:
+#    - Ubuntu 20.04+ o Debian 11+
+#    - Cloud-init configurado
+#    - QEMU Guest Agent instalado
+#    - SSH habilitado
+#    - Usuario con sudo configurado
+
+# 2. Network Requirements:
+#    - La IP especificada debe estar libre
+#    - El gateway debe ser accesible
+#    - Los puertos 1433, 22 deben estar disponibles
+
+# 3. Storage Requirements:
+#    - El pool de almacenamiento debe tener espacio suficiente
+#    - Se recomienda SSD para mejor rendimiento
+#    - Mínimo 30GB para desarrollo, 50GB+ para producción
+
+# 4. Security:
+#    - Use contraseñas seguras
+#    - Configure autenticación SSH por clave
+#    - Configure firewall de red además del de Linux
+#    - Considere usar VPN o túneles SSH
+
+# 5. Backup:
+#    - Configure backups automáticos de la VM
+#    - Configure backups de la base de datos SQL Server
+#    - Backup automático en /var/opt/mssql/backup/
