@@ -31,6 +31,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Temporal para debug
+Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
+Console.WriteLine($"SQL Password from env: {Environment.GetEnvironmentVariable("SQL_SA_PASSWORD")?.Substring(0, 3)}***");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
