@@ -25,12 +25,29 @@
     color: white
 }
 
-  .btn-custom-1:hover {
-      background: #504482;
-      border-color: #504482;
-      color: white
-  }
+.btn-custom-1:hover {
+    background: #504482;
+    border-color: #504482;
+    color: white
+}
 
-  .bg-black-custom {
-      background:#31323c;
-  }
+.bg-black-custom {
+    background:#31323c;
+}
+
+.hov-underline {
+    box-sizing: border-box;
+    border-bottom: solid 3px;
+    border-color: transparent;
+}
+
+.hov-underline:hover {
+    border-bottom: solid 3px;
+    border-color: white;
+}
+
+.hov-underline-simple:hover {
+    text-decoration: underline
+}
+
+.scrolled {}

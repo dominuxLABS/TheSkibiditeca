@@ -21,10 +21,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Libros</a>
+                            <a class="nav-link text-light hov-underline mx-2" asp-area="" asp-controller="Home" asp-action="Index">Libros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+                            <a class="nav-link text-light hov-underline mx-2" asp-area="" asp-controller="Home" asp-action="Index">Autores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light hov-underline mx-2" asp-area="" asp-controller="Home" asp-action="Index">Géneros</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav justify-content-end">
@@ -53,8 +56,8 @@
                 </div>
                 <div class="col text-right">
                     <ul class="d-flex justify-content-end list-unstyled m-0">
-                        <li><a href="#" class="nav-link  p-0 px-2" style="color: gray">Privacidad</a></li>
-                        <li><a href="#" class="nav-link p-0 px-2" style="color: gray">Créditos</a></li>
+                        <li><a class="nav-link p-0 px-2 hov-underline-simple" style="color: gray" asp-controller="Home" asp-action="Privacy">Privacidad</a></li>
+                        <li><a class="nav-link p-0 px-2 hov-underline-simple" style="color: gray" asp-controller="Home" asp-action="Credits">Créditos</a></li>
                     </ul>
                 </div>
             </div>

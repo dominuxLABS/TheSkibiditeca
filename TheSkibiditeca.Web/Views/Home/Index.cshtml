@@ -2,31 +2,31 @@
     ViewData["Title"] = "Home | The Skibiditeca";
 }
 
-<div class="pt-5 pb-5">
+<div class="container pt-5 pb-5 scrolled">
     <div class="text-center text-white">
         <h2 class="display-2">@await Html.PartialAsync("Partial/_TypingText", "The Skibiditeca")</h2>
         <p>La biblioteca más insana</p>
         <button class="btn btn-custom-1 ">Ver libros</button>
     </div>
+    
 </div>
-
 <div class="container pb-2">
     <div class="row justify-content-between">
-        <div class="col">
+        <div class="col scrolled">
             @await Html.PartialAsync("Partial/_Card", new CardModel(){
                 Title = "Libro aleatorio",
                 Description = "Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. ",
                 Image = "https://i.pinimg.com/736x/13/ed/c5/13edc586280bdd1685f596f83625a9a0.jpg"
             })
         </div>
-        <div class="col">
+        <div class="col scrolled">
             @await Html.PartialAsync("Partial/_Card", new CardModel(){
                 Title = "Sexo 2 (Lo nuevo)",
                 Description = "Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. ",
                 Image = "https://i.pinimg.com/564x/33/32/ee/3332ee7f8caae724d38bb8d2bc73e581.jpg"
             })
         </div>
-        <div class="col">
+        <div class="col scrolled">
             @await Html.PartialAsync("Partial/_Card", new CardModel(){
                     Title = "Biblia 2 (Lo más popular)",
                     Description = "Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. ",
@@ -34,6 +34,5 @@
             })
         </div>
     </div>
-
 </div>
 
