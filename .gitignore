@@ -361,3 +361,46 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# =============================================================================
+# ARCHIVOS SENSIBLES Y CONFIGURACIÓN LOCAL
+# =============================================================================
+
+# Variables de entorno (contienen credenciales)
+.env
+.env.local
+.env.development
+.env.production
+
+# Archivos de configuración con credenciales
+appsettings.*.local.json
+secrets.json
+config.local.json
+
+# Logs y archivos temporales
+*.log
+logs/
+temp/
+tmp/
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+localdb/
+
+# Certificados y claves
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Backup files
+*.backup
+*.bak
