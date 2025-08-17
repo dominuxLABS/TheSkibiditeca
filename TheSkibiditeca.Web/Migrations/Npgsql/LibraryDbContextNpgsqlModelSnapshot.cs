@@ -186,8 +186,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ISBN")
-                        .IsUnique()
-                        .HasFilter("[ISBN] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("PublisherId");
 
