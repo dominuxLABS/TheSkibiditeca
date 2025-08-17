@@ -1,0 +1,65 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Project",
+			"type": "shell",
+			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Run Project",
+			"type": "shell",
+			"command": "dotnet run --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build",
+			"dependsOn": "Build Project"
+		},
+		{
+			"label": "Install EF Tools",
+			"type": "shell",
+			"command": "dotnet tool install --global dotnet-ef",
+			"group": "build"
+		},
+		{
+			"label": "Add Migration",
+			"type": "shell",
+			"command": "dotnet ef migrations add ${input:migrationName} --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		},
+		{
+			"label": "Update Database",
+			"type": "shell",
+			"command": "dotnet ef database update --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		},
+		{
+			"label": "Clean",
+			"type": "shell",
+			"command": "dotnet clean ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		},
+		{
+			"label": "Restore",
+			"type": "shell",
+			"command": "dotnet restore ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		}
+	],
+	"inputs": [
+		{
+			"id": "migrationName",
+			"description": "Nombre de la migración",
+			"default": "NewMigration",
+			"type": "promptString"
+		}
+	]
+}

@@ -1,0 +1,17 @@
+﻿@model string
+
+<div id="elm"></div>
+
+<script>
+    var speed_text = 0.1;
+    var title = "@Model";
+    var i = 0;
+    var elm = document.getElementById("elm");
+    function type() {
+        elm.innerHTML += title[i];
+        i++;
+        if(elm.innerHTML.length < title.length) setTimeout(type, speed_text*1000);
+    }
+
+    type();
+</script>
