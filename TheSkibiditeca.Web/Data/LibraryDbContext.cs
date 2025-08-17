@@ -202,16 +202,70 @@ namespace TheSkibiditeca.Web.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure default values and constraints
-            ConfigureDefaultValues(modelBuilder);
+            // Configure provider-specific settings
+            if (this.Database.IsNpgsql())
+            {
+                ConfigureForPostgreSQL(modelBuilder);
+            }
+            else if (this.Database.IsSqlServer())
+            {
+                ConfigureForSqlServer(modelBuilder);
+            }
+
+            ConfigureUniqueConstraints(modelBuilder);
         }
 
         /// <summary>
-        /// Configures default values for entities.
+        /// Configures PostgreSQL-specific settings.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void ConfigureDefaultValues(ModelBuilder modelBuilder)
+        private static void ConfigureForPostgreSQL(ModelBuilder modelBuilder)
         {
-            // Set default values
+            // PostgreSQL default values for timestamps
+            modelBuilder.Entity<Author>()
+                .Property(a => a.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Author>()
+                .Property(a => a.UpdatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Book>()
+                .Property(b => b.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Book>()
+                .Property(b => b.UpdatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.UpdatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Loan>()
+                .Property(l => l.LoanDate)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Loan>()
+                .Property(l => l.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Loan>()
+                .Property(l => l.UpdatedAt)
+                .HasDefaultValueSql("NOW()");
+        }
+
+        /// <summary>
+        /// Configures SQL Server-specific settings.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void ConfigureForSqlServer(ModelBuilder modelBuilder)
+        {
+            // SQL Server default values for timestamps
             modelBuilder.Entity<Author>()
                 .Property(a => a.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -247,6 +301,22 @@ namespace TheSkibiditeca.Web.Data
             modelBuilder.Entity<Loan>()
                 .Property(l => l.UpdatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
+        }
+
+        /// <summary>
+        /// Configures unique constraints for entities.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void ConfigureUniqueConstraints(ModelBuilder modelBuilder)
+        {
+            // Configure unique constraints
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Book>()
+                .HasIndex(b => b.ISBN)
+                .IsUnique();
         }
 
         /// <summary>
