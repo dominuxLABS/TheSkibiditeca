@@ -165,9 +165,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<int?>("PublicationYear")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -184,12 +181,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.HasKey("BookId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ISBN")
-                        .IsUnique()
-                        .HasFilter("[ISBN] IS NOT NULL");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
                 });
@@ -242,6 +233,43 @@ namespace TheSkibiditeca.Web.Migrations
                         .IsUnique();
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.Property<int>("CopyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CopyId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ISBN")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhysicalLocation")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PublisherName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("CopyId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("ISBN")
+                        .IsUnique()
+                        .HasFilter("[ISBN] IS NOT NULL");
+
+                    b.ToTable("Copies");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Fine", b =>
@@ -302,7 +330,10 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<DateTime?>("ActualReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CopyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -346,49 +377,11 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.HasIndex("BookId");
 
+                    b.HasIndex("CopyId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Loans");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
-                {
-                    b.Property<int>("PublisherId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublisherId"));
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Website")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("PublisherId");
-
-                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
@@ -399,7 +392,10 @@ namespace TheSkibiditeca.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CopyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -423,6 +419,8 @@ namespace TheSkibiditeca.Web.Migrations
                     b.HasKey("ReservationId");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("CopyId");
 
                     b.HasIndex("UserId");
 
@@ -560,14 +558,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Category");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.BookAuthor", b =>
@@ -585,6 +576,17 @@ namespace TheSkibiditeca.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                        .WithMany("Copies")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
@@ -609,9 +611,13 @@ namespace TheSkibiditeca.Web.Migrations
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", null)
                         .WithMany("Loans")
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
+                        .WithMany("Loans")
+                        .HasForeignKey("CopyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -621,16 +627,20 @@ namespace TheSkibiditeca.Web.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("Copy");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", null)
                         .WithMany("Reservations")
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
+                        .WithMany("Reservations")
+                        .HasForeignKey("CopyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -640,7 +650,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("Copy");
 
                     b.Navigation("User");
                 });
@@ -665,6 +675,8 @@ namespace TheSkibiditeca.Web.Migrations
                 {
                     b.Navigation("BookAuthors");
 
+                    b.Navigation("Copies");
+
                     b.Navigation("Loans");
 
                     b.Navigation("Reservations");
@@ -675,14 +687,16 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.Navigation("Loans");
+
+                    b.Navigation("Reservations");
+                });
+
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
                     b.Navigation("Fines");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.User", b =>
