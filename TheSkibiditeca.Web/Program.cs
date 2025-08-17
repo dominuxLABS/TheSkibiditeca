@@ -2,24 +2,58 @@
 
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Data;
+using TheSkibiditeca.Web.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add Entity Framework
-builder.Services.AddDbContext<LibraryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Configure database provider based on environment
+if (builder.Environment.IsDevelopment())
+{
+    // DEVELOPMENT: SQL Server LocalDB
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+    builder.Services.AddDbContext<LibraryDbContext>(options =>
+        options.UseSqlServer(connectionString));
+
+    Console.WriteLine("Using SQL Server LocalDB for development");
+}
+else
+{
+    // PRODUCTION: PostgreSQL (URL provided by Coolify resource)
+    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
+        ?? throw new InvalidOperationException("DATABASE_URL environment variable not found");
+
+    builder.Services.AddDbContext<LibraryDbContext>(options =>
+        options.UseNpgsql(databaseUrl));
+
+    Console.WriteLine("Using PostgreSQL from Coolify resource");
+}
 
 var app = builder.Build();
 
-// Seed the database
+// Seed the database and apply migrations
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
-    context.Database.Migrate();
-    DbSeeder.SeedData(context);
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    try
+    {
+        DatabaseSetupLoggers.ApplyingMigrations(logger);
+        await context.Database.MigrateAsync();
+        DatabaseSetupLoggers.MigrationsApplied(logger);
+
+        DatabaseSetupLoggers.SeedingData(logger);
+        DbSeeder.SeedData(context);
+        DatabaseSetupLoggers.DataSeeded(logger);
+    }
+    catch (Exception ex)
+    {
+        DatabaseSetupLoggers.DatabaseSetupError(logger, ex);
+        throw; // Re-throw to prevent app startup with corrupted database
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -30,10 +64,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-// Temporal para debug
-Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
-Console.WriteLine($"SQL Password from env: {Environment.GetEnvironmentVariable("SQL_SA_PASSWORD")?.Substring(0, 3)}***");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
