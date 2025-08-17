@@ -1,104 +1,134 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Build Project",
-			"type": "shell",
-			"command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"problemMatcher": [
-				"$msCompile"
-			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
-		},
-		{
-			"label": "Run Project",
-			"type": "shell",
-			"command": "dotnet run --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"problemMatcher": [
-				"$msCompile"
-			],
-			"group": "build",
-			"dependsOn": "Build Project"
-		},
-		{
-			"label": "Install EF Tools",
-			"type": "shell",
-			"command": "dotnet tool install --global dotnet-ef",
-			"group": "build"
-		},
-		{
-			"label": "Add Migration (SQL Server)",
-			"type": "shell",
-			"command": "dotnet ef migrations add ${input:migrationName} --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build",
-			"options": {
-				"env": {
-					"ASPNETCORE_ENVIRONMENT": "Development"
-				}
-			}
-		},
-		{
-			"label": "Remove Last Migration",
-			"type": "shell",
-			"command": "dotnet ef migrations remove --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build",
-			"options": {
-				"env": {
-					"ASPNETCORE_ENVIRONMENT": "Development"
-				}
-			}
-		},
-		{
-			"label": "Update Database",
-			"type": "shell",
-			"command": "dotnet ef database update --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
-		},
-		{
-			"label": "Update Database (SQL Server)",
-			"type": "shell",
-			"command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
-		},
-		{
-			"label": "Update Database (PostgreSQL)",
-			"type": "shell",
-			"command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build",
-			"options": {
-				"env": {
-					"DATABASE_URL": "${input:postgresDatabaseUrl}"
-				}
-			}
-		},
-		{
-			"label": "Clean",
-			"type": "shell",
-			"command": "dotnet clean ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
-		},
-		{
-			"label": "Restore",
-			"type": "shell",
-			"command": "dotnet restore ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
-		}
-	],
-	"inputs": [
-		{
-			"id": "migrationName",
-			"description": "Migration name",
-			"default": "NewMigration",
-			"type": "promptString"
-		},
-		{
-			"id": "postgresDatabaseUrl",
-			"description": "Coolify's DATABASE_URL (postgres://usuario:password@host:puerto/db?sslmode=Prefer)",
-			"default": "postgres://user:password@host:5432/dbname?sslmode=Prefer",
-			"type": "promptString"
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Docker: Up Postgres 17",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.postgres.yml up -d",
+            "group": "build"
+        },
+        {
+            "label": "Docker: Down Postgres 17",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.postgres.yml down -v",
+            "group": "build"
+        },
+        {
+            "label": "Docker: Wait for Postgres",
+            "type": "shell",
+            "command": "bash ./scripts/wait-for-postgres.sh localhost 5432 postgres skibiditeca",
+            "group": "build",
+            "dependsOn": "Docker: Up Postgres 17"
+        },
+        {
+            "label": "Build Project",
+            "type": "shell",
+            "command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run Project",
+            "type": "shell",
+            "command": "dotnet run --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "dependsOn": "Build Project"
+        },
+        {
+            "label": "Install EF Tools",
+            "type": "shell",
+            "command": "dotnet tool install --global dotnet-ef",
+            "group": "build"
+        },
+        {
+            "label": "Add Migration (SQL Server)",
+            "type": "shell",
+            "command": "dotnet ef migrations add ${input:migrationName} --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build",
+            "options": {
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+            }
+        },
+        {
+            "label": "Remove Last Migration (SQL Server)",
+            "type": "shell",
+            "command": "dotnet ef migrations remove --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build",
+            "options": {
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+            }
+        },
+        {
+            "label": "Update Database (SQL Server)",
+            "type": "shell",
+            "command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build"
+        },
+        {
+            "label": "Add Migration (PostgreSQL)",
+            "type": "shell",
+            "command": "dotnet ef migrations add ${input:migrationName} --context TheSkibiditeca.Web.Data.DbContextPostgres --output-dir ./Migrations/Npgsql --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build",
+            "options": {
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Production"
+                }
+            }
+        },
+        {
+            "label": "Remove Last Migration (PostgreSQL)",
+            "type": "shell",
+            "command": "dotnet ef migrations remove --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build",
+            "options": {
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Production"
+                }
+            }
+        },
+        {
+            "label": "Update Database (PostgreSQL via Docker)",
+            "type": "shell",
+            "command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build",
+            "options": {
+                "env": {
+                    "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/skibiditeca?sslmode=Prefer",
+                    "ASPNETCORE_ENVIRONMENT": "Production"
+                }
+            }
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "dotnet clean ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build"
+        },
+        {
+            "label": "Restore",
+            "type": "shell",
+            "command": "dotnet restore ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "group": "build"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "migrationName",
+            "description": "Migration name",
+            "default": "NewMigration",
+            "type": "promptString"
+        }
+    ]
 }
