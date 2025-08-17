@@ -301,9 +301,6 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.Property<int?>("BookId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CopyId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -345,11 +342,56 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("CopyId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Loans");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanDetails", b =>
+                {
+                    b.Property<int>("LoanDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LoanDetailId"));
+
+                    b.Property<int>("CopyId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<DateTime>("DateAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LoanId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("LoanDetailId");
+
+                    b.HasIndex("CopyId");
+
+                    b.HasIndex("LoanId");
+
+                    b.ToTable("LoanDetails");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
@@ -583,21 +625,32 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                         .WithMany("Loans")
                         .HasForeignKey("BookId");
 
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
-                        .WithMany("Loans")
-                        .HasForeignKey("CopyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.User", "User")
                         .WithMany("Loans")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanDetails", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("CopyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Loan", "Loan")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Copy");
 
-                    b.Navigation("User");
+                    b.Navigation("Loan");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
@@ -657,7 +710,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
                 {
-                    b.Navigation("Loans");
+                    b.Navigation("LoanDetails");
 
                     b.Navigation("Reservations");
                 });
@@ -665,6 +718,8 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
                     b.Navigation("Fines");
+
+                    b.Navigation("LoanDetails");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.User", b =>
