@@ -154,41 +154,6 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
-                {
-                    b.Property<int>("CopyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CopyId"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ISBN")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PhysicalLocation")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("PublisherName")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("CopyId");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("ISBN").IsUnique();
-
-                    b.ToTable("Copies");
-                });
-
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.BookAuthor", b =>
                 {
                     b.Property<int>("BookId")
@@ -237,6 +202,42 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                         .IsUnique();
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.Property<int>("CopyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CopyId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ISBN")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PhysicalLocation")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PublisherName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("CopyId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("ISBN")
+                        .IsUnique();
+
+                    b.ToTable("Copies");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Fine", b =>
@@ -297,7 +298,10 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.Property<DateTime?>("ActualReturnDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CopyId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -341,49 +345,11 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
                     b.HasIndex("BookId");
 
+                    b.HasIndex("CopyId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Loans");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
-                {
-                    b.Property<int>("PublisherId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PublisherId"));
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Website")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("PublisherId");
-
-                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
@@ -394,7 +360,10 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CopyId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -418,6 +387,8 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.HasKey("ReservationId");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("CopyId");
 
                     b.HasIndex("UserId");
 
@@ -555,14 +526,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Category");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.BookAuthor", b =>
@@ -580,6 +544,17 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                         .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                        .WithMany("Copies")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
@@ -604,9 +579,13 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", null)
                         .WithMany("Loans")
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
+                        .WithMany("Loans")
+                        .HasForeignKey("CopyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -616,16 +595,20 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("Copy");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", null)
                         .WithMany("Reservations")
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
+                        .WithMany("Reservations")
+                        .HasForeignKey("CopyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -635,7 +618,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("Copy");
 
                     b.Navigation("User");
                 });
@@ -660,6 +643,8 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                 {
                     b.Navigation("BookAuthors");
 
+                    b.Navigation("Copies");
+
                     b.Navigation("Loans");
 
                     b.Navigation("Reservations");
@@ -670,14 +655,16 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.Navigation("Loans");
+
+                    b.Navigation("Reservations");
+                });
+
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
                     b.Navigation("Fines");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.User", b =>
