@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Copyright (c) dominuxLABS. All rights reserved.
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -78,7 +79,7 @@ namespace TheSkibiditeca.Web.Migrations
                     ISBN = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     PublisherName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     PhysicalLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -220,7 +221,7 @@ namespace TheSkibiditeca.Web.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Website = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                    Website = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                 },
                 constraints: table =>
                 {
