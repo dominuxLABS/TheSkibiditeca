@@ -14,7 +14,7 @@ if (builder.Environment.IsDevelopment())
 {
     // DEVELOPMENT: SQL Server LocalDB
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
-    builder.Services.AddDbContext<LibraryDbContextSqlServer>(options =>
+    builder.Services.AddDbContext<DbContextSqlServer>(options =>
         options.UseSqlServer(connectionString));
 
     Console.WriteLine("Using SQL Server LocalDB for development");
@@ -28,7 +28,7 @@ else
     // Convert postgres:// URI to a safe Npgsql connection string
     var npgsqlConnectionString = ConnectionStrings.BuildNpgsqlFromUrl(databaseUrl);
 
-    builder.Services.AddDbContext<LibraryDbContextNpgsql>(options =>
+    builder.Services.AddDbContext<DbContextPostgres>(options =>
         options.UseNpgsql(npgsqlConnectionString, npgsql =>
         {
             npgsql.EnableRetryOnFailure(5);
@@ -44,8 +44,8 @@ using (var scope = app.Services.CreateScope())
 {
     // Resolve the proper DbContext based on environment
     var context = app.Environment.IsDevelopment()
-        ? scope.ServiceProvider.GetRequiredService<LibraryDbContextSqlServer>() as DbContext
-        : scope.ServiceProvider.GetRequiredService<LibraryDbContextNpgsql>() as DbContext;
+        ? scope.ServiceProvider.GetRequiredService<DbContextSqlServer>() as DbContext
+        : scope.ServiceProvider.GetRequiredService<DbContextPostgres>() as DbContext;
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
     try
@@ -57,7 +57,7 @@ using (var scope = app.Services.CreateScope())
         DatabaseSetupLoggers.SeedingData(logger);
 
     // DbSeeder expects LibraryDbContext; cast when running in dev
-        if (context is LibraryDbContextSqlServer lib)
+        if (context is DbContextSqlServer lib)
         {
             DbSeeder.SeedData(lib);
         }
