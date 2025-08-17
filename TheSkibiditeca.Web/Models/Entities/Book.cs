@@ -94,7 +94,7 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// Gets the number of available copies (active and not currently loaned).
         /// </summary>
         [NotMapped]
-        public int AvailableCopies => this.Copies?.Count(c => c.IsActive && (c.Loans == null || !c.Loans.Any(l => l.ActualReturnDate == null && l.Status != LoanStatusType.Returned))) ?? 0;
+        public int AvailableCopies => this.Copies?.Count(c => c.IsActive && (c.LoanDetails == null || !c.LoanDetails.Any(ld => ld.IsActive && ld.Loan.ActualReturnDate == null && ld.Loan.Status != LoanStatusType.Returned))) ?? 0;
 
         /// <summary>
         /// Gets a value indicating whether the book is available for loan.
