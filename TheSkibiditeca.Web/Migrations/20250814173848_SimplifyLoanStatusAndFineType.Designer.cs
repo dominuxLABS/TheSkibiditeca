@@ -11,7 +11,7 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations
 {
-    [DbContext(typeof(LibraryDbContextSqlServer))]
+    [DbContext(typeof(DbContextSqlServer))]
     [Migration("20250814173848_SimplifyLoanStatusAndFineType")]
     partial class SimplifyLoanStatusAndFineType
     {

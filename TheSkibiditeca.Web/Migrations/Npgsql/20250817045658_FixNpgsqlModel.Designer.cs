@@ -11,7 +11,7 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations.Npgsql
 {
-    [DbContext(typeof(LibraryDbContextNpgsql))]
+    [DbContext(typeof(DbContextPostgres))]
     [Migration("20250817045658_FixNpgsqlModel")]
     partial class FixNpgsqlModel
     {
