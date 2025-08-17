@@ -30,16 +30,49 @@
 			"group": "build"
 		},
 		{
-			"label": "Add Migration",
+			"label": "Add Migration (SQL Server)",
 			"type": "shell",
-			"command": "dotnet ef migrations add ${input:migrationName} --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-			"group": "build"
+			"command": "dotnet ef migrations add ${input:migrationName} --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build",
+			"options": {
+				"env": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+				}
+			}
+		},
+		{
+			"label": "Remove Last Migration",
+			"type": "shell",
+			"command": "dotnet ef migrations remove --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build",
+			"options": {
+				"env": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+				}
+			}
 		},
 		{
 			"label": "Update Database",
 			"type": "shell",
 			"command": "dotnet ef database update --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
 			"group": "build"
+		},
+		{
+			"label": "Update Database (SQL Server)",
+			"type": "shell",
+			"command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build"
+		},
+		{
+			"label": "Update Database (PostgreSQL)",
+			"type": "shell",
+			"command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+			"group": "build",
+			"options": {
+				"env": {
+					"DATABASE_URL": "${input:postgresDatabaseUrl}"
+				}
+			}
 		},
 		{
 			"label": "Clean",
@@ -57,8 +90,14 @@
 	"inputs": [
 		{
 			"id": "migrationName",
-			"description": "Nombre de la migración",
+			"description": "Migration name",
 			"default": "NewMigration",
+			"type": "promptString"
+		},
+		{
+			"id": "postgresDatabaseUrl",
+			"description": "Coolify's DATABASE_URL (postgres://usuario:password@host:puerto/db?sslmode=Prefer)",
+			"default": "postgres://user:password@host:5432/dbname?sslmode=Prefer",
 			"type": "promptString"
 		}
 	]
