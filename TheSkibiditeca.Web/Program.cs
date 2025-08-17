@@ -14,7 +14,7 @@ if (builder.Environment.IsDevelopment())
 {
     // DEVELOPMENT: SQL Server LocalDB
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
-    builder.Services.AddDbContext<LibraryDbContext>(options =>
+    builder.Services.AddDbContext<LibraryDbContextSqlServer>(options =>
         options.UseSqlServer(connectionString));
 
     Console.WriteLine("Using SQL Server LocalDB for development");
@@ -28,7 +28,7 @@ else
     // Convert postgres:// URI to a safe Npgsql connection string
     var npgsqlConnectionString = ConnectionStrings.BuildNpgsqlFromUrl(databaseUrl);
 
-    builder.Services.AddDbContext<LibraryDbContext>(options =>
+    builder.Services.AddDbContext<LibraryDbContextNpgsql>(options =>
         options.UseNpgsql(npgsqlConnectionString, npgsql =>
         {
             npgsql.EnableRetryOnFailure(5);
@@ -42,17 +42,26 @@ var app = builder.Build();
 // Seed the database and apply migrations
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+    // Resolve the proper DbContext based on environment
+    var context = app.Environment.IsDevelopment()
+        ? scope.ServiceProvider.GetRequiredService<LibraryDbContextSqlServer>() as DbContext
+        : scope.ServiceProvider.GetRequiredService<LibraryDbContextNpgsql>() as DbContext;
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
     try
     {
         DatabaseSetupLoggers.ApplyingMigrations(logger);
-        await context.Database.MigrateAsync();
+    await context.Database.MigrateAsync();
         DatabaseSetupLoggers.MigrationsApplied(logger);
 
         DatabaseSetupLoggers.SeedingData(logger);
-        DbSeeder.SeedData(context);
+        
+    // DbSeeder expects LibraryDbContext; cast when running in dev
+        if (context is LibraryDbContextSqlServer lib)
+        {
+            DbSeeder.SeedData(lib);
+        }
+        
         DatabaseSetupLoggers.DataSeeded(logger);
     }
     catch (Exception ex)
