@@ -1,7 +1,5 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-using Microsoft.Extensions.Logging;
-
 namespace TheSkibiditeca.Web.Logging
 {
     /// <summary>
