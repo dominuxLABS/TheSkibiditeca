@@ -7,6 +7,7 @@ namespace TheSkibiditeca.Web.Models.Entities
 {
     /// <summary>
     /// Represents a book reservation in the library system.
+    /// Reservations are tied to a physical copy (ejemplar).
     /// </summary>
     [Table("Reservations")]
     public class Reservation
@@ -18,9 +19,9 @@ namespace TheSkibiditeca.Web.Models.Entities
         public int ReservationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the book identifier.
+        /// Gets or sets the copy (ejemplar) identifier.
         /// </summary>
-        public int BookId { get; set; }
+        public int CopyId { get; set; }
 
         /// <summary>
         /// Gets or sets the user identifier.
@@ -54,9 +55,9 @@ namespace TheSkibiditeca.Web.Models.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// Gets or sets the book navigation property.
+        /// Gets or sets the copy navigation property.
         /// </summary>
-        public virtual Book Book { get; set; } = null!;
+        public virtual Copy Copy { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the user navigation property.

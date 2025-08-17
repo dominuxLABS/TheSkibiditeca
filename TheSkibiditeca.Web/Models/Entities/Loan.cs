@@ -1,5 +1,7 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TheSkibiditeca.Web.Models.Enums;
@@ -8,6 +10,7 @@ namespace TheSkibiditeca.Web.Models.Entities
 {
     /// <summary>
     /// Represents a book loan in the library system.
+    /// Each loan is associated with a specific physical copy (ejemplar).
     /// </summary>
     [Table("Loans")]
     public class Loan
@@ -19,9 +22,9 @@ namespace TheSkibiditeca.Web.Models.Entities
         public int LoanId { get; set; }
 
         /// <summary>
-        /// Gets or sets the book identifier.
+        /// Gets or sets the copy (ejemplar) identifier.
         /// </summary>
-        public int BookId { get; set; }
+        public int CopyId { get; set; }
 
         /// <summary>
         /// Gets or sets the user identifier.
@@ -84,9 +87,9 @@ namespace TheSkibiditeca.Web.Models.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// Gets or sets the book navigation property.
+        /// Gets or sets the copy navigation property.
         /// </summary>
-        public virtual Book Book { get; set; } = null!;
+        public virtual Copy Copy { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the user navigation property.
