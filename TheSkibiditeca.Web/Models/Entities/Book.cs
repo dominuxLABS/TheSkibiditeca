@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TheSkibiditeca.Web.Models.Enums;
 
 namespace TheSkibiditeca.Web.Models.Entities
 {
@@ -25,17 +26,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         public string Title { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the book ISBN.
-        /// </summary>
-        [StringLength(20)]
-        public string? ISBN { get; set; }
-
-        /// <summary>
-        /// Gets or sets the publisher identifier.
-        /// </summary>
-        public int? PublisherId { get; set; }
-
-        /// <summary>
         /// Gets or sets the publication year.
         /// </summary>
         [Range(1000, 9999)]
@@ -45,36 +35,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// Gets or sets the category identifier.
         /// </summary>
         public int? CategoryId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of pages.
-        /// </summary>
-        [Range(1, int.MaxValue)]
-        public int? NumberOfPages { get; set; }
-
-        /// <summary>
-        /// Gets or sets the book language.
-        /// </summary>
-        [StringLength(50)]
-        public string Language { get; set; } = "English";
-
-        /// <summary>
-        /// Gets or sets the physical location of the book.
-        /// </summary>
-        [StringLength(100)]
-        public string? PhysicalLocation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the total quantity of this book.
-        /// </summary>
-        [Range(1, int.MaxValue)]
-        public int TotalQuantity { get; set; } = 1;
-
-        /// <summary>
-        /// Gets or sets the available quantity of this book.
-        /// </summary>
-        [Range(0, int.MaxValue)]
-        public int AvailableQuantity { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the book description.
@@ -90,18 +50,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         public string? CoverImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the acquisition price.
-        /// </summary>
-        [Column(TypeName = "decimal(10,2)")]
-        public decimal? AcquisitionPrice { get; set; }
-
-        /// <summary>
-        /// Gets or sets the acquisition date.
-        /// </summary>
-        [DataType(DataType.Date)]
-        public DateTime? AcquisitionDate { get; set; }
-
-        /// <summary>
         /// Gets or sets the creation date.
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -112,16 +60,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the book is active.
-        /// </summary>
-        public bool IsActive { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the publisher navigation property.
-        /// </summary>
-        public virtual Publisher? Publisher { get; set; }
-
-        /// <summary>
         /// Gets or sets the category navigation property.
         /// </summary>
         public virtual Category? Category { get; set; }
@@ -129,23 +67,40 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// <summary>
         /// Gets or sets the book-author relationships.
         /// </summary>
-        public virtual ICollection<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
+        public virtual ICollection<BookAuthor> BookAuthors { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the loans for this book.
         /// </summary>
-        public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
+        public virtual ICollection<Loan> Loans { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the reservations for this book.
         /// </summary>
-        public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public virtual ICollection<Reservation> Reservations { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the physical copies (ejemplares) for this book.
+        /// </summary>
+        public virtual ICollection<Copy> Copies { get; set; } = [];
+
+        /// <summary>
+        /// Gets the total number of copies for this book.
+        /// </summary>
+        [NotMapped]
+        public int TotalCopies => this.Copies?.Count ?? 0;
+
+        /// <summary>
+        /// Gets the number of available copies (active and not currently loaned).
+        /// </summary>
+        [NotMapped]
+        public int AvailableCopies => this.Copies?.Count(c => c.IsActive && (c.Loans == null || !c.Loans.Any(l => l.ActualReturnDate == null && l.Status != LoanStatusType.Returned))) ?? 0;
 
         /// <summary>
         /// Gets a value indicating whether the book is available for loan.
         /// </summary>
         [NotMapped]
-        public bool IsAvailable => this.AvailableQuantity > 0;
+        public bool IsAvailable => this.AvailableCopies > 0;
 
         /// <summary>
         /// Gets the authors' names as a comma-separated string.
