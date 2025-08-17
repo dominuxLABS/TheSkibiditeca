@@ -51,17 +51,17 @@ using (var scope = app.Services.CreateScope())
     try
     {
         DatabaseSetupLoggers.ApplyingMigrations(logger);
-    await context.Database.MigrateAsync();
+        await context.Database.MigrateAsync();
         DatabaseSetupLoggers.MigrationsApplied(logger);
 
         DatabaseSetupLoggers.SeedingData(logger);
-        
+
     // DbSeeder expects LibraryDbContext; cast when running in dev
         if (context is LibraryDbContextSqlServer lib)
         {
             DbSeeder.SeedData(lib);
         }
-        
+
         DatabaseSetupLoggers.DataSeeded(logger);
     }
     catch (Exception ex)
