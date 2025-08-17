@@ -11,7 +11,7 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations
 {
-    [DbContext(typeof(LibraryDbContext))]
+    [DbContext(typeof(LibraryDbContextSqlServer))]
     [Migration("20250814125649_InitialCreate")]
     partial class InitialCreate
     {
