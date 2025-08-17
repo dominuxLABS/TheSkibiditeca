@@ -10,7 +10,7 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations
 {
-    [DbContext(typeof(LibraryDbContextSqlServer))]
+    [DbContext(typeof(DbContextSqlServer))]
     partial class LibraryDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
