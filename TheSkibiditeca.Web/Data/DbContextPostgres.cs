@@ -8,13 +8,13 @@ namespace TheSkibiditeca.Web.Data;
 /// <summary>
 /// PostgreSQL-specific DbContext type with its own model to keep migrations/provider metadata isolated.
 /// </summary>
-public class LibraryDbContextNpgsql : DbContext
+public class DbContextPostgres : DbContext
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="LibraryDbContextNpgsql"/> class.
+    /// Initializes a new instance of the <see cref="DbContextPostgres"/> class.
     /// </summary>
     /// <param name="options">The options to be used by the DbContext.</param>
-    public LibraryDbContextNpgsql(DbContextOptions<LibraryDbContextNpgsql> options)
+    public DbContextPostgres(DbContextOptions<DbContextPostgres> options)
         : base(options)
     {
     }
