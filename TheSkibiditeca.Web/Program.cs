@@ -59,7 +59,7 @@ using (var scope = app.Services.CreateScope())
     // DbSeeder expects LibraryDbContext; cast when running in dev
         if (context is DbContextSqlServer lib)
         {
-            DbSeeder.SeedData(lib);
+            DbSeeder.SeedData(lib, logger);
         }
 
         DatabaseSetupLoggers.DataSeeded(logger);
