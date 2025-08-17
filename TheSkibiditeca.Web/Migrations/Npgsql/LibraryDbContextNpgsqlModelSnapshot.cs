@@ -119,15 +119,6 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
 
-                    b.Property<DateTime?>("AcquisitionDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal?>("AcquisitionPrice")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("AvailableQuantity")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
@@ -143,38 +134,13 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("ISBN")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<int?>("NumberOfPages")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PhysicalLocation")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<int?>("PublicationYear")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("PublisherId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
-
-                    b.Property<int>("TotalQuantity")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -185,12 +151,42 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ISBN")
-                        .IsUnique();
-
-                    b.HasIndex("PublisherId");
-
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.Property<int>("CopyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CopyId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ISBN")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PhysicalLocation")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PublisherName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("CopyId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("ISBN").IsUnique();
+
+                    b.ToTable("Copies");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.BookAuthor", b =>
