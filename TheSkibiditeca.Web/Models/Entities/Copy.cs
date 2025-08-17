@@ -51,9 +51,9 @@ namespace TheSkibiditeca.Web.Models.Entities
         public virtual Book? Book { get; set; }
 
     /// <summary>
-    /// Gets or sets the loans associated with this copy.
+    /// Gets or sets the loans associated with this copy through loan details.
     /// </summary>
-        public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
+        public virtual ICollection<LoanDetails> LoanDetails { get; set; } = new List<LoanDetails>();
 
     /// <summary>
     /// Gets or sets the reservations associated with this copy.

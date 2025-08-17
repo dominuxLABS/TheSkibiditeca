@@ -1,7 +1,5 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TheSkibiditeca.Web.Models.Enums;
@@ -20,11 +18,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// </summary>
         [Key]
         public int LoanId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the copy (ejemplar) identifier.
-        /// </summary>
-        public int CopyId { get; set; }
 
         /// <summary>
         /// Gets or sets the user identifier.
@@ -87,14 +80,14 @@ namespace TheSkibiditeca.Web.Models.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// Gets or sets the copy navigation property.
-        /// </summary>
-        public virtual Copy Copy { get; set; } = null!;
-
-        /// <summary>
         /// Gets or sets the user navigation property.
         /// </summary>
         public virtual User User { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the loan details associated with this loan.
+        /// </summary>
+        public virtual ICollection<LoanDetails> LoanDetails { get; set; } = new List<LoanDetails>();
 
         /// <summary>
         /// Gets or sets the fines associated with this loan.
