@@ -26,7 +26,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     NewData = table.Column<string>(type: "text", nullable: true),
                     SystemUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IpAddress = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: true)
+                    IpAddress = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: true),
                 },
                 constraints: table =>
                 {
@@ -46,7 +46,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     Nationality = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -62,7 +62,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -81,7 +81,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Website = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -100,7 +100,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     CanRenew = table.Column<bool>(type: "boolean", nullable: false),
                     DailyFineAmount = table.Column<decimal>(type: "numeric(5,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -129,7 +129,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     AcquisitionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -168,7 +168,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    PasswordSalt = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
+                    PasswordSalt = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -187,7 +187,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                 {
                     BookId = table.Column<int>(type: "integer", nullable: false),
                     AuthorId = table.Column<int>(type: "integer", nullable: false),
-                    Role = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    Role = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -223,7 +223,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     Observations = table.Column<string>(type: "text", nullable: true),
                     StaffMember = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                 },
                 constraints: table =>
                 {
@@ -254,7 +254,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsNotified = table.Column<bool>(type: "boolean", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -288,7 +288,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                     Description = table.Column<string>(type: "text", nullable: true),
                     IsPaid = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                 },
                 constraints: table =>
                 {
