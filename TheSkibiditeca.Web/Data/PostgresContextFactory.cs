@@ -8,16 +8,16 @@ namespace TheSkibiditeca.Web.Data;
 /// <summary>
 /// Design-time factory to create the Npgsql DbContext for migrations scaffolding.
 /// </summary>
-public class LibraryNpgsqlContextFactory : IDesignTimeDbContextFactory<LibraryDbContextNpgsql>
+public class PostgresContextFactory : IDesignTimeDbContextFactory<DbContextPostgres>
 {
     /// <summary>
-    /// Creates an instance of <see cref="LibraryDbContextNpgsql"/> for design-time operations such as migrations.
+    /// Creates an instance of <see cref="DbContextPostgres"/> for design-time operations such as migrations.
     /// </summary>
     /// <param name="args">Command-line arguments.</param>
-    /// <returns>A configured <see cref="LibraryDbContextNpgsql"/>.</returns>
-    public LibraryDbContextNpgsql CreateDbContext(string[] args)
+    /// <returns>A configured <see cref="DbContextPostgres"/>.</returns>
+    public DbContextPostgres CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<LibraryDbContextNpgsql>();
+        var optionsBuilder = new DbContextOptionsBuilder<DbContextPostgres>();
 
         // Use DATABASE_URL if set; otherwise, use a safe dummy connection string.
         var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ??
@@ -25,6 +25,6 @@ public class LibraryNpgsqlContextFactory : IDesignTimeDbContextFactory<LibraryDb
 
         optionsBuilder.UseNpgsql(ConnectionStrings.BuildNpgsqlFromUrl(databaseUrl));
 
-        return new LibraryDbContextNpgsql(optionsBuilder.Options);
+        return new DbContextPostgres(optionsBuilder.Options);
     }
 }
