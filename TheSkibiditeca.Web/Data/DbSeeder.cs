@@ -1,6 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-using TheSkibiditeca.Web.Data;
+using TheSkibiditeca.Web.Logging;
 using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Data
@@ -14,7 +14,8 @@ namespace TheSkibiditeca.Web.Data
         /// Seeds the database with initial data.
         /// </summary>
         /// <param name="context">The database context.</param>
-        public static void SeedData(DbContextSqlServer context)
+        /// <param name="logger">Logger to report seeding errors and progress.</param>
+        public static void SeedData(DbContextSqlServer context, ILogger logger)
         {
             // Ensure database is created
             context.Database.EnsureCreated();
@@ -62,19 +63,18 @@ namespace TheSkibiditeca.Web.Data
             };
             context.Categories.AddRange(categories);
 
-            // Seed Publishers
-            var publishers = new Publisher[]
+            // Seed publisher names (Publishers entity removed; we now store publisher as a string on Copy)
+            var publisherNames = new[]
             {
-                new() { Name = "Penguin Random House", Address = "1745 Broadway, New York, NY 10019", Email = "info@penguinrandomhouse.com", Website = "https://www.penguinrandomhouse.com" },
-                new() { Name = "HarperCollins", Address = "195 Broadway, New York, NY 10007", Email = "info@harpercollins.com", Website = "https://www.harpercollins.com" },
-                new() { Name = "Simon & Schuster", Address = "1230 Avenue of the Americas, New York, NY 10020", Email = "info@simonandschuster.com", Website = "https://www.simonandschuster.com" },
-                new() { Name = "Macmillan", Address = "120 Broadway, New York, NY 10271", Email = "info@macmillan.com", Website = "https://us.macmillan.com" },
-                new() { Name = "Editorial Planeta", Address = "Av. Diagonal 662-664, 08034 Barcelona, España", Email = "info@planeta.es", Website = "https://www.planeta.es" },
-                new() { Name = "Alfaguara", Address = "Juan Ignacio Luca de Tena 15, 28027 Madrid, España", Email = "info@alfaguara.com", Website = "https://www.alfaguara.com" },
-                new() { Name = "Anagrama", Address = "Pedró de la Creu 58, 08034 Barcelona, España", Email = "info@anagrama-ed.es", Website = "https://www.anagrama-ed.es" },
-                new() { Name = "Fondo de Cultura Económica", Address = "Carretera Picacho-Ajusco 227, México D.F., México", Email = "info@fce.com.mx", Website = "https://www.fce.com.mx" },
+                "Penguin Random House",
+                "HarperCollins",
+                "Simon & Schuster",
+                "Macmillan",
+                "Editorial Planeta",
+                "Alfaguara",
+                "Anagrama",
+                "Fondo de Cultura Económica",
             };
-            context.Publishers.AddRange(publishers);
 
             // Seed Authors (306 authors from the SQL file)
             var authors = new Author[]
@@ -212,6 +212,50 @@ namespace TheSkibiditeca.Web.Data
             // Save to get book IDs
             context.SaveChanges();
 
+            // Seed Copies (physical ejemplares) - generate one copy per book in this seed subset
+            var usedIsbns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            // preload existing ISBNs from DB if any
+            try
+            {
+                usedIsbns.UnionWith(context.Copies.Where(c => !string.IsNullOrEmpty(c.ISBN)).Select(c => c.ISBN!));
+            }
+            catch (Exception ex)
+            {
+                // Log the issue (e.g., table doesn't exist yet during migrations). Continue seeding.
+                DatabaseSetupLoggers.DatabaseSetupError(logger, ex);
+            }
+
+            var copies = new List<Copy>(books.Length);
+            foreach (var (b, idx) in books.Select((x, i) => (x, i)))
+            {
+                string? isbn = null;
+
+                // try to generate a unique ISBN up to a few attempts
+                for (int attempt = 0; attempt < 10; attempt++)
+                {
+                    var candidate = GenerateIsbn();
+                    if (!usedIsbns.Contains(candidate))
+                    {
+                        isbn = candidate;
+                        usedIsbns.Add(candidate);
+                        break;
+                    }
+                }
+
+                copies.Add(new Copy
+                {
+                    BookId = b.BookId,
+                    ISBN = isbn,
+                    PublisherName = publisherNames.Length > 0 ? publisherNames[idx % publisherNames.Length] : null,
+                    PhysicalLocation = b.PhysicalLocation,
+                    IsActive = true,
+                });
+            }
+
+            context.Copies.AddRange(copies);
+            context.SaveChanges();
+
             // Seed Book-Author relationships (matching the SQL data where author IDs correspond to book titles)
             var bookAuthors = new BookAuthor[]
             {
@@ -320,6 +364,40 @@ namespace TheSkibiditeca.Web.Data
 
             // Save all changes
             context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Generates a pseudo-ISBN-13 string using the 978 prefix for seeding/demo purposes.
+        /// </summary>
+        /// <returns>A 13-digit ISBN-like string with a computed check digit.</returns>
+        private static string GenerateIsbn()
+        {
+            // Build 12-digit payload: 978 + 9 random digits
+            using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
+            Span<byte> bytes = stackalloc byte[6]; // 6 bytes -> will be used to derive digits
+            rng.GetBytes(bytes);
+
+            var sb = new System.Text.StringBuilder("978");
+            for (int i = 0; i < 9; i++)
+            {
+                int digit = bytes[i % bytes.Length] % 10;
+                sb.Append((char)('0' + digit));
+            }
+
+            var payload = sb.ToString(); // 12 digits
+
+            // compute check digit for ISBN-13
+            int sum = 0;
+            for (int i = 0; i < payload.Length; i++)
+            {
+                int d = payload[i] - '0';
+                sum += (i % 2 == 0) ? d : d * 3;
+            }
+
+            int remainder = sum % 10;
+            int check = remainder == 0 ? 0 : 10 - remainder;
+
+            return payload + check.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }
