@@ -321,8 +321,7 @@ namespace TheSkibiditeca.Web.Migrations.Npgsql
                 name: "IX_Books_ISBN",
                 table: "Books",
                 column: "ISBN",
-                unique: true,
-                filter: "[ISBN] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_PublisherId",
