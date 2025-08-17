@@ -29,15 +29,17 @@ public class DbContextPostgres : DbContext
     /// </summary>
     public DbSet<Category> Categories { get; set; }
 
-    /// <summary>
-    /// Gets or sets the publishers table.
-    /// </summary>
-    public DbSet<Publisher> Publishers { get; set; }
+    // Publishers entity removed; publisher name is stored on Copy as a simple string.
 
     /// <summary>
     /// Gets or sets the books table.
     /// </summary>
     public DbSet<Book> Books { get; set; }
+
+    /// <summary>
+    /// Gets or sets the physical copies (ejemplares) table.
+    /// </summary>
+    public DbSet<Copy> Copies { get; set; }
 
     /// <summary>
     /// Gets or sets the book-authors relationship table.
@@ -121,8 +123,9 @@ public class DbContextPostgres : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         // Unique indexes (PostgreSQL handles NULLs in unique indexes without filters)
-        modelBuilder.Entity<Book>()
-            .HasIndex(b => b.ISBN)
+        // Move ISBN uniqueness to Copy
+        modelBuilder.Entity<Copy>()
+            .HasIndex(c => c.ISBN)
             .IsUnique();
 
         modelBuilder.Entity<User>()
@@ -142,11 +145,12 @@ public class DbContextPostgres : DbContext
             .IsUnique();
 
         // Optional FKs
-        modelBuilder.Entity<Book>()
-            .HasOne(b => b.Publisher)
-            .WithMany(p => p.Books)
-            .HasForeignKey(b => b.PublisherId)
-            .OnDelete(DeleteBehavior.SetNull);
+    // Book->Publisher relationship removed. Publisher data lives on Copy.PublisherName.
+        modelBuilder.Entity<Copy>()
+            .HasOne(c => c.Book)
+            .WithMany(b => b.Copies)
+            .HasForeignKey(c => c.BookId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Book>()
             .HasOne(b => b.Category)
@@ -161,11 +165,11 @@ public class DbContextPostgres : DbContext
             .HasForeignKey(u => u.UserTypeId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Loan relationships
+        // Loan relationships (loan is per physical Copy)
         modelBuilder.Entity<Loan>()
-            .HasOne(l => l.Book)
-            .WithMany(b => b.Loans)
-            .HasForeignKey(l => l.BookId)
+            .HasOne(l => l.Copy)
+            .WithMany(c => c.Loans)
+            .HasForeignKey(l => l.CopyId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Loan>()
@@ -174,11 +178,11 @@ public class DbContextPostgres : DbContext
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Reservation relationships
+        // Reservation relationships (reservation is per physical Copy)
         modelBuilder.Entity<Reservation>()
-            .HasOne(r => r.Book)
-            .WithMany(b => b.Reservations)
-            .HasForeignKey(r => r.BookId)
+            .HasOne(r => r.Copy)
+            .WithMany(c => c.Reservations)
+            .HasForeignKey(r => r.CopyId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Reservation>()

@@ -29,15 +29,17 @@ namespace TheSkibiditeca.Web.Data
         /// </summary>
         public DbSet<Category> Categories { get; set; }
 
-        /// <summary>
-        /// Gets or sets the publishers table.
-        /// </summary>
-        public DbSet<Publisher> Publishers { get; set; }
+    // Publishers entity removed; publisher name is stored on Copy as a simple string.
+
+    /// <summary>
+    /// Gets or sets the books table.
+    /// </summary>
+        public DbSet<Book> Books { get; set; }
 
         /// <summary>
-        /// Gets or sets the books table.
+        /// Gets or sets the physical copies (ejemplares) table.
         /// </summary>
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Copy> Copies { get; set; }
 
         /// <summary>
         /// Gets or sets the book-authors relationship table.
@@ -121,8 +123,9 @@ namespace TheSkibiditeca.Web.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure unique constraints
-            modelBuilder.Entity<Book>()
-                .HasIndex(b => b.ISBN)
+            // ISBN uniqueness moved to Copy.
+            modelBuilder.Entity<Copy>()
+                .HasIndex(c => c.ISBN)
                 .IsUnique()
                 .HasFilter("[ISBN] IS NOT NULL");
 
@@ -142,12 +145,14 @@ namespace TheSkibiditeca.Web.Data
                 .HasIndex(ut => ut.Name)
                 .IsUnique();
 
-            // Configure relationships with optional foreign keys
-            modelBuilder.Entity<Book>()
-                .HasOne(b => b.Publisher)
-                .WithMany(p => p.Books)
-                .HasForeignKey(b => b.PublisherId)
-                .OnDelete(DeleteBehavior.SetNull);
+            // Publisher removed: publisher information is stored per Copy as a simple string (Copy.PublisherName).
+
+            // Book -> Copies relationship
+            modelBuilder.Entity<Copy>()
+                .HasOne(c => c.Book)
+                .WithMany(b => b.Copies)
+                .HasForeignKey(c => c.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Category)
@@ -162,11 +167,11 @@ namespace TheSkibiditeca.Web.Data
                 .HasForeignKey(u => u.UserTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure Loan relationships
+            // Configure Loan relationships (loan is per physical Copy)
             modelBuilder.Entity<Loan>()
-                .HasOne(l => l.Book)
-                .WithMany(b => b.Loans)
-                .HasForeignKey(l => l.BookId)
+                .HasOne(l => l.Copy)
+                .WithMany(c => c.Loans)
+                .HasForeignKey(l => l.CopyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Loan>()
@@ -175,11 +180,11 @@ namespace TheSkibiditeca.Web.Data
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure Reservation relationships
+            // Configure Reservation relationships (reservation is per physical Copy)
             modelBuilder.Entity<Reservation>()
-                .HasOne(r => r.Book)
-                .WithMany(b => b.Reservations)
-                .HasForeignKey(r => r.BookId)
+                .HasOne(r => r.Copy)
+                .WithMany(c => c.Reservations)
+                .HasForeignKey(r => r.CopyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Reservation>()
@@ -278,6 +283,10 @@ namespace TheSkibiditeca.Web.Data
                 .Property(b => b.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
 
+            modelBuilder.Entity<Copy>()
+                .Property(c => c.CopyId)
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Book>()
                 .Property(b => b.UpdatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -314,9 +323,7 @@ namespace TheSkibiditeca.Web.Data
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            modelBuilder.Entity<Book>()
-                .HasIndex(b => b.ISBN)
-                .IsUnique();
+            // ISBN uniqueness moved to Copy entity; Book.ISBN is no longer uniquely indexed.
         }
 
         /// <summary>
