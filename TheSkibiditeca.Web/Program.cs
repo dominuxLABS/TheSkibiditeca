@@ -25,8 +25,14 @@ else
     var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
         ?? throw new InvalidOperationException("DATABASE_URL environment variable not found");
 
+    // Convert postgres:// URI to a safe Npgsql connection string
+    var npgsqlConnectionString = ConnectionStrings.BuildNpgsqlFromUrl(databaseUrl);
+
     builder.Services.AddDbContext<LibraryDbContext>(options =>
-        options.UseNpgsql(databaseUrl));
+        options.UseNpgsql(npgsqlConnectionString, npgsql =>
+        {
+            npgsql.EnableRetryOnFailure(5);
+        }));
 
     Console.WriteLine("Using PostgreSQL from Coolify resource");
 }
