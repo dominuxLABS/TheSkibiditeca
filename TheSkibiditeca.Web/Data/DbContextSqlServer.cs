@@ -62,6 +62,11 @@ namespace TheSkibiditeca.Web.Data
         public DbSet<Loan> Loans { get; set; }
 
         /// <summary>
+        /// Gets or sets the loan details table.
+        /// </summary>
+        public DbSet<LoanDetails> LoanDetails { get; set; }
+
+        /// <summary>
         /// Gets or sets the reservations table.
         /// </summary>
         public DbSet<Reservation> Reservations { get; set; }
@@ -167,17 +172,24 @@ namespace TheSkibiditeca.Web.Data
                 .HasForeignKey(u => u.UserTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure Loan relationships (loan is per physical Copy)
-            modelBuilder.Entity<Loan>()
-                .HasOne(l => l.Copy)
-                .WithMany(c => c.Loans)
-                .HasForeignKey(l => l.CopyId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            // Configure Loan relationships (now through LoanDetails)
             modelBuilder.Entity<Loan>()
                 .HasOne(l => l.User)
                 .WithMany(u => u.Loans)
                 .HasForeignKey(l => l.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure LoanDetails relationships
+            modelBuilder.Entity<LoanDetails>()
+                .HasOne(ld => ld.Loan)
+                .WithMany(l => l.LoanDetails)
+                .HasForeignKey(ld => ld.LoanId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LoanDetails>()
+                .HasOne(ld => ld.Copy)
+                .WithMany(c => c.LoanDetails)
+                .HasForeignKey(ld => ld.CopyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure Reservation relationships (reservation is per physical Copy)
@@ -310,6 +322,18 @@ namespace TheSkibiditeca.Web.Data
             modelBuilder.Entity<Loan>()
                 .Property(l => l.UpdatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<LoanDetails>()
+                .Property(ld => ld.DateAdded)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<LoanDetails>()
+                .Property(ld => ld.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<LoanDetails>()
+                .Property(ld => ld.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
         }
 
         /// <summary>
@@ -332,7 +356,7 @@ namespace TheSkibiditeca.Web.Data
         private void UpdateTimestamps()
         {
             var entries = this.ChangeTracker.Entries()
-                .Where(e => e.Entity is Author || e.Entity is Book || e.Entity is User || e.Entity is Loan)
+                .Where(e => e.Entity is Author || e.Entity is Book || e.Entity is User || e.Entity is Loan || e.Entity is LoanDetails)
                 .Where(e => e.State == EntityState.Modified);
 
             foreach (var entry in entries)
@@ -352,6 +376,10 @@ namespace TheSkibiditeca.Web.Data
                 else if (entry.Entity is Loan loan)
                 {
                     loan.UpdatedAt = DateTime.UtcNow;
+                }
+                else if (entry.Entity is LoanDetails loanDetails)
+                {
+                    loanDetails.UpdatedAt = DateTime.UtcNow;
                 }
             }
         }
