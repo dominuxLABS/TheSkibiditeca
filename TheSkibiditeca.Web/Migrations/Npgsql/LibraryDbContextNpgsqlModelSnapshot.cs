@@ -10,7 +10,7 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations.Npgsql
 {
-    [DbContext(typeof(LibraryDbContextNpgsql))]
+    [DbContext(typeof(DbContextPostgres))]
     partial class LibraryDbContextNpgsqlModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
