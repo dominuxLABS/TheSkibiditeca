@@ -14,7 +14,7 @@ namespace TheSkibiditeca.Web.Data
         /// Seeds the database with initial data.
         /// </summary>
         /// <param name="context">The database context.</param>
-        public static void SeedData(LibraryDbContext context)
+        public static void SeedData(LibraryDbContextSqlServer context)
         {
             // Ensure database is created
             context.Database.EnsureCreated();
