@@ -17,7 +17,7 @@ public class LibraryNpgsqlContextFactory : IDesignTimeDbContextFactory<LibraryDb
     /// <returns>A configured <see cref="LibraryDbContextNpgsql"/>.</returns>
     public LibraryDbContextNpgsql CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<LibraryDbContextSqlServer>();
+        var optionsBuilder = new DbContextOptionsBuilder<LibraryDbContextNpgsql>();
 
         // Use DATABASE_URL if set; otherwise, use a safe dummy connection string.
         var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ??
