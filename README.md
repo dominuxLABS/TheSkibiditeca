@@ -2,6 +2,8 @@
 
 A modern library management system built with ASP.NET Core for the Applied Programming II course.
 
+> 📖 **[Versión en Español](README.es.md)** | **[English Version](README.md)**
+
 ## Overview
 
 TheSkibiditeca is a comprehensive library management platform that streamlines library operations including book loans, returns, and fine management. This project demonstrates modern web development practices using Microsoft technologies and follows industry-standard patterns and conventions.
