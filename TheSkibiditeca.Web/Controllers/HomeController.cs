@@ -40,6 +40,10 @@ namespace TheSkibiditeca.Web.Controllers
             return this.View();
         }
 
+        public IActionResult Credits() {
+            return this.View();
+        }
+
         /// <summary>
         /// Displays the error page with diagnostic information.
         /// </summary>
