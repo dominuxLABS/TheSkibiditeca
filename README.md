@@ -66,6 +66,117 @@ TheSkibiditeca is a comprehensive library management platform that streamlines l
 
 The application will be available at `https://localhost:7000` and `http://localhost:5000`.
 
+## Scaffolding (CRUD Generation)
+
+**⚠️ IMPORTANT**: Use `dotnet scaffold` (NEW) instead of `dotnet aspnet-codegenerator` (DEPRECATED)
+
+The project supports automatic CRUD generation for entities using Microsoft's **new interactive scaffolding tool**. This tool is compatible with minimal hosting and works seamlessly with our project structure.
+
+### Prerequisites for Scaffolding
+
+Ensure you have the required packages installed (already included in this project):
+
+```xml
+<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
+```
+
+### Using dotnet scaffold (Interactive Tool)
+
+The **recommended method** for generating CRUD operations:
+
+```bash
+# Navigate to the Web project directory
+cd TheSkibiditeca.Web
+
+# Launch interactive scaffolding
+dotnet scaffold
+```
+
+This will open an **interactive menu** where you can:
+
+1. **Select scaffold type**: Choose "Controller with views, using Entity Framework"
+2. **Select model class**: Pick your entity (e.g., `User`, `Book`, `Loan`)
+3. **Select data context**: Choose `DbContextSqlServer` (for development)
+4. **Configure options**: 
+   - Controller name (auto-suggested)
+   - Views folder path
+   - Layout usage
+   - Reference script libraries
+
+### Example: Scaffolding User CRUD
+
+```bash
+cd TheSkibiditeca.Web
+dotnet scaffold
+
+# Interactive menu selections:
+# 1. Controller with views, using Entity Framework
+# 2. Model class: User
+# 3. Data context: DbContextSqlServer
+# 4. Controller name: UsersController
+# 5. Generate views: Yes
+# 6. Reference script libraries: Yes
+# 7. Use default layout: Yes
+```
+
+This generates:
+- `Controllers/UsersController.cs` - Full CRUD controller
+- `Views/Users/Index.cshtml` - List view
+- `Views/Users/Create.cshtml` - Create form
+- `Views/Users/Edit.cshtml` - Edit form
+- `Views/Users/Details.cshtml` - Details view
+- `Views/Users/Delete.cshtml` - Delete confirmation
+
+### Alternative Methods
+
+#### 1. Visual Studio IDE (Recommended for GUI users)
+
+In Visual Studio:
+1. Right-click on `Controllers` folder
+2. **Add** → **New Scaffolded Item**
+3. **MVC Controller with views, using Entity Framework**
+4. Configure your entity and context
+
+#### 2. Command Line (Legacy - Limited compatibility)
+
+```bash
+# ⚠️ May not work with minimal hosting - use dotnet scaffold instead
+dotnet aspnet-codegenerator controller -name [Entity]Controller -m [Entity] -dc DbContextSqlServer --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries --databaseProvider sqlserver
+```
+
+### Troubleshooting Scaffolding
+
+**Problem**: "Minimal hosting scenario!" error
+**Solution**: Use `dotnet scaffold` instead of `dotnet aspnet-codegenerator`
+
+**Problem**: Missing references or packages
+**Solution**: Ensure all EF packages are installed and project builds successfully
+
+**Problem**: DbContext not found
+**Solution**: Verify your DbContext class name matches exactly (case-sensitive)
+
+### Post-Scaffolding Steps
+
+After scaffolding, remember to:
+
+1. **Update navigation menu** (if needed):
+   ```html
+   <!-- Add to Views/Shared/_Layout.cshtml -->
+   <li class="nav-item">
+       <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
+   </li>
+   ```
+
+2. **Run database migrations** (if new entities):
+   ```bash
+   dotnet ef migrations add Add[Entity]Entity --context DbContextSqlServer
+   dotnet ef database update --context DbContextSqlServer
+   ```
+
+3. **Test the generated CRUD operations** in your browser
+
 ### Docker Support
 
 To run the application using Docker:
