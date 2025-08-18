@@ -50,4 +50,56 @@
     text-decoration: underline
 }
 
+svg {
+    margin: px
+}
+
 .scrolled {}
+
+.form-custom {
+    background: none;
+    margin-top: 5%;
+    border: none;
+    color: white;
+}
+
+.form-custom::placeholder {
+    color: gray;
+}
+
+.form-custom::target-text {
+    color: white;
+}
+
+
+.form-custom:focus-visible {
+    border: none;
+    outline: none;
+}
+
+.input-container {
+    border-bottom: solid 2px white;
+    width: 75%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.select-custom {
+    color: lightgray;
+    width: 100%;
+    background: none;
+    border-top: none;
+    border-bottom: solid 2px white;
+    border-left: none;
+    border-right: none;
+}
+
+.select-custom:focus-visible {
+    outline: none;
+}
+
+.select-custom::selection {
+    background-color: black;
+}
