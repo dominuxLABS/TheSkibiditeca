@@ -150,60 +150,60 @@ namespace TheSkibiditeca.Web.Data
             // Seed Books (using data from the SQL file - 306 books)
             var books = new Book[]
             {
-                new() { Title = "Beowulf", PublicationYear = 800, Description = "Épica Fantástica" },
-                new() { Title = "El Cantar de Roldán", PublicationYear = 1100, Description = "Épica Fantástica" },
-                new() { Title = "La Muerte de Arturo", PublicationYear = 1485, Description = "Fantasía Artúrica" },
-                new() { Title = "Alicia en el País de las Maravillas", PublicationYear = 1865, Description = "Fantasía" },
-                new() { Title = "A Través del Espejo", PublicationYear = 1871, Description = "Fantasía" },
-                new() { Title = "Cinco Niños y Eso", PublicationYear = 1902, Description = "Fantasía Infantil" },
-                new() { Title = "Los Niños del Ferrocarril", PublicationYear = 1906, Description = "Aventura Infantil" },
-                new() { Title = "Mary Poppins", PublicationYear = 1934, Description = "Fantasía Infantil" },
-                new() { Title = "Mary Poppins Regresa", PublicationYear = 1935, Description = "Fantasía Infantil" },
-                new() { Title = "El León, la Bruja y el Ropero", PublicationYear = 1950, Description = "Fantasía" },
-                new() { Title = "El Príncipe Caspian", PublicationYear = 1951, Description = "Fantasía" },
-                new() { Title = "El Bebedor de Vino de Palma", PublicationYear = 1952, Description = "Fantasía Folclórica" },
-                new() { Title = "Mi Vida en el Monte de los Fantasmas", PublicationYear = 1954, Description = "Fantasía Folclórica" },
-                new() { Title = "El Hobbit", PublicationYear = 1937, Description = "Fantasía" },
-                new() { Title = "El Señor de los Anillos", PublicationYear = 1954, Description = "Fantasía" },
-                new() { Title = "Un Mago de Terramar", PublicationYear = 1968, Description = "Fantasía" },
-                new() { Title = "La Mano Izquierda de la Oscuridad", PublicationYear = 1969, Description = "Ciencia Ficción/Fantasía" },
-                new() { Title = "La Princesa Prometida", PublicationYear = 1973, Description = "Fantasía de Aventura" },
-                new() { Title = "Maratón", PublicationYear = 1974, Description = "Suspenso" },
-                new() { Title = "El Rey que Fue y Será", PublicationYear = 1958, Description = "Fantasía Artúrica" },
-                new() { Title = "La Espada en la Piedra", PublicationYear = 1938, Description = "Fantasía" },
-                new() { Title = "Charlie y la Fábrica de Chocolate", PublicationYear = 1964, Description = "Fantasía Infantil" },
-                new() { Title = "Matilda", PublicationYear = 1988, Description = "Fantasía Infantil" },
-                new() { Title = "Bomarzo", PublicationYear = 1962, Description = "Novela Histórica Fantástica" },
-                new() { Title = "El Unicornio", PublicationYear = 1965, Description = "Novela Histórica Fantástica" },
-                new() { Title = "Frankenstein", PublicationYear = 1818, Description = "Ciencia Ficción/Gótica" },
-                new() { Title = "El Último Hombre", PublicationYear = 1826, Description = "Ciencia Ficción" },
-                new() { Title = "Veinte Mil Leguas de Viaje Submarino", PublicationYear = 1870, Description = "Ciencia Ficción/Aventura" },
-                new() { Title = "Viaje al Centro de la Tierra", PublicationYear = 1864, Description = "Ciencia Ficción/Aventura" },
-                new() { Title = "La Máquina del Tiempo", PublicationYear = 1895, Description = "Ciencia Ficción" },
-                new() { Title = "La Guerra de los Mundos", PublicationYear = 1898, Description = "Ciencia Ficción" },
-                new() { Title = "Un Mundo Feliz", PublicationYear = 1932, Description = "Ciencia Ficción Distópica" },
-                new() { Title = "Rebelión en la Granja", PublicationYear = 1945, Description = "Sátira Política/Ciencia Ficción" },
-                new() { Title = "1984", PublicationYear = 1949, Description = "Ciencia Ficción Distópica" },
-                new() { Title = "Fahrenheit 451", PublicationYear = 1953, Description = "Ciencia Ficción Distópica" },
-                new() { Title = "Crónicas Marcianas", PublicationYear = 1950, Description = "Ciencia Ficción" },
-                new() { Title = "Fundación", PublicationYear = 1951, Description = "Ciencia Ficción" },
-                new() { Title = "Yo, Robot", PublicationYear = 1950, Description = "Ciencia Ficción" },
-                new() { Title = "Duna", PublicationYear = 1965, Description = "Ciencia Ficción" },
-                new() { Title = "Los Hijos de Duna", PublicationYear = 1976, Description = "Ciencia Ficción" },
-                new() { Title = "2001: Una Odisea del Espacio", PublicationYear = 1968, Description = "Ciencia Ficción" },
-                new() { Title = "Cita con Rama", PublicationYear = 1973, Description = "Ciencia Ficción" },
-                new() { Title = "Solaris", PublicationYear = 1961, Description = "Ciencia Ficción" },
-                new() { Title = "El Congreso de Futurología", PublicationYear = 1971, Description = "Ciencia Ficción" },
-                new() { Title = "¿Sueñan los Androides con Ovejas Eléctricas?", PublicationYear = 1968, Description = "Ciencia Ficción" },
-                new() { Title = "Ubik", PublicationYear = 1969, Description = "Ciencia Ficción" },
-                new() { Title = "Neuromancer", PublicationYear = 1984, Description = "Ciencia Ficción Ciberpunk" },
-                new() { Title = "Conde Cero", PublicationYear = 1986, Description = "Ciencia Ficción Ciberpunk" },
-                new() { Title = "Las Estrellas mi Destino", PublicationYear = 1956, Description = "Ciencia Ficción" },
-                new() { Title = "El Hombre Demolido", PublicationYear = 1953, Description = "Ciencia Ficción" },
-                new() { Title = "El Juego de Ender", PublicationYear = 1985, Description = "Ciencia Ficción" },
-                new() { Title = "La Voz de los Muertos", PublicationYear = 1986, Description = "Ciencia Ficción" },
-                new() { Title = "Hyperion", PublicationYear = 1989, Description = "Ciencia Ficción" },
-                new() { Title = "La Caída de Hyperion", PublicationYear = 1990, Description = "Ciencia Ficción" },
+                new() { Title = "Beowulf", PublicationYear = 800, CategoryId = categories[0].CategoryId, Description = "Épica Fantástica" },
+                new() { Title = "El Cantar de Roldán", PublicationYear = 1100, CategoryId = categories[0].CategoryId, Description = "Épica Fantástica" },
+                new() { Title = "La Muerte de Arturo", PublicationYear = 1485, CategoryId = categories[0].CategoryId, Description = "Fantasía Artúrica" },
+                new() { Title = "Alicia en el País de las Maravillas", PublicationYear = 1865, CategoryId = categories[12].CategoryId, Description = "Fantasía" },
+                new() { Title = "A Través del Espejo", PublicationYear = 1871, CategoryId = categories[12].CategoryId, Description = "Fantasía" },
+                new() { Title = "Cinco Niños y Eso", PublicationYear = 1902, CategoryId = categories[12].CategoryId, Description = "Fantasía Infantil" },
+                new() { Title = "Los Niños del Ferrocarril", PublicationYear = 1906, CategoryId = categories[6].CategoryId, Description = "Aventura Infantil" },
+                new() { Title = "Mary Poppins", PublicationYear = 1934, CategoryId = categories[12].CategoryId, Description = "Fantasía Infantil" },
+                new() { Title = "Mary Poppins Regresa", PublicationYear = 1935, CategoryId = categories[12].CategoryId, Description = "Fantasía Infantil" },
+                new() { Title = "El León, la Bruja y el Ropero", PublicationYear = 1950, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
+                new() { Title = "El Príncipe Caspian", PublicationYear = 1951, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
+                new() { Title = "El Bebedor de Vino de Palma", PublicationYear = 1952, CategoryId = categories[0].CategoryId, Description = "Fantasía Folclórica" },
+                new() { Title = "Mi Vida en el Monte de los Fantasmas", PublicationYear = 1954, CategoryId = categories[0].CategoryId, Description = "Fantasía Folclórica" },
+                new() { Title = "El Hobbit", PublicationYear = 1937, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
+                new() { Title = "El Señor de los Anillos", PublicationYear = 1954, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
+                new() { Title = "Un Mago de Terramar", PublicationYear = 1968, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
+                new() { Title = "La Mano Izquierda de la Oscuridad", PublicationYear = 1969, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción/Fantasía" },
+                new() { Title = "La Princesa Prometida", PublicationYear = 1973, CategoryId = categories[6].CategoryId, Description = "Fantasía de Aventura" },
+                new() { Title = "Maratón", PublicationYear = 1974, CategoryId = categories[5].CategoryId, Description = "Suspenso" },
+                new() { Title = "El Rey que Fue y Será", PublicationYear = 1958, CategoryId = categories[0].CategoryId, Description = "Fantasía Artúrica" },
+                new() { Title = "La Espada en la Piedra", PublicationYear = 1938, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
+                new() { Title = "Charlie y la Fábrica de Chocolate", PublicationYear = 1964, CategoryId = categories[12].CategoryId, Description = "Fantasía Infantil" },
+                new() { Title = "Matilda", PublicationYear = 1988, CategoryId = categories[12].CategoryId, Description = "Fantasía Infantil" },
+                new() { Title = "Bomarzo", PublicationYear = 1962, CategoryId = categories[13].CategoryId, Description = "Novela Histórica Fantástica" },
+                new() { Title = "El Unicornio", PublicationYear = 1965, CategoryId = categories[13].CategoryId, Description = "Novela Histórica Fantástica" },
+                new() { Title = "Frankenstein", PublicationYear = 1818, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción/Gótica" },
+                new() { Title = "El Último Hombre", PublicationYear = 1826, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Veinte Mil Leguas de Viaje Submarino", PublicationYear = 1870, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción/Aventura" },
+                new() { Title = "Viaje al Centro de la Tierra", PublicationYear = 1864, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción/Aventura" },
+                new() { Title = "La Máquina del Tiempo", PublicationYear = 1895, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "La Guerra de los Mundos", PublicationYear = 1898, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Un Mundo Feliz", PublicationYear = 1932, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción Distópica" },
+                new() { Title = "Rebelión en la Granja", PublicationYear = 1945, CategoryId = categories[1].CategoryId, Description = "Sátira Política/Ciencia Ficción" },
+                new() { Title = "1984", PublicationYear = 1949, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción Distópica" },
+                new() { Title = "Fahrenheit 451", PublicationYear = 1953, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción Distópica" },
+                new() { Title = "Crónicas Marcianas", PublicationYear = 1950, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Fundación", PublicationYear = 1951, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Yo, Robot", PublicationYear = 1950, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Duna", PublicationYear = 1965, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Los Hijos de Duna", PublicationYear = 1976, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "2001: Una Odisea del Espacio", PublicationYear = 1968, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Cita con Rama", PublicationYear = 1973, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Solaris", PublicationYear = 1961, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "El Congreso de Futurología", PublicationYear = 1971, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "¿Sueñan los Androides con Ovejas Eléctricas?", PublicationYear = 1968, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Ubik", PublicationYear = 1969, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Neuromancer", PublicationYear = 1984, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción Ciberpunk" },
+                new() { Title = "Conde Cero", PublicationYear = 1986, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción Ciberpunk" },
+                new() { Title = "Las Estrellas mi Destino", PublicationYear = 1956, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "El Hombre Demolido", PublicationYear = 1953, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "El Juego de Ender", PublicationYear = 1985, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "La Voz de los Muertos", PublicationYear = 1986, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "Hyperion", PublicationYear = 1989, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
+                new() { Title = "La Caída de Hyperion", PublicationYear = 1990, CategoryId = categories[1].CategoryId, Description = "Ciencia Ficción" },
 
                 // Agregar más libros según sea necesario - esto representa un subconjunto para demostración
             };
@@ -212,7 +212,7 @@ namespace TheSkibiditeca.Web.Data
             // Save to get book IDs
             context.SaveChanges();
 
-            // Seed Copies (physical ejemplares) - generate one copy per book in this seed subset
+            // Seed Copies (physical ejemplares) - generate 5 copies per book
             var usedIsbns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             // preload existing ISBNs from DB if any
@@ -226,31 +226,49 @@ namespace TheSkibiditeca.Web.Data
                 DatabaseSetupLoggers.DatabaseSetupError(logger, ex);
             }
 
-            var copies = new List<Copy>(books.Length);
-            foreach (var (b, idx) in books.Select((x, i) => (x, i)))
+            var copies = new List<Copy>(books.Length * 5); // 5 copies per book
+            var random = new Random(12345); // Fixed seed for consistent results
+
+            // Locations for physical copies
+            var locations = new[]
             {
-                string? isbn = null;
+                "Estante A-1", "Estante A-2", "Estante A-3", "Estante B-1", "Estante B-2",
+                "Estante B-3", "Estante C-1", "Estante C-2", "Estante C-3", "Estante D-1",
+                "Archivo Principal", "Sala de Lectura", "Sección Especial", "Depósito", "Nueva Adquisición",
+            };
 
-                // try to generate a unique ISBN up to a few attempts
-                for (int attempt = 0; attempt < 10; attempt++)
+            foreach (var (book, bookIndex) in books.Select((x, i) => (x, i)))
+            {
+                // Generate 5 copies per book
+                for (int copyNumber = 1; copyNumber <= 5; copyNumber++)
                 {
-                    var candidate = GenerateIsbn();
-                    if (!usedIsbns.Contains(candidate))
+                    string? isbn = null;
+
+                    // try to generate a unique ISBN up to a few attempts
+                    for (int attempt = 0; attempt < 10; attempt++)
                     {
-                        isbn = candidate;
-                        usedIsbns.Add(candidate);
-                        break;
+                        var candidate = GenerateIsbn();
+                        if (!usedIsbns.Contains(candidate))
+                        {
+                            isbn = candidate;
+                            usedIsbns.Add(candidate);
+                            break;
+                        }
                     }
-                }
 
-                copies.Add(new Copy
-                {
-                    BookId = b.BookId,
-                    ISBN = isbn,
-                    PublisherName = publisherNames.Length > 0 ? publisherNames[idx % publisherNames.Length] : null,
-                    PhysicalLocation = null,
-                    IsActive = true,
-                });
+                    // Vary publishers across copies of the same book
+                    var publisherIndex = ((bookIndex * 5) + copyNumber - 1) % publisherNames.Length;
+                    var locationIndex = ((bookIndex * 5) + copyNumber - 1) % locations.Length;
+
+                    copies.Add(new Copy
+                    {
+                        BookId = book.BookId,
+                        ISBN = isbn,
+                        PublisherName = publisherNames[publisherIndex],
+                        PhysicalLocation = locations[locationIndex],
+                        IsActive = true,
+                    });
+                }
             }
 
             context.Copies.AddRange(copies);
