@@ -70,16 +70,6 @@ namespace TheSkibiditeca.Web.Models.Entities
         public virtual ICollection<BookAuthor> BookAuthors { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets the loans for this book.
-        /// </summary>
-        public virtual ICollection<Loan> Loans { get; set; } = [];
-
-        /// <summary>
-        /// Gets or sets the reservations for this book.
-        /// </summary>
-        public virtual ICollection<Reservation> Reservations { get; set; } = [];
-
-        /// <summary>
         /// Gets or sets the physical copies (ejemplares) for this book.
         /// </summary>
         public virtual ICollection<Copy> Copies { get; set; } = [];
@@ -94,7 +84,7 @@ namespace TheSkibiditeca.Web.Models.Entities
         /// Gets the number of available copies (active and not currently loaned).
         /// </summary>
         [NotMapped]
-        public int AvailableCopies => this.Copies?.Count(c => c.IsActive && (c.LoanDetails == null || !c.LoanDetails.Any(ld => ld.IsActive && ld.Loan.ActualReturnDate == null && ld.Loan.Status != LoanStatusType.Returned))) ?? 0;
+        public int AvailableCopies => this.Copies?.Count(c => c.IsActive && !c.LoanDetails.Any(ld => ld.IsActive && ld.Loan.ActualReturnDate == null && ld.Loan.Status != LoanStatusType.Returned)) ?? 0;
 
         /// <summary>
         /// Gets a value indicating whether the book is available for loan.
