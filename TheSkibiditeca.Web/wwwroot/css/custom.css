@@ -110,3 +110,7 @@ svg {
     height: 21em;
     width: 17rem;
 }
+
+hr {
+    background-color: white;
+}

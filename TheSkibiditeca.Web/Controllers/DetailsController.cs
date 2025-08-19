@@ -4,9 +4,9 @@ using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Controllers {
-    public class InfoController : Controller {
+    public class DetailsController : Controller {
         private readonly DbContextSqlServer _db;
-        public InfoController(DbContextSqlServer db) {
+        public DetailsController(DbContextSqlServer db) {
             _db = db;
         }
 
