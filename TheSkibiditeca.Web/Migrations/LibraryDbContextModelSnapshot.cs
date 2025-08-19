@@ -299,9 +299,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<DateTime?>("ActualReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -340,8 +337,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("LoanId");
-
-                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -403,9 +398,6 @@ namespace TheSkibiditeca.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CopyId")
                         .HasColumnType("int");
 
@@ -428,8 +420,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ReservationId");
-
-                    b.HasIndex("BookId");
 
                     b.HasIndex("CopyId");
 
@@ -622,10 +612,6 @@ namespace TheSkibiditeca.Web.Migrations
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", null)
-                        .WithMany("Loans")
-                        .HasForeignKey("BookId");
-
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.User", "User")
                         .WithMany("Loans")
                         .HasForeignKey("UserId")
@@ -656,10 +642,6 @@ namespace TheSkibiditeca.Web.Migrations
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", null)
-                        .WithMany("Reservations")
-                        .HasForeignKey("BookId");
-
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
                         .WithMany("Reservations")
                         .HasForeignKey("CopyId")
@@ -698,10 +680,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Navigation("BookAuthors");
 
                     b.Navigation("Copies");
-
-                    b.Navigation("Loans");
-
-                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Category", b =>
