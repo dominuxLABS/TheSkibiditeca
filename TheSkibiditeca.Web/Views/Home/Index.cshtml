@@ -6,9 +6,8 @@
     <div class="text-center text-white">
         <h2 class="display-2">@await Html.PartialAsync("Partial/_TypingText", "The Skibiditeca")</h2>
         <p>La biblioteca más insana</p>
-        <button class="btn btn-custom-1 ">Ver libros</button>
-    </div>
-    
+        <a class="btn btn-custom-1" href=@Url.Action("Book", "Info")>Ver libros</a>
+    </div>  
 </div>
 <div class="container pb-2">
     <div class="row justify-content-between">
