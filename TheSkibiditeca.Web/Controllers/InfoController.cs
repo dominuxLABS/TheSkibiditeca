@@ -15,9 +15,12 @@ namespace TheSkibiditeca.Web.Controllers {
         }
 
         public IActionResult Book(string bookId) {
-            
             var c = _db.Books.Find(int.Parse(bookId));
-            ViewBag.Book = c;
+            ViewBag.Title = c.Title;
+            ViewBag.Description = c.Description;
+            ViewBag.Year = c.PublicationYear;
+            ViewBag.Authors = c.AuthorNames;
+            ViewBag.Count = c.AvailableCopies;
             return View();
         }
     }

@@ -1,2 +1,24 @@
 ﻿
-<h1 class="text-light">@ViewBag.Book.Title</h1>
+<div class="container m-4 justify-content-start">
+    <div class="row">
+       
+        <div class="col-1" style="width: 20rem">
+            <div class="row">
+                <div class="col">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM9DnrNw2g1Rklts1JAsyN-oJaJ7OSqRusNA&s" class="book-img" />
+                </div>
+                <div class="col-1" style="width: 2px">
+                    <div class="vr" style="background-color: white; width: 2px; height: 100%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col text-light pt-3">
+            <strong>Título: </strong><p>@ViewBag.Title</p>
+            <strong>Descripción: </strong><p>@ViewBag.Description</p>
+            <strong>Año de publicación: </strong><p>@ViewBag.Year</p>
+            <strong>Autores: </strong><p>@ViewBag.Authors</p>
+            <strong>Cantidades disponibles: </strong><p>@ViewBag.Count</p>
+        </div>
+    </div>
+</div>
