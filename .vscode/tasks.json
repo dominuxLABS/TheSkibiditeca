@@ -111,6 +111,29 @@
             }
         },
         {
+            "label": "Drop Database (SQL Server)",
+            "type": "shell",
+            "command": "dotnet ef database drop --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
+            "group": "build",
+            "options": {
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+            }
+        },
+        {
+            "label": "Drop Database (PostgreSQL via Docker)",
+            "type": "shell",
+            "command": "dotnet ef database drop --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
+            "group": "build",
+            "options": {
+                "env": {
+                    "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/skibiditeca?sslmode=Prefer",
+                    "ASPNETCORE_ENVIRONMENT": "Production"
+                }
+            }
+        },
+        {
             "label": "Clean",
             "type": "shell",
             "command": "dotnet clean ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
