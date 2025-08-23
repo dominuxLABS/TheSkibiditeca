@@ -1,0 +1,11 @@
+﻿@using TheSkibiditeca.Web.Models.Partial
+@model BookMiniCardModel
+
+<div class="minibook-container rounded-3">
+    <img src="@Model.ImageURL" style="width: 100%; height: 20rem;"/>
+    <div class="container py-2 px-4">
+        <p>@Model.Title</p>
+        <a class="btn btn-custom-1" href="@Url.Action("Book", "Details", new {bookId = Model.BookID})">Ver más</a>
+    </div>
+</div>
+

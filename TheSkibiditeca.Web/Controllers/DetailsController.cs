@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
+using System.Text.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models.Entities;
 
@@ -14,8 +15,11 @@ namespace TheSkibiditeca.Web.Controllers {
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Book(string bookId) {
+        public IActionResult Book(string? bookId) {
+            if(bookId == null) bookId = "1";
             var c = _db.Books.Find(int.Parse(bookId));
+            string xd = JsonSerializer.Serialize(c);
+            Console.WriteLine(xd);
             ViewBag.Title = c.Title;
             ViewBag.Description = c.Description;
             ViewBag.Year = c.PublicationYear;

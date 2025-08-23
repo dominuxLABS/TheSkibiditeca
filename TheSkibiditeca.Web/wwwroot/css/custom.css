@@ -1,4 +1,12 @@
-﻿.btn-custom {
+﻿hr {
+    background-color: white;
+}
+
+svg {
+    margin: 5px;
+}
+
+.btn-custom {
     background: #31323c;
     border-color: #31323c;
     color: #bfe0d1
@@ -48,10 +56,6 @@
 
 .hov-underline-simple:hover {
     text-decoration: underline
-}
-
-svg {
-    margin: px
 }
 
 .scrolled {}
@@ -111,6 +115,9 @@ svg {
     width: 17rem;
 }
 
-hr {
-    background-color: white;
+.minibook-container {
+    margin: 1rem;
+    background-color: #31323e;
+    max-width: 15rem;
+    min-width: 15rem;
 }

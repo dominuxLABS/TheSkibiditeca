@@ -1,4 +1,5 @@
-﻿@{
+﻿@using TheSkibiditeca.Web.Models.Partial
+@{
     ViewData["Title"] = "Home | The Skibiditeca";
 }
 
@@ -6,7 +7,7 @@
     <div class="text-center text-white">
         <h2 class="display-2">@await Html.PartialAsync("Partial/_TypingText", "The Skibiditeca")</h2>
         <p>La biblioteca más insana</p>
-        <a class="btn btn-custom-1" href=@Url.Action("Book", "Info")>Ver libros</a>
+        <a class="btn btn-custom-1" href=@Url.Action("Book", "List")>Ver libros</a>
     </div>  
 </div>
 <div class="container pb-2">
