@@ -24,7 +24,7 @@ namespace TheSkibiditeca.Web.Controllers
         /// Shows the book list view.
         /// </summary>
         /// <returns>The Book view.</returns>
-        public IActionResult Book(int page = 1, int pageSize = 30) {
+        public IActionResult Book(string? searchStr, int page = 1, int pageSize = 30) {
             var allBooks = new List<BookMiniCardModel>();
             for (int i = 0; i < 500; i++){
                 allBooks.Add(new BookMiniCardModel() {
@@ -34,9 +34,14 @@ namespace TheSkibiditeca.Web.Controllers
                 });
             }
 
+            if (!String.IsNullOrEmpty(searchStr)) {
+                allBooks = allBooks.Where(b => b.Title.Contains(searchStr, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             var paginatedBooks = allBooks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             ViewBag.AllBooks = paginatedBooks;
             ViewData["CurrentPage"] = page;
+            ViewData["CurrentFilter"] = searchStr;
             ViewData["PageSize"] = pageSize;
             ViewData["TotalPages"] = (int)Math.Ceiling(allBooks.Count / (double)pageSize);
             return this.View();
