@@ -14,7 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? Environment.GetEnvironmentVariable("DEFAULT_CONNECTION")
     ?? throw new InvalidOperationException("DefaultConnection not configured");
 
-builder.Services.AddDbContext<DbContextSqlServer>(options =>
+builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure(5)));
 
 Console.WriteLine("Using SQL Server for database provider");
@@ -25,7 +25,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     // Resolve the DbContext (SQL Server)
-    var context = scope.ServiceProvider.GetRequiredService<DbContextSqlServer>() as DbContext;
+    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>() as DbContext;
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
     try
@@ -37,7 +37,7 @@ using (var scope = app.Services.CreateScope())
         DatabaseSetupLoggers.SeedingData(logger);
 
     // DbSeeder expects LibraryDbContext; cast when running in dev
-        if (context is DbContextSqlServer lib)
+        if (context is LibraryDbContext lib)
         {
             DbSeeder.SeedData(lib, logger);
         }
