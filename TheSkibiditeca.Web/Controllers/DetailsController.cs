@@ -51,13 +51,16 @@ namespace TheSkibiditeca.Web.Controllers
 
             // log a serialized copy for debugging (kept intentionally simple)
             var serialized = JsonSerializer.Serialize(c);
-            Console.WriteLine(serialized);
 
             this.ViewBag.Title = c.Title;
             this.ViewBag.Description = c.Description;
             this.ViewBag.Year = c.PublicationYear;
             this.ViewBag.Authors = c.AuthorNames;
             this.ViewBag.Count = c.AvailableCopies;
+            return this.View();
+        }
+
+        public IActionResult Author() {
             return this.View();
         }
     }
