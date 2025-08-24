@@ -55,16 +55,51 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-    DatabaseSetupLoggers.ApplyingMigrations(logger);
-    await context.Database.MigrateAsync();
+        DatabaseSetupLoggers.ApplyingMigrations(logger);
 
-    DatabaseSetupLoggers.MigrationsApplied(logger);
+        // Wait for the database to be reachable before attempting migrations.
+        // This helps in containerized deployments where the DB service may take
+        // a few seconds to become ready even after the container starts.
+        var maxAttempts = 30; // ~1 minute default (30 * 2000ms)
+        var delayMs = 2000;
+        var connected = false;
 
-    DatabaseSetupLoggers.SeedingData(logger);
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                if (await context.Database.CanConnectAsync())
+                {
+                    connected = true;
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and retry using precompiled delegate
+                ProgramLog.DbConnectionAttemptFailed(logger, attempt, ex);
+            }
 
-    // Call the async Identity-aware seeder which uses UserManager/RoleManager
-    await DbSeeder.SeedDataAsync(scope.ServiceProvider, logger);
-    DatabaseSetupLoggers.DataSeeded(logger);
+            ProgramLog.DatabaseNotReady(logger, attempt, maxAttempts, delayMs, null);
+            await Task.Delay(delayMs);
+        }
+
+        if (!connected)
+        {
+            var message = $"Could not connect to the database after {maxAttempts} attempts. Aborting startup.";
+            DatabaseSetupLoggers.DatabaseSetupError(logger, new InvalidOperationException(message));
+            throw new InvalidOperationException(message);
+        }
+
+        await context.Database.MigrateAsync();
+
+        DatabaseSetupLoggers.MigrationsApplied(logger);
+
+        DatabaseSetupLoggers.SeedingData(logger);
+
+        // Call the async Identity-aware seeder which uses UserManager/RoleManager
+        await DbSeeder.SeedDataAsync(scope.ServiceProvider, logger);
+        DatabaseSetupLoggers.DataSeeded(logger);
     }
     catch (Exception ex)
     {
