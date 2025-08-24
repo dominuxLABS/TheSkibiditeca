@@ -5,8 +5,8 @@ using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Controllers {
     public class AuthController : Controller {
-        private readonly DbContextSqlServer _db;
-        public AuthController(DbContextSqlServer db) {
+        private readonly LibraryDbContext _db;
+        public AuthController(LibraryDbContext db) {
             _db = db;
         }
 

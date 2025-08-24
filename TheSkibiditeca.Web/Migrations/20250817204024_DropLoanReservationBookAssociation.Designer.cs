@@ -11,7 +11,7 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations
 {
-    [DbContext(typeof(DbContextSqlServer))]
+    [DbContext(typeof(LibraryDbContext))]
     [Migration("20250817204024_DropLoanReservationBookAssociation")]
     partial class DropLoanReservationBookAssociation
     {

@@ -6,8 +6,8 @@ using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Controllers {
     public class DetailsController : Controller {
-        private readonly DbContextSqlServer _db;
-        public DetailsController(DbContextSqlServer db) {
+        private readonly LibraryDbContext _db;
+        public DetailsController(LibraryDbContext db) {
             _db = db;
         }
 

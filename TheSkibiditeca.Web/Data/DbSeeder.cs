@@ -15,7 +15,7 @@ namespace TheSkibiditeca.Web.Data
         /// </summary>
         /// <param name="context">The database context.</param>
         /// <param name="logger">Logger to report seeding errors and progress.</param>
-        public static void SeedData(DbContextSqlServer context, ILogger logger)
+        public static void SeedData(LibraryDbContext context, ILogger logger)
         {
             // Ensure database is created
             context.Database.EnsureCreated();
