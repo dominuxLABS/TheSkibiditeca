@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Copyright (c) dominuxLABS. All rights reserved.
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -19,7 +20,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -39,7 +40,7 @@ namespace TheSkibiditeca.Web.Migrations
                     NewData = table.Column<string>(type: "text", nullable: true),
                     SystemUser = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IpAddress = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: true)
+                    IpAddress = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: true),
                 },
                 constraints: table =>
                 {
@@ -59,7 +60,7 @@ namespace TheSkibiditeca.Web.Migrations
                     Nationality = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -75,7 +76,7 @@ namespace TheSkibiditeca.Web.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -94,7 +95,7 @@ namespace TheSkibiditeca.Web.Migrations
                     CanRenew = table.Column<bool>(type: "bit", nullable: false),
                     DailyFineAmount = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -109,7 +110,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -134,7 +135,7 @@ namespace TheSkibiditeca.Web.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     CoverImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                 },
                 constraints: table =>
                 {
@@ -176,7 +177,7 @@ namespace TheSkibiditeca.Web.Migrations
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -195,7 +196,7 @@ namespace TheSkibiditeca.Web.Migrations
                 {
                     BookId = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -224,7 +225,7 @@ namespace TheSkibiditeca.Web.Migrations
                     ISBN = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     PublisherName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     PhysicalLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -245,7 +246,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -265,7 +266,7 @@ namespace TheSkibiditeca.Web.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -283,7 +284,7 @@ namespace TheSkibiditeca.Web.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -309,7 +310,7 @@ namespace TheSkibiditeca.Web.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -338,7 +339,7 @@ namespace TheSkibiditeca.Web.Migrations
                     Observations = table.Column<string>(type: "text", nullable: true),
                     StaffMember = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                 },
                 constraints: table =>
                 {
@@ -363,7 +364,7 @@ namespace TheSkibiditeca.Web.Migrations
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsNotified = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -397,7 +398,7 @@ namespace TheSkibiditeca.Web.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -429,7 +430,7 @@ namespace TheSkibiditeca.Web.Migrations
                     Notes = table.Column<string>(type: "text", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                 },
                 constraints: table =>
                 {
