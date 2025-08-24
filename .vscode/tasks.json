@@ -1,25 +1,7 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "Docker: Up Postgres 17",
-            "type": "shell",
-            "command": "docker compose -f docker-compose.postgres.yml up -d",
-            "group": "build"
-        },
-        {
-            "label": "Docker: Down Postgres 17",
-            "type": "shell",
-            "command": "docker compose -f docker-compose.postgres.yml down -v",
-            "group": "build"
-        },
-        {
-            "label": "Docker: Wait for Postgres",
-            "type": "shell",
-            "command": "bash ./scripts/wait-for-postgres.sh localhost 5432 postgres skibiditeca",
-            "group": "build",
-            "dependsOn": "Docker: Up Postgres 17"
-        },
+    // ...existing tasks...
         {
             "label": "Build Project",
             "type": "shell",
@@ -77,40 +59,6 @@
             "group": "build"
         },
         {
-            "label": "Add Migration (PostgreSQL)",
-            "type": "shell",
-            "command": "dotnet ef migrations add ${input:migrationName} --context TheSkibiditeca.Web.Data.DbContextPostgres --output-dir ./Migrations/Npgsql --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-            "group": "build",
-            "options": {
-                "env": {
-                    "ASPNETCORE_ENVIRONMENT": "Production"
-                }
-            }
-        },
-        {
-            "label": "Remove Last Migration (PostgreSQL)",
-            "type": "shell",
-            "command": "dotnet ef migrations remove --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-            "group": "build",
-            "options": {
-                "env": {
-                    "ASPNETCORE_ENVIRONMENT": "Production"
-                }
-            }
-        },
-        {
-            "label": "Update Database (PostgreSQL via Docker)",
-            "type": "shell",
-            "command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
-            "group": "build",
-            "options": {
-                "env": {
-                    "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/skibiditeca?sslmode=Prefer",
-                    "ASPNETCORE_ENVIRONMENT": "Production"
-                }
-            }
-        },
-        {
             "label": "Drop Database (SQL Server)",
             "type": "shell",
             "command": "dotnet ef database drop --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
@@ -121,18 +69,7 @@
                 }
             }
         },
-        {
-            "label": "Drop Database (PostgreSQL via Docker)",
-            "type": "shell",
-            "command": "dotnet ef database drop --context TheSkibiditeca.Web.Data.DbContextPostgres --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
-            "group": "build",
-            "options": {
-                "env": {
-                    "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/skibiditeca?sslmode=Prefer",
-                    "ASPNETCORE_ENVIRONMENT": "Production"
-                }
-            }
-        },
+    // Postgres tasks removed — project now targets SQL Server only
         {
             "label": "Clean",
             "type": "shell",
