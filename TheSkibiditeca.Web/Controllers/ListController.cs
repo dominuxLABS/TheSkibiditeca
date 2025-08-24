@@ -1,7 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing.Printing;
 using TheSkibiditeca.Web.Models.ModelPartial;
 
 namespace TheSkibiditeca.Web.Controllers
