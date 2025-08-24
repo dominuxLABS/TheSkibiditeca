@@ -8,13 +8,13 @@ namespace TheSkibiditeca.Web.Data
     /// <summary>
     /// Database context for the library management system.
     /// </summary>
-    public class DbContextSqlServer : DbContext
+    public class LibraryDbContext : DbContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbContextSqlServer"/> class.
+        /// Initializes a new instance of the <see cref="LibraryDbContext"/> class.
         /// </summary>
         /// <param name="options">The database context options.</param>
-        public DbContextSqlServer(DbContextOptions<DbContextSqlServer> options)
+        public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options)
         {
         }
