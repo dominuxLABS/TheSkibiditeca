@@ -8,8 +8,8 @@ services:
       MSSQL_PID: Express
     volumes:
       - sqlserver_data:/var/opt/mssql
-    ports:
-      - "1433:1433"
+    expose:
+      - "1433"
 
   app:
     build:
