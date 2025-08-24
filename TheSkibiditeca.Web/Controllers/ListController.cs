@@ -1,6 +1,8 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Printing;
+using TheSkibiditeca.Web.Models.ModelPartial;
 
 namespace TheSkibiditeca.Web.Controllers
 {
@@ -22,8 +24,21 @@ namespace TheSkibiditeca.Web.Controllers
         /// Shows the book list view.
         /// </summary>
         /// <returns>The Book view.</returns>
-        public IActionResult Book()
-        {
+        public IActionResult Book(int page = 1, int pageSize = 30) {
+            var allBooks = new List<BookMiniCardModel>();
+            for (int i = 0; i < 500; i++){
+                allBooks.Add(new BookMiniCardModel() {
+                    ImageURL = "https://m.media-amazon.com/images/I/51n4B7p6cML._SY250_.jpg",
+                    Title = $"Ramires al enterarse {i + 1}",
+                    BookID = "1",
+                });
+            }
+
+            var paginatedBooks = allBooks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            ViewBag.AllBooks = paginatedBooks;
+            ViewData["CurrentPage"] = page;
+            ViewData["PageSize"] = pageSize;
+            ViewData["TotalPages"] = (int)Math.Ceiling(allBooks.Count / (double)pageSize);
             return this.View();
         }
     }
