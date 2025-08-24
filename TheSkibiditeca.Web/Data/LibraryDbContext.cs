@@ -1,19 +1,21 @@
 // Copyright (c) dominuxLABS. All rights reserved.
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Data
 {
     /// <summary>
-    /// Database context for the library management system.
+    /// Database context for the library management system. Integrates ASP.NET Core Identity
+    /// using the existing Users table (mapped to User entity).
     /// </summary>
-    public class LibraryDbContext : DbContext
+    public class LibraryDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LibraryDbContext"/> class.
         /// </summary>
-        /// <param name="options">The database context options.</param>
+        /// <param name="options">The options to configure the database context.</param>
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options)
         {
@@ -22,69 +24,64 @@ namespace TheSkibiditeca.Web.Data
         /// <summary>
         /// Gets or sets the authors table.
         /// </summary>
-        public DbSet<Author> Authors { get; set; }
+        public DbSet<Author> Authors { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the categories table.
         /// </summary>
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; } = null!;
 
-    // Publishers entity removed; publisher name is stored on Copy as a simple string.
-
-    /// <summary>
-    /// Gets or sets the books table.
-    /// </summary>
-        public DbSet<Book> Books { get; set; }
+        /// <summary>
+        /// Gets or sets the books table.
+        /// </summary>
+        public DbSet<Book> Books { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the physical copies (ejemplares) table.
         /// </summary>
-        public DbSet<Copy> Copies { get; set; }
+        public DbSet<Copy> Copies { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the book-authors relationship table.
+        /// Gets or sets the book-author relationship table.
         /// </summary>
-        public DbSet<BookAuthor> BookAuthors { get; set; }
+        public DbSet<BookAuthor> BookAuthors { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the user types table.
         /// </summary>
-        public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<UserType> UserTypes { get; set; } = null!;
 
-        /// <summary>
-        /// Gets or sets the users table.
-        /// </summary>
-        public DbSet<User> Users { get; set; }
+        // Users DbSet is provided by IdentityDbContext<User, ...>
 
         /// <summary>
         /// Gets or sets the loans table.
         /// </summary>
-        public DbSet<Loan> Loans { get; set; }
+        public DbSet<Loan> Loans { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the loan details table.
         /// </summary>
-        public DbSet<LoanDetails> LoanDetails { get; set; }
+        public DbSet<LoanDetails> LoanDetails { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the reservations table.
         /// </summary>
-        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Reservation> Reservations { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the fines table.
         /// </summary>
-        public DbSet<Fine> Fines { get; set; }
+        public DbSet<Fine> Fines { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the audit logs table.
         /// </summary>
-        public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; } = null!;
 
         /// <summary>
-        /// Override SaveChanges to automatically update timestamps.
+        /// Saves changes to the database and updates timestamps for modified entities.
         /// </summary>
-        /// <returns>The number of entries written to the database.</returns>
+        /// <returns>The number of state entries written to the database.</returns>
         public override int SaveChanges()
         {
             this.UpdateTimestamps();
@@ -92,10 +89,10 @@ namespace TheSkibiditeca.Web.Data
         }
 
         /// <summary>
-        /// Override SaveChangesAsync to automatically update timestamps.
+        /// Asynchronously saves changes to the database and updates timestamps for modified entities.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task representing the asynchronous operation with the number of entries written.</returns>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>A task that represents the asynchronous save operation. The task result is the number of state entries written to the database.</returns>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             this.UpdateTimestamps();
@@ -103,136 +100,133 @@ namespace TheSkibiditeca.Web.Data
         }
 
         /// <summary>
-        /// Configures the entity models and relationships.
+        /// Configures the entity models and relationships for the database.
         /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /// <param name="builder">The model builder.</param>
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
+
+            // Map User to existing Users table and columns
+            builder.Entity<User>(b =>
+            {
+                b.ToTable("Users");
+                b.HasKey(u => u.Id);
+                b.Property(u => u.Id).HasColumnName("UserId");
+                b.Property(u => u.UserName).HasColumnName("UserCode").HasMaxLength(20).IsRequired();
+                b.Property(u => u.PhoneNumber).HasColumnName("Phone").HasMaxLength(20);
+                b.Property(u => u.PasswordHash).HasColumnName("PasswordHash").HasMaxLength(500);
+                b.Property(u => u.Email).HasMaxLength(150);
+            });
 
             // Configure BookAuthor composite key
-            modelBuilder.Entity<BookAuthor>()
+            builder.Entity<BookAuthor>()
                 .HasKey(ba => new { ba.BookId, ba.AuthorId });
 
-            // Configure BookAuthor relationships
-            modelBuilder.Entity<BookAuthor>()
+            // BookAuthor relationships
+            builder.Entity<BookAuthor>()
                 .HasOne(ba => ba.Book)
                 .WithMany(b => b.BookAuthors)
                 .HasForeignKey(ba => ba.BookId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<BookAuthor>()
+            builder.Entity<BookAuthor>()
                 .HasOne(ba => ba.Author)
                 .WithMany(a => a.BookAuthors)
                 .HasForeignKey(ba => ba.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure unique constraints
-            // ISBN uniqueness moved to Copy.
-            modelBuilder.Entity<Copy>()
+            // Unique constraints and indexes
+            builder.Entity<Copy>()
                 .HasIndex(c => c.ISBN)
                 .IsUnique()
                 .HasFilter("[ISBN] IS NOT NULL");
 
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.UserCode)
+            builder.Entity<User>()
+                .HasIndex(u => u.UserName)
                 .IsUnique();
 
-            modelBuilder.Entity<User>()
+            builder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            modelBuilder.Entity<Category>()
+            builder.Entity<Category>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
 
-            modelBuilder.Entity<UserType>()
+            builder.Entity<UserType>()
                 .HasIndex(ut => ut.Name)
                 .IsUnique();
 
-            // Publisher removed: publisher information is stored per Copy as a simple string (Copy.PublisherName).
-
-            // Book -> Copies relationship
-            modelBuilder.Entity<Copy>()
+            // Relationships
+            builder.Entity<Copy>()
                 .HasOne(c => c.Book)
                 .WithMany(b => b.Copies)
                 .HasForeignKey(c => c.BookId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Book>()
+            builder.Entity<Book>()
                 .HasOne(b => b.Category)
                 .WithMany(c => c.Books)
                 .HasForeignKey(b => b.CategoryId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // Configure User relationships
-            modelBuilder.Entity<User>()
+            builder.Entity<User>()
                 .HasOne(u => u.UserType)
                 .WithMany(ut => ut.Users)
                 .HasForeignKey(u => u.UserTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure Loan relationships (now through LoanDetails)
-            modelBuilder.Entity<Loan>()
+            builder.Entity<Loan>()
                 .HasOne(l => l.User)
                 .WithMany(u => u.Loans)
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure LoanDetails relationships
-            modelBuilder.Entity<LoanDetails>()
+            builder.Entity<LoanDetails>()
                 .HasOne(ld => ld.Loan)
                 .WithMany(l => l.LoanDetails)
                 .HasForeignKey(ld => ld.LoanId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<LoanDetails>()
+            builder.Entity<LoanDetails>()
                 .HasOne(ld => ld.Copy)
                 .WithMany(c => c.LoanDetails)
                 .HasForeignKey(ld => ld.CopyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure Reservation relationships (reservation is per physical Copy)
-            modelBuilder.Entity<Reservation>()
+            builder.Entity<Reservation>()
                 .HasOne(r => r.Copy)
                 .WithMany(c => c.Reservations)
                 .HasForeignKey(r => r.CopyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Reservation>()
+            builder.Entity<Reservation>()
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reservations)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure Fine relationships
-            modelBuilder.Entity<Fine>()
+            builder.Entity<Fine>()
                 .HasOne(f => f.Loan)
                 .WithMany(l => l.Fines)
                 .HasForeignKey(f => f.LoanId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Fine>()
+            builder.Entity<Fine>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Fines)
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure default values and constraints for SQL Server
-            ConfigureForSqlServer(modelBuilder);
+            ConfigureForSqlServer(builder);
 
-            ConfigureUniqueConstraints(modelBuilder);
+            ConfigureUniqueConstraints(builder);
         }
 
-    // PostgreSQL support removed; SQL Server configuration lives in ConfigureForSqlServer
-
-        /// <summary>
-        /// Configures SQL Server-specific settings.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
         private static void ConfigureForSqlServer(ModelBuilder modelBuilder)
         {
-            // SQL Server default values for timestamps
             modelBuilder.Entity<Author>()
                 .Property(a => a.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -286,23 +280,13 @@ namespace TheSkibiditeca.Web.Data
                 .HasDefaultValueSql("GETUTCDATE()");
         }
 
-        /// <summary>
-        /// Configures unique constraints for entities.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
         private static void ConfigureUniqueConstraints(ModelBuilder modelBuilder)
         {
-            // Configure unique constraints
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
-
-            // ISBN uniqueness moved to Copy entity; Book.ISBN is no longer uniquely indexed.
         }
 
-        /// <summary>
-        /// Updates the UpdatedAt timestamp for modified entities.
-        /// </summary>
         private void UpdateTimestamps()
         {
             var entries = this.ChangeTracker.Entries()
