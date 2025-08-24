@@ -4,7 +4,7 @@
         {
             "label": "Build Project",
             "type": "shell",
-            "command": "dotnet build --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "problemMatcher": [
                 "$msCompile"
             ],
@@ -16,7 +16,7 @@
         {
             "label": "Run Project",
             "type": "shell",
-            "command": "dotnet run --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet run ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "problemMatcher": [
                 "$msCompile"
             ],
@@ -32,7 +32,7 @@
         {
             "label": "Add Migration",
             "type": "shell",
-            "command": "dotnet ef migrations add ${input:migrationName} --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet ef migrations add ${input:migrationName} ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "group": "build",
             "options": {
                 "env": {
@@ -43,7 +43,7 @@
         {
             "label": "Remove Last Migration",
             "type": "shell",
-            "command": "dotnet ef migrations remove --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet ef migrations remove ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "group": "build",
             "options": {
                 "env": {
@@ -54,13 +54,13 @@
         {
             "label": "Update Database",
             "type": "shell",
-            "command": "dotnet ef database update --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet ef database update ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "group": "build"
         },
         {
             "label": "Drop Database",
             "type": "shell",
-            "command": "dotnet ef database drop --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
+            "command": "dotnet ef database drop ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
             "group": "build",
             "options": {
                 "env": {
