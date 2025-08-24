@@ -60,7 +60,7 @@ using (var scope = app.Services.CreateScope())
         // Wait for the database to be reachable before attempting migrations.
         // This helps in containerized deployments where the DB service may take
         // a few seconds to become ready even after the container starts.
-        var maxAttempts = 30; // ~1 minute default (30 * 2000ms)
+        var maxAttempts = 100; // ~1 minute default (30 * 2000ms)
         var delayMs = 2000;
         var connected = false;
 
