@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models;
-using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Controllers {
     public class AuthController : Controller {
         private readonly LibraryDbContext _db;
+
         public AuthController(LibraryDbContext db) {
             _db = db;
         }
@@ -21,7 +21,7 @@ namespace TheSkibiditeca.Web.Controllers {
 
         [HttpPost]
         public async Task<IActionResult>Register(RegisterModel model) {
-            return this.View(model); 
+            return this.View(model);
         }
 
         public IActionResult Login() {
