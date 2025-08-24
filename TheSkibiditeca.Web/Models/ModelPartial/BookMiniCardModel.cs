@@ -1,6 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-namespace TheSkibiditeca.Web.Models.Partial
+namespace TheSkibiditeca.Web.Models.ModelPartial
 {
     /// <summary>
     /// Lightweight model used to render a small card for a book (image, title and id) in lists or partial views.
