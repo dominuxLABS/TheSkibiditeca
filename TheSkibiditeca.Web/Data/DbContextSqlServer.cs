@@ -218,63 +218,13 @@ namespace TheSkibiditeca.Web.Data
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure default values and constraints
-            // Configure provider-specific settings
-            if (this.Database.IsNpgsql())
-            {
-                ConfigureForPostgreSQL(modelBuilder);
-            }
-            else if (this.Database.IsSqlServer())
-            {
-                ConfigureForSqlServer(modelBuilder);
-            }
+            // Configure default values and constraints for SQL Server
+            ConfigureForSqlServer(modelBuilder);
 
             ConfigureUniqueConstraints(modelBuilder);
         }
 
-        /// <summary>
-        /// Configures PostgreSQL-specific settings.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        private static void ConfigureForPostgreSQL(ModelBuilder modelBuilder)
-        {
-            // PostgreSQL default values for timestamps
-            modelBuilder.Entity<Author>()
-                .Property(a => a.CreatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<Author>()
-                .Property(a => a.UpdatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<Book>()
-                .Property(b => b.CreatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<Book>()
-                .Property(b => b.UpdatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<User>()
-                .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<User>()
-                .Property(u => u.UpdatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<Loan>()
-                .Property(l => l.LoanDate)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<Loan>()
-                .Property(l => l.CreatedAt)
-                .HasDefaultValueSql("NOW()");
-
-            modelBuilder.Entity<Loan>()
-                .Property(l => l.UpdatedAt)
-                .HasDefaultValueSql("NOW()");
-        }
+    // PostgreSQL support removed; SQL Server configuration lives in ConfigureForSqlServer
 
         /// <summary>
         /// Configures SQL Server-specific settings.
