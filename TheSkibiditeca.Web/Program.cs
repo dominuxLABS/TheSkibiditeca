@@ -9,43 +9,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure database provider based on environment
-if (builder.Environment.IsDevelopment())
-{
-    // DEVELOPMENT: SQL Server LocalDB
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
-    builder.Services.AddDbContext<DbContextSqlServer>(options =>
-        options.UseSqlServer(connectionString));
+// Configure database provider: use SQL Server for both development and production
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? Environment.GetEnvironmentVariable("DEFAULT_CONNECTION")
+    ?? throw new InvalidOperationException("DefaultConnection not configured");
 
-    Console.WriteLine("Using SQL Server LocalDB for development");
-}
-else
-{
-    // PRODUCTION: PostgreSQL (URL provided by Coolify resource)
-    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
-        ?? throw new InvalidOperationException("DATABASE_URL environment variable not found");
+builder.Services.AddDbContext<DbContextSqlServer>(options =>
+    options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure(5)));
 
-    // Convert postgres:// URI to a safe Npgsql connection string
-    var npgsqlConnectionString = ConnectionStrings.BuildNpgsqlFromUrl(databaseUrl);
-
-    builder.Services.AddDbContext<DbContextPostgres>(options =>
-        options.UseNpgsql(npgsqlConnectionString, npgsql =>
-        {
-            npgsql.EnableRetryOnFailure(5);
-        }));
-
-    Console.WriteLine("Using PostgreSQL from Coolify resource");
-}
+Console.WriteLine("Using SQL Server for database provider");
 
 var app = builder.Build();
 
 // Seed the database and apply migrations
 using (var scope = app.Services.CreateScope())
 {
-    // Resolve the proper DbContext based on environment
-    var context = app.Environment.IsDevelopment()
-        ? scope.ServiceProvider.GetRequiredService<DbContextSqlServer>() as DbContext
-        : scope.ServiceProvider.GetRequiredService<DbContextPostgres>() as DbContext;
+    // Resolve the DbContext (SQL Server)
+    var context = scope.ServiceProvider.GetRequiredService<DbContextSqlServer>() as DbContext;
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
     try
