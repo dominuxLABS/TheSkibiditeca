@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// Copyright (c) dominuxLABS. All rights reserved.
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
