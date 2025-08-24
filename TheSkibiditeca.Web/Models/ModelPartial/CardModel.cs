@@ -1,6 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-namespace TheSkibiditeca.Web.Models.Partial
+namespace TheSkibiditeca.Web.Models.ModelPartial
 {
     /// <summary>
     /// Represents a card with an image, title, and description.
