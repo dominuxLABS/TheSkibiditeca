@@ -62,12 +62,8 @@ using (var scope = app.Services.CreateScope())
 
     DatabaseSetupLoggers.SeedingData(logger);
 
-    // DbSeeder expects LibraryDbContext; cast when running in dev
-    if (context is LibraryDbContext lib)
-        {
-            DbSeeder.SeedData(lib, logger);
-        }
-
+    // Call the async Identity-aware seeder which uses UserManager/RoleManager
+    await DbSeeder.SeedDataAsync(scope.ServiceProvider, logger);
     DatabaseSetupLoggers.DataSeeded(logger);
     }
     catch (Exception ex)
