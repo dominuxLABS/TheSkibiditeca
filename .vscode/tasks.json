@@ -1,11 +1,10 @@
 {
     "version": "2.0.0",
     "tasks": [
-    // ...existing tasks...
         {
             "label": "Build Project",
             "type": "shell",
-            "command": "dotnet build ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet build --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "problemMatcher": [
                 "$msCompile"
             ],
@@ -31,9 +30,9 @@
             "group": "build"
         },
         {
-            "label": "Add Migration (SQL Server)",
+            "label": "Add Migration",
             "type": "shell",
-            "command": "dotnet ef migrations add ${input:migrationName} --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet ef migrations add ${input:migrationName} --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "group": "build",
             "options": {
                 "env": {
@@ -42,9 +41,9 @@
             }
         },
         {
-            "label": "Remove Last Migration (SQL Server)",
+            "label": "Remove Last Migration",
             "type": "shell",
-            "command": "dotnet ef migrations remove --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet ef migrations remove --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "group": "build",
             "options": {
                 "env": {
@@ -53,15 +52,15 @@
             }
         },
         {
-            "label": "Update Database (SQL Server)",
+            "label": "Update Database",
             "type": "shell",
-            "command": "dotnet ef database update --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
+            "command": "dotnet ef database update --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj",
             "group": "build"
         },
         {
-            "label": "Drop Database (SQL Server)",
+            "label": "Drop Database",
             "type": "shell",
-            "command": "dotnet ef database drop --context TheSkibiditeca.Web.Data.DbContextSqlServer --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
+            "command": "dotnet ef database drop --project ./TheSkibiditeca.Web/TheSkibiditeca.Web.csproj --force",
             "group": "build",
             "options": {
                 "env": {
@@ -69,7 +68,6 @@
                 }
             }
         },
-    // Postgres tasks removed — project now targets SQL Server only
         {
             "label": "Clean",
             "type": "shell",
