@@ -1,0 +1,19 @@
+﻿@{
+}
+@{
+    if(Context.User.Identity.Name != null)
+    {
+        <p1>@Context.User.Identity.Name</p1>
+    } else
+    {
+    <ul class="navbar-nav justify-content-end">
+        <li class="nav-item">
+            <button class="btn btn-custom m-1 p-0"><a class="nav-link text-light" asp-controller="Auth" asp-action="Login">Iniciar sesión</a></button>
+        </li>
+        <li>
+            <button class="btn btn-outline-custom  m-1 p-0"><a class="nav-link text-light" asp-controller="Auth" asp-action="Register">Regístrate</a></button>
+        </li>
+    </ul>
+
+    }
+}

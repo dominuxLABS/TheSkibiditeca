@@ -30,14 +30,7 @@
                             <a class="nav-link text-light hov-underline mx-2" asp-area="" asp-controller="Home" asp-action="Index">Autores</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav justify-content-end">
-                        <li class="nav-item">
-                            <button class="btn btn-custom m-1 p-0"><a class="nav-link text-light" asp-controller="Auth" asp-action="Login">Iniciar sesión</a></button>
-                        </li>
-                        <li>
-                            <button class="btn btn-outline-custom  m-1 p-0"><a class="nav-link text-light" asp-controller="Auth" asp-action="Register">Regístrate</a></button>
-                        </li>
-                    </ul>
+                    @await Html.PartialAsync("Partial/_UserInfo");
                 </div>
             </div>
         </nav>

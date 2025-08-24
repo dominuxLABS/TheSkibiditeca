@@ -121,3 +121,9 @@ svg {
     max-width: 15rem;
     min-width: 15rem;
 }
+
+.page-item.custom-disabled .page-link {
+    background: #31323f;
+    border-color: #31323f;
+    color: white
+}
