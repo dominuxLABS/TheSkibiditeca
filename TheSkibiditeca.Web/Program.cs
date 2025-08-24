@@ -1,5 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Logging;
@@ -8,6 +9,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register Identity services using our User entity and integer keys
+builder.Services.AddIdentity<TheSkibiditeca.Web.Models.Entities.User, Microsoft.AspNetCore.Identity.IdentityRole<int>>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredLength = 6;
+})
+    .AddEntityFrameworkStores<LibraryDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Auth/Login";
+    options.LogoutPath = "/Auth/Logout";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
+    options.Cookie.Name = "skibi.auth";
+    options.Cookie.HttpOnly = true;
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+});
 
 // Configure database provider: use SQL Server for both development and production
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -25,24 +50,25 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     // Resolve the DbContext (SQL Server)
-    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>() as DbContext;
+    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
     try
     {
-        DatabaseSetupLoggers.ApplyingMigrations(logger);
-        await context.Database.MigrateAsync();
-        DatabaseSetupLoggers.MigrationsApplied(logger);
+    DatabaseSetupLoggers.ApplyingMigrations(logger);
+    await context.Database.MigrateAsync();
 
-        DatabaseSetupLoggers.SeedingData(logger);
+    DatabaseSetupLoggers.MigrationsApplied(logger);
+
+    DatabaseSetupLoggers.SeedingData(logger);
 
     // DbSeeder expects LibraryDbContext; cast when running in dev
-        if (context is LibraryDbContext lib)
+    if (context is LibraryDbContext lib)
         {
             DbSeeder.SeedData(lib, logger);
         }
 
-        DatabaseSetupLoggers.DataSeeded(logger);
+    DatabaseSetupLoggers.DataSeeded(logger);
     }
     catch (Exception ex)
     {
@@ -65,6 +91,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
