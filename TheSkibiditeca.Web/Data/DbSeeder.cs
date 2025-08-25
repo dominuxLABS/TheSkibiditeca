@@ -63,7 +63,7 @@ namespace TheSkibiditeca.Web.Data
             // Seed Authors (small subset)
             var authors = new Author[]
             {
-                new() { FirstName = "Desconocido", LastName = "Autor", Nationality = "Desconocida", Biography = "Autor anónimo" },
+                new() { FirstName = "Autor", LastName = "Desconocido", Nationality = "Desconocida", Biography = "Autor anónimo" },
                 new() { FirstName = "J.R.R.", LastName = "Tolkien", Nationality = "Británica", Biography = "Autor de El Señor de los Anillos" },
                 new() { FirstName = "Lewis", LastName = "Carroll", Nationality = "Inglesa", Biography = "Autor de Alicia en el País de las Maravillas" },
             };
@@ -73,9 +73,9 @@ namespace TheSkibiditeca.Web.Data
             // Seed Books (small subset)
             var books = new Book[]
             {
-                new() { Title = "Beowulf", PublicationYear = 800, CategoryId = categories[0].CategoryId, Description = "Épica Fantástica" },
-                new() { Title = "El Señor de los Anillos", PublicationYear = 1954, CategoryId = categories[0].CategoryId, Description = "Fantasía" },
-                new() { Title = "Alicia en el País de las Maravillas", PublicationYear = 1865, CategoryId = categories[1].CategoryId, Description = "Fantasía" },
+                new() { Title = "Beowulf", CoverImageUrl = "https://www.crisol.com.pe/media/catalog/product/cache/cf84e6047db2ba7f2d5c381080c69ffe/9/7/9788445009871_c0nxmf9mcsrbokqu.jpg", PublicationYear = 800, CategoryId = categories[0].CategoryId, Description = "Beowulf, adaptado al español como Beovulfo, es un poema épico anglosajón anónimo que fue escrito en inglés antiguo en verso aliterativo. Cuenta con 3182 versos." },
+                new() { Title = "El Señor de los Anillos", CoverImageUrl= "https://www.crisol.com.pe/media/catalog/product/cache/f6d2c62455a42b0d712f6c919e880845/9/7/9788445011119_hfv2hzneyamrzdod.jpg", PublicationYear = 1954, CategoryId = categories[0].CategoryId, Description = "El Señor de los Anillos es una novela de fantasía épica escrita por el filólogo y escritor británico J. R. R. Tolkien." },
+                new() { Title = "Alicia en el País de las Maravillas", CoverImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw5JN2j8YUEfm_YkoqOaCVRqnIv3dEKlu09g&s", PublicationYear = 1865, CategoryId = categories[1].CategoryId, Description = "Las aventuras de Alicia en el país de las maravillas, comúnmente abreviado como Alicia en el país de las maravillas, es una novela de fantasía escrita por el matemático, lógico, fotógrafo y escritor británico Charles Lutwidge Dodgson, bajo el seudónimo de Lewis Carroll, publicada en 1865." },
             };
             context.Books.AddRange(books);
             context.SaveChanges();
