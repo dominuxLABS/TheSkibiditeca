@@ -24,5 +24,7 @@ namespace TheSkibiditeca.Web.Models.ModelPartial
         /// Gets or sets the description text displayed on the card.
         /// </summary>
         public required string Description { get; set; }
+
+        public required int IDBook { get; set; }
     }
 }

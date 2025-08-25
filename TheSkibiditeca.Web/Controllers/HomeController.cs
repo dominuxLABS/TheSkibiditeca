@@ -15,8 +15,10 @@ namespace TheSkibiditeca.Web.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<User> _userM;
+        private readonly LibraryDbContext db;
         public HomeController(LibraryDbContext context, UserManager<User> userM) {
             _userM = userM;
+            db = context;
         }
 
         /// <summary>
@@ -27,6 +29,12 @@ namespace TheSkibiditeca.Web.Controllers
         {
             var user = await _userM.GetUserAsync(HttpContext.User);
             if(user != null) { ViewBag.RoleID = user.UserTypeId; }
+            var random = new Random();
+            int index = random.Next(db.Books.Count());
+            ViewBag.Newest = db.Books.ToList().OrderByDescending(b => b.CreatedAt).FirstOrDefault(); 
+            ViewBag.Random = db.Books.ToArray()[index];
+            ViewBag.Popular = db.Books.ToList().OrderByDescending(b => b.TotalCopies).FirstOrDefault();
+
             return this.View();
         }
 

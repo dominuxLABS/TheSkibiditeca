@@ -1,13 +1,13 @@
 ﻿@using TheSkibiditeca.Web.Models.ModelPartial
 @model CardModel
 
-<div class="card bg-black-custom text-white" style="width: 19rem; height: 85%" >
+<div class="card bg-black-custom text-white" style="width: 19rem; height: auto" >
     <img src="@Model.Image" class="card-img-top rounded" alt="card" style="height: 50%">
     <div class="card-body">
         <h5 class="card-title">@Model.Title</h5>
         <p class="card-text">@Model.Description</p>
     </div>
     <div class="card-footer">
-        <a href="#" class="btn btn-custom-1">Ver</a>
+        <a href="@Url.Action("Book", "Details", new {bookId = Model.IDBook})" class="btn btn-custom-1">Ver</a>
     </div>
 </div>

@@ -24,9 +24,15 @@
         <button class="btn btn-custom-1">Pedir préstamo</button>
         <button class="btn btn-secondary">Agregar a carrito</button>
     </div>
-    <div class="container my-3">
-        <strong class="text-light">Admin controls</strong><br />
-        <button class="btn btn-primary">Eliminar</button>
-        <button class="btn btn-secondary">Editar</button>
-    </div>
+
+    @{
+        if(ViewBag.RoleID >= 2)
+        {
+            <div class="container my-3">
+                <strong class="text-light">Admin controls</strong><br />
+                <button class="btn btn-danger">Eliminar</button>
+            </div>
+        }
+    }
+
 </div>

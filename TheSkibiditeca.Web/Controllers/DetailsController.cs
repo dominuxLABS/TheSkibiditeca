@@ -20,9 +20,10 @@ namespace TheSkibiditeca.Web.Controllers
         /// Initializes a new instance of the <see cref="DetailsController"/> class.
         /// </summary>
         /// <param name="context">The library database context.</param>
-        public DetailsController(LibraryDbContext context)
+        public DetailsController(LibraryDbContext context, UserManager<User> user)
         {
             this.db = context;
+            this._userM = user;
         }
 
         /// <summary>
@@ -39,12 +40,15 @@ namespace TheSkibiditeca.Web.Controllers
         /// </summary>
         /// <param name="bookId">The book identifier (as string). If null or invalid, defaults to 1.</param>
         /// <returns>The book details view, or NotFound if the book doesn't exist.</returns>
-        public IActionResult Book(string? bookId)
+        public async Task<IActionResult> Book(string? bookId)
         {
             if (!int.TryParse(bookId, out var id))
             {
                 id = 1;
             }
+
+            var user = await _userM.GetUserAsync(HttpContext.User);
+            if(user != null) { ViewBag.RoleID = user.UserTypeId; }
 
             var c = this.db.Books.Find(id);
             if (c == null)
