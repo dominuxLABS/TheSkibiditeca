@@ -125,6 +125,10 @@ namespace TheSkibiditeca.Web.Data
                 new() { BookId = books[0].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[0], PhysicalLocation = "Estante A-1", IsActive = true },
                 new() { BookId = books[1].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[1], PhysicalLocation = "Estante A-2", IsActive = true },
                 new() { BookId = books[2].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[1], PhysicalLocation = "Estante A-3", IsActive = true },
+                new() { BookId = books[3].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[1], PhysicalLocation = "Estante A-4", IsActive = true },
+                new() { BookId = books[4].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[0], PhysicalLocation = "Estante A-5", IsActive = true },
+                new() { BookId = books[5].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[1], PhysicalLocation = "Estante A-6", IsActive = true },
+                new() { BookId = books[6].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[2], PhysicalLocation = "Estante A-7", IsActive = true },
             };
             context.Copies.AddRange(copies);
             context.SaveChanges();

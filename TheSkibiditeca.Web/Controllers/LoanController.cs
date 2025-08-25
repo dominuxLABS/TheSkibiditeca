@@ -2,15 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Data;
+using TheSkibiditeca.Web.Models;
 using TheSkibiditeca.Web.Models.Entities;
 
 public class LoanController : Controller
 {
     private readonly LibraryDbContext _context;
+    private readonly ShoppingCart shoppingCart;
 
-    public LoanController(LibraryDbContext context)
+    public LoanController(LibraryDbContext context, ShoppingCart cart)
     {
         _context = context;
+        shoppingCart = cart;
     }
 
     // GET: LOANS
@@ -40,6 +43,7 @@ public class LoanController : Controller
     // GET: LOANS/Create
     public IActionResult Create()
     {
+        ViewBag.ShoopingBooks = shoppingCart.books;
         return View();
     }
 

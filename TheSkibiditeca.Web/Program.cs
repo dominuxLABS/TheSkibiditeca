@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Logging;
+using TheSkibiditeca.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure(5)));
+
+builder.Services.AddSingleton<ShoppingCart>();
 
 Console.WriteLine("Using SQL Server for database provider");
 

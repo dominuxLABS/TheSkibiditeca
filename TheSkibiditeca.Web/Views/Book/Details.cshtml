@@ -21,8 +21,16 @@
         </div>
     </div>
     <div class="container my-3">
-        <button class="btn btn-custom-1">Pedir préstamo</button>
-        <button class="btn btn-secondary">Agregar a carrito</button>
+        @if(ViewBag.Count == 0)
+        {
+            <button class="btn btn-custom-1" disabled>Pedir préstamo</button>
+            <button class="btn btn-secondary" disabled>Agregar a carrito</button>
+        }else
+        {
+            <a href="@Url.Action("AddCart", "Book", new { bookId = ViewBag.ID, once=true })" class="btn btn-custom-1">Pedir préstamo</a>
+            <a href="@Url.Action("AddCart", "Book", new { bookId = ViewBag.ID, once=false })" class="btn btn-secondary">Agregar a carrito</a>
+        }
+
     </div>
 
     @{

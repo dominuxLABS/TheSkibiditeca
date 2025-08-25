@@ -1,18 +1,21 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TheSkibiditeca.Web.Data;
-using TheSkibiditeca.Web.Models.Create;
+using TheSkibiditeca.Web.Models;
+using TheSkibiditeca.Web.Models.BookModels;
 using TheSkibiditeca.Web.Models.Entities;
 using TheSkibiditeca.Web.Models.ModelPartial;
 
 namespace TheSkibiditeca.Web.Controllers {
-    
+
     public class BookController : Controller {
         private readonly LibraryDbContext db;
         private readonly UserManager<User> _userM;
-        public BookController(LibraryDbContext dbo, UserManager<User> user) {
+        private readonly ShoppingCart carro;
+        public BookController(LibraryDbContext dbo, UserManager<User> user, ShoppingCart cart) {
             db = dbo;
             _userM = user;
+            carro = cart;
         }
         public IActionResult Index() {
             return View();
@@ -96,6 +99,7 @@ namespace TheSkibiditeca.Web.Controllers {
             var authorsIds = this.db.BookAuthors.Where(e => e.BookId == c.BookId).Select(e => e.AuthorId);
             var authorNames = this.db.Authors.Where(e => authorsIds.Contains(e.AuthorId)).Select(e => e.FullName);
 
+            this.ViewBag.ID = bookId;
             this.ViewBag.Title = c.Title;
             this.ViewBag.Description = c.Description;
             this.ViewBag.Year = c.PublicationYear;
@@ -103,6 +107,13 @@ namespace TheSkibiditeca.Web.Controllers {
             this.ViewBag.Count = this.db.Copies.Where(e => e.BookId == c.BookId).Count();
             this.ViewBag.URL = c.CoverImageUrl;
             return this.View();
+        }
+
+        public async Task<IActionResult> AddCart(string bookId, bool? once = false) {
+            var c = this.db.Books.Find(int.Parse(bookId));
+            carro.books.Add(c);
+            if((bool)once) return RedirectToAction("Create", "Loan");
+            return RedirectToAction("Details", "Book", new { bookId });
         }
     }
 }
