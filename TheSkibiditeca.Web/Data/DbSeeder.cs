@@ -80,6 +80,16 @@ namespace TheSkibiditeca.Web.Data
             context.Books.AddRange(books);
             context.SaveChanges();
 
+            // Seed BookAuthors
+            var authorBooks = new BookAuthor[] {
+                new() {BookId = 1, AuthorId = 1, Role = "Writer" },
+                new() {BookId = 2, AuthorId = 2, Role = "Writer" },
+                new() {BookId = 3, AuthorId = 3, Role = "Writer" },
+            };
+
+            context.BookAuthors.AddRange(authorBooks);
+            context.SaveChanges();
+
             // Seed Copies (few copies for demo)
             var usedIsbns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             try
@@ -96,6 +106,7 @@ namespace TheSkibiditeca.Web.Data
             {
                 new() { BookId = books[0].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[0], PhysicalLocation = "Estante A-1", IsActive = true },
                 new() { BookId = books[1].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[1], PhysicalLocation = "Estante A-2", IsActive = true },
+                new() { BookId = books[2].BookId, ISBN = GenerateIsbn(), PublisherName = PublisherNames[1], PhysicalLocation = "Estante A-3", IsActive = true },
             };
             context.Copies.AddRange(copies);
             context.SaveChanges();
@@ -131,7 +142,7 @@ namespace TheSkibiditeca.Web.Data
                     Email = "admin@localhost",
                     Phone = "+00-000-000-0000",
                     Address = "Localhost",
-                    UserTypeId = userTypes[1].UserTypeId,
+                    UserTypeId = userTypes[3].UserTypeId,
                     CareerDepartment = "IT",
                     RegistrationDate = DateTime.UtcNow.Date,
                     MembershipExpirationDate = DateTime.UtcNow.Date.AddYears(1),
