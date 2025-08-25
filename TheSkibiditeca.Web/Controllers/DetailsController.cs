@@ -1,8 +1,10 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TheSkibiditeca.Web.Data;
+using TheSkibiditeca.Web.Models.Entities;
 
 namespace TheSkibiditeca.Web.Controllers
 {
@@ -12,10 +14,11 @@ namespace TheSkibiditeca.Web.Controllers
     public class DetailsController : Controller
     {
         private readonly LibraryDbContext db;
+        private readonly UserManager<User> _userM;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DetailsController"/> class.
-    /// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DetailsController"/> class.
+        /// </summary>
         /// <param name="context">The library database context.</param>
         public DetailsController(LibraryDbContext context)
         {
@@ -51,12 +54,15 @@ namespace TheSkibiditeca.Web.Controllers
 
             // log a serialized copy for debugging (kept intentionally simple)
             var serialized = JsonSerializer.Serialize(c);
+            var authorsIds = this.db.BookAuthors.Where(e => e.BookId == c.BookId).Select(e => e.AuthorId);
+            var authorNames = this.db.Authors.Where(e => authorsIds.Contains(e.AuthorId)).Select(e => e.FullName);
 
             this.ViewBag.Title = c.Title;
             this.ViewBag.Description = c.Description;
             this.ViewBag.Year = c.PublicationYear;
-            this.ViewBag.Authors = c.AuthorNames;
-            this.ViewBag.Count = c.AvailableCopies;
+            this.ViewBag.Authors = String.Join(",", authorNames);
+            this.ViewBag.Count = this.db.Copies.Where(e => e.BookId == c.BookId).Count();
+            this.ViewBag.URL = c.CoverImageUrl;
             return this.View();
         }
 
