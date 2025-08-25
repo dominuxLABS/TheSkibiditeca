@@ -60,7 +60,7 @@
 
                     <h4 class="section-title">Detalles Adicionales</h4>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group my-3">
                                 <label asp-for="book.CoverImageUrl" class="control-label"><i class="fas fa-image me-1"></i> URL de la portada</label>
                                 <div class="icon-input">
@@ -71,7 +71,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-group my-3">
+                                <label asp-for="book.PublicationYear" class="control-label"><i class="fas fa-calendar-alt me-1"></i> Año de Publicación</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-calendar"></i>
+                                    <input asp-for="book.PublicationYear" class="form-control" type="number"
+                                           min="1000" max="@DateTime.Now.Year"
+                                           placeholder="Ej: 2023" />
+                                </div>
+                                <span asp-validation-for="book.PublicationYear" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
                             <div class="form-group my-3">
                                 <label asp-for="Copies" class="control-label"><i class="fas fa-copy me-1"></i> Cantidad de copias</label>
                                 <div class="icon-input">

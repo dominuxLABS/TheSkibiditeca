@@ -74,6 +74,7 @@ public class LoanController : Controller
             MaxRenewals = 5,
         };
         model.loan = nLoan;
+
         return View(model);
     }
 
