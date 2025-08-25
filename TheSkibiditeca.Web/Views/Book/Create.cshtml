@@ -7,71 +7,105 @@
     List<string> authors = [];
 }
 
-<div class="container">
-    <h1 class="text-light">Agregar nuevo libro</h1>
-    <hr />
-    <div class="row text-center justify-content-center form-group-container">
-        <div class="col-md-4 text-light">
-            <form asp-action="Book" asp-controller="Create" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group my-3">
-                    <label asp-for="book.Title" class="control-label">Título</label>
-                    <input required asp-for="book.Title" class="form-control" />
-                    <span asp-validation-for="book.Title" class="text-danger"></span>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="book-container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="mb-0"><i class="fas fa-book me-2"></i>Agregar Nuevo Libro</h1>
                 </div>
 
-                <div class="form-group my-3">
-                    <label asp-for="book.CategoryId" class="control-label">Categoría</label>
-                    <select required asp-for="book.CategoryId" class="form-control">
-                        <option value="" selected disabled>Selecciona una categoría</option>
-                        @{
-                            foreach(Category cat in ViewBag.Categories)
-                            {
-                                <option value="@cat.CategoryId">@cat.Name</option>
+                <hr />
+
+                <form asp-action="Book" asp-controller="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <h4 class="section-title">Información Básica</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="book.Title" class="control-label"><i class="fas fa-heading me-1"></i> Título</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    <input required asp-for="book.Title" class="form-control" placeholder="Ingresa el título del libro" />
+                                </div>
+                                <span asp-validation-for="book.Title" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="book.CategoryId" class="control-label"><i class="fas fa-tag me-1"></i> Categoría</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-list"></i>
+                                    <select required asp-for="book.CategoryId" class="form-control">
+                                        <option value="" selected disabled>Selecciona una categoría</option>
+                                        @{
+                                            foreach(Category cat in ViewBag.Categories) {
+                                                <option value="@cat.CategoryId">@cat.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <span asp-validation-for="book.CategoryId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label asp-for="book.Description" class="control-label"><i class="fas fa-align-left me-1"></i> Descripción</label>
+                        <textarea asp-for="book.Description" class="form-control" rows="4" placeholder="Proporciona una descripción del libro"></textarea>
+                        <span asp-validation-for="book.Description" class="text-danger"></span>
+                    </div>
+
+                    <h4 class="section-title">Detalles Adicionales</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="book.CoverImageUrl" class="control-label"><i class="fas fa-image me-1"></i> URL de la portada</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-link"></i>
+                                    <input required asp-for="book.CoverImageUrl" class="form-control" type="url" placeholder="https://ejemplo.com/imagen.jpg" />
+                                </div>
+                                <span asp-validation-for="book.CoverImageUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="Copies" class="control-label"><i class="fas fa-copy me-1"></i> Cantidad de copias</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-hashtag"></i>
+                                    <input required asp-for="Copies" class="form-control" type="number" min="1" placeholder="Ej: 5" />
+                                </div>
+                                <span asp-validation-for="Copies" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label asp-for="authors" class="control-label"><i class="fas fa-user-edit me-1"></i> Autores</label>
+                        <select required asp-for="authors" multiple class="form-select" size="5">
+                            @{
+                                foreach(Author author in ViewBag.Authors) {
+                                    <option value="@author.AuthorId">@author.FullName</option>
+                                }
                             }
-                        }
-                    </select>
-                    <span asp-validation-for="book.CategoryId" class="text-danger"></span>
-                </div>
+                        </select>
+                        <small class="form-text text-muted">Mantén presionada la tecla Ctrl para seleccionar múltiples autores.</small>
+                        <span asp-validation-for="authors" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group my-3">
-                    <label asp-for="book.Description" class="control-label">Descripción</label>
-                    <textarea asp-for="book.Description" class="form-control" ></textarea>
-                    <span asp-validation-for="book.Description" class="text-danger"></span>
-                </div>
-
-                <div class="form-group my-3">
-                    <label asp-for="book.CoverImageUrl" class="control-label">URL de la portada</label>
-                    <input required asp-for="book.CoverImageUrl" class="form-control" type="url" />
-                    <span asp-validation-for="book.CoverImageUrl" class="text-danger"></span>
-                </div>
-
-                <div class="form-group my-3">
-                    <label asp-for="authors" class="control-label">Autores</label>
-                    <select required asp-for="authors" multiple readonly class="form-select">
-                        @{
-                            foreach(Author author in ViewBag.Authors)
-                            {
-                                <option value="@author.AuthorId">@author.FullName</option>
-                            }
-                        }
-                    </select>
-                    
-                    <span asp-validation-for="authors" class="text-danger"></span>
-                </div>
-
-                <div class="form-group my-3">
-                    <label asp-for="Copies" class="control-label">Cantidad de copias</label>
-                    <input required asp-for="Copies" class="form-control" />
-                    <span asp-validation-for="Copies" class="text-danger"></span>
-                </div>
-
-                <div class="form-group my-3">
-                    <input type="submit" class="btn btn-primary" />
-                </div>
-            </form>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="@Url.Action("List", "Book")" class="btn btn-outline-secondary align-content-center">
+                            <i class="fas fa-arrow-left me-1"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Agregar Libro
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
-

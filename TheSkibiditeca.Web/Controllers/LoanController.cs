@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Data;
@@ -9,11 +10,13 @@ public class LoanController : Controller
 {
     private readonly LibraryDbContext _context;
     private readonly ShoppingCart shoppingCart;
+    private readonly UserManager<User> _userManager;
 
-    public LoanController(LibraryDbContext context, ShoppingCart cart)
+    public LoanController(LibraryDbContext context, ShoppingCart cart, UserManager<User> user)
     {
         _context = context;
         shoppingCart = cart;
+        _userManager = user;
     }
 
     // GET: LOANS
@@ -41,8 +44,9 @@ public class LoanController : Controller
     }
 
     // GET: LOANS/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        ViewBag.User = (await _userManager.GetUserAsync(HttpContext.User)).FirstName;
         ViewBag.ShoopingBooks = shoppingCart.books;
         return View();
     }

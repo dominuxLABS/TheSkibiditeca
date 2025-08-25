@@ -110,10 +110,22 @@ namespace TheSkibiditeca.Web.Controllers {
         }
 
         public async Task<IActionResult> AddCart(string bookId, bool? once = false) {
-            var c = this.db.Books.Find(int.Parse(bookId));
-            carro.books.Add(c);
+            var sameBooks = carro.books.Where(e => e.BookId == int.Parse(bookId));
+            var book = this.db.Books.Find(int.Parse(bookId));
+
+            if(sameBooks.Count() <= book.AvailableCopies) { 
+                carro.books.Add(book);
+            }
+
             if((bool)once) return RedirectToAction("Create", "Loan");
             return RedirectToAction("Details", "Book", new { bookId });
+        }
+
+
+        public async Task<IActionResult> RemoveCart(string bookId) {
+            var index = carro.books.Find(e => e.BookId == int.Parse(bookId));
+            carro.books.Remove(index);
+            return RedirectToAction("Create", "Loan");
         }
     }
 }
