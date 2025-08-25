@@ -15,13 +15,13 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group my-3">
                     <label asp-for="book.Title" class="control-label">Título</label>
-                    <input asp-for="book.Title" class="form-control" />
+                    <input required asp-for="book.Title" class="form-control" />
                     <span asp-validation-for="book.Title" class="text-danger"></span>
                 </div>
 
                 <div class="form-group my-3">
                     <label asp-for="book.CategoryId" class="control-label">Categoría</label>
-                    <select asp-for="book.CategoryId" class="form-control">
+                    <select required asp-for="book.CategoryId" class="form-control">
                         <option value="" selected disabled>Selecciona una categoría</option>
                         @{
                             foreach(Category cat in ViewBag.Categories)
@@ -41,13 +41,13 @@
 
                 <div class="form-group my-3">
                     <label asp-for="book.CoverImageUrl" class="control-label">URL de la portada</label>
-                    <input asp-for="book.CoverImageUrl" class="form-control" type="url" />
+                    <input required asp-for="book.CoverImageUrl" class="form-control" type="url" />
                     <span asp-validation-for="book.CoverImageUrl" class="text-danger"></span>
                 </div>
 
                 <div class="form-group my-3">
                     <label asp-for="authors" class="control-label">Autores</label>
-                    <select asp-for="authors" multiple readonly class="form-select">
+                    <select required asp-for="authors" multiple readonly class="form-select">
                         @{
                             foreach(Author author in ViewBag.Authors)
                             {
@@ -61,7 +61,7 @@
 
                 <div class="form-group my-3">
                     <label asp-for="Copies" class="control-label">Cantidad de copias</label>
-                    <input asp-for="Copies" class="form-control" />
+                    <input required asp-for="Copies" class="form-control" />
                     <span asp-validation-for="Copies" class="text-danger"></span>
                 </div>
 

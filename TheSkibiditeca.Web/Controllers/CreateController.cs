@@ -27,9 +27,11 @@ namespace TheSkibiditeca.Web.Controllers {
         public IActionResult Book(BookCreateModel bmodel) {
             Book nbook = bmodel.book;
             db.Books.Add(nbook);
+            db.SaveChanges();
+            Book lastAdded = db.Books.OrderBy(e => e.BookId).LastOrDefault();
             for(int i = 0; i < bmodel.Copies; i++) {
                 db.Copies.Add(new Copy() {
-                    BookId = nbook.BookId,
+                    BookId = lastAdded.BookId,
                     ISBN = DbSeeder.GenerateIsbn(),
                     PublisherName = "GenericPublisher",
                     PhysicalLocation = "GenericPosition",
@@ -39,12 +41,15 @@ namespace TheSkibiditeca.Web.Controllers {
 
             foreach(string authorId in bmodel.authors) {
                 db.BookAuthors.Add(new BookAuthor() {
-                    BookId = nbook.BookId,
+                    BookId = lastAdded.BookId,
                     AuthorId = int.Parse(authorId),
                     Role = "Writer"
                 });
             }
-            return RedirectToAction("Book", "Details", new { bookId = nbook.BookId});
+
+            db.SaveChanges();
+            
+            return RedirectToAction("Book", "List");
         }
     }
 }
