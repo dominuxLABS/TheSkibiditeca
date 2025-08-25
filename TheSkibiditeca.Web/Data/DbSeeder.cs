@@ -198,7 +198,7 @@ namespace TheSkibiditeca.Web.Data
         /// Generates a pseudo-ISBN-13 string using the 978 prefix for seeding/demo purposes.
         /// </summary>
         /// <returns>A 13-digit ISBN-like string with a computed check digit.</returns>
-        private static string GenerateIsbn()
+        public static string GenerateIsbn()
         {
             // Build 12-digit payload: 978 + 9 random digits
             using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
