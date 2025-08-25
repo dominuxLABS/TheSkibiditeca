@@ -26,7 +26,7 @@ namespace TheSkibiditeca.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userM.GetUserAsync(HttpContext.User);
-            
+            if(user != null) { ViewBag.RoleID = user.UserTypeId; }
             return this.View();
         }
 

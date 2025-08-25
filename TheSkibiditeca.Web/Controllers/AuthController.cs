@@ -113,13 +113,20 @@ namespace TheSkibiditeca.Web.Controllers
         public async Task<IActionResult> Login(LoginModel model) {
             ViewBag.Falied = false;
             User signedUser = await _userM.FindByEmailAsync(model.email);
-            var result = await _singIn.PasswordSignInAsync(signedUser.UserName, model.password, false, lockoutOnFailure: true);
-            if(result.Succeeded) {
-                return RedirectToAction("Index", "Home");
-            }else {
+            if(signedUser != null) {
+                var result = await _singIn.PasswordSignInAsync(signedUser.UserName, model.password, false, lockoutOnFailure: true);
+                if(result.Succeeded) {
+                    return RedirectToAction("Index", "Home");
+                } else {
+                    ViewBag.Falied = true;
+                    return this.View();
+                }
+            } else {
                 ViewBag.Falied = true;
                 return this.View();
-            }    
+            }
+
+            
         }
 
         public async Task<IActionResult> Logout() {

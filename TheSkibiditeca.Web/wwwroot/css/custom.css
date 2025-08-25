@@ -60,6 +60,12 @@ svg {
 
 .scrolled {}
 
+.form-group-container {
+    border: solid 2px;
+    border-radius: 20px;
+    border-color: white;
+}
+
 .form-custom {
     background: none;
     margin-top: 5%;
