@@ -18,11 +18,15 @@ namespace TheSkibiditeca.Web.Controllers {
             carro = cart;
         }
         public IActionResult Index() {
-            return View();
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public IActionResult Create() {
+        public async Task<IActionResult> Create() {
+            var user = await _userM.GetUserAsync(HttpContext.User);
+            if(user == null) return RedirectToAction("Lost", "Home");
+            if(user.UserTypeId < 2) return RedirectToAction("Lost", "Home");
+
             ViewBag.Categories = db.Categories.ToArray();
             ViewBag.Authors = db.Authors.ToArray();
             return View();
@@ -103,28 +107,30 @@ namespace TheSkibiditeca.Web.Controllers {
             this.ViewBag.Title = c.Title;
             this.ViewBag.Description = c.Description;
             this.ViewBag.Year = c.PublicationYear;
-            this.ViewBag.Authors = String.Join(",", authorNames);
-            this.ViewBag.Count = this.db.Copies.Where(e => e.BookId == c.BookId).Count();
+            this.ViewBag.Authors = string.Join(",", authorNames);
+            this.ViewBag.Count = this.db.Copies.Where(e => e.BookId == c.BookId && e.IsActive == true).Count();
             this.ViewBag.URL = c.CoverImageUrl;
             return this.View();
         }
 
         public async Task<IActionResult> AddCart(string bookId, bool? once = false) {
-            var sameBooks = carro.books.Where(e => e.BookId == int.Parse(bookId));
-            var book = this.db.Books.Find(int.Parse(bookId));
-
-            if(sameBooks.Count() <= book.AvailableCopies) { 
-                carro.books.Add(book);
+            var aviableCopy = db.Copies.Where(e => e.BookId == int.Parse(bookId));
+            if(carro.copies.Count >= aviableCopy.Count()) return RedirectToAction("Details", "Book", new { bookId });
+            if(aviableCopy != null) {
+                carro.copies.Add(aviableCopy.First());
             }
 
             if((bool)once) return RedirectToAction("Create", "Loan");
             return RedirectToAction("Details", "Book", new { bookId });
         }
 
-
         public async Task<IActionResult> RemoveCart(string bookId) {
-            var index = carro.books.Find(e => e.BookId == int.Parse(bookId));
-            carro.books.Remove(index);
+            if(carro.copies.Count == 0) return RedirectToAction("Create", "Loan");
+            var copiesIncar = carro.copies.Where(e => e.BookId == int.Parse(bookId)).First();
+            if(copiesIncar != null) {
+                carro.copies.Remove(copiesIncar);
+            }
+
             return RedirectToAction("Create", "Loan");
         }
     }

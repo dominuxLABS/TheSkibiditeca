@@ -1,10 +1,11 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models;
 using TheSkibiditeca.Web.Models.Entities;
+using TheSkibiditeca.Web.Models.LoanModels;
 
 public class LoanController : Controller
 {
@@ -47,7 +48,11 @@ public class LoanController : Controller
     public async Task<IActionResult> Create()
     {
         ViewBag.User = (await _userManager.GetUserAsync(HttpContext.User)).FirstName;
-        ViewBag.ShoopingBooks = shoppingCart.books;
+        ViewBag.ShoopingBooks = shoppingCart.copies;
+        foreach(Copy c in shoppingCart.copies) {
+            c.Book = _context.Books.Find(c.BookId);
+        }
+
         return View();
     }
 
@@ -56,15 +61,20 @@ public class LoanController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ID,Title,ReleaseDate,Genre,Price")] Loan loan)
+    public async Task<IActionResult> Create(CreateLoanModel model)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Add(loan);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(loan);
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        model.copies = shoppingCart.copies;
+        Loan nLoan = new() {
+            UserId = user.Id,
+            Status = 0,
+            LoanDate = model.loan.LoanDate,
+            ExpectedReturnDate = model.loan.ExpectedReturnDate,
+            RenewalsCount = 0,
+            MaxRenewals = 5,
+        };
+        model.loan = nLoan;
+        return View(model);
     }
 
     // GET: LOANS/Edit/5
@@ -142,6 +152,7 @@ public class LoanController : Controller
     public async Task<IActionResult> DeleteConfirmed(int? loanid)
     {
         var loan = await _context.Loans.FindAsync(loanid);
+
         if (loan != null)
         {
             _context.Loans.Remove(loan);

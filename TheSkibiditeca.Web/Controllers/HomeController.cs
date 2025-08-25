@@ -47,6 +47,10 @@ namespace TheSkibiditeca.Web.Controllers
             return this.View();
         }
 
+        public IActionResult Lost() {
+            return this.View();
+        }
+
         /// <summary>
         /// Shows the credits page.
         /// </summary>
