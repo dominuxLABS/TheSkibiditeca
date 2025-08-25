@@ -7,11 +7,11 @@
     <div class="text-center text-white">
         <h2 class="display-2">@await Html.PartialAsync("Partial/_TypingText", "The Skibiditeca")</h2>
         <p>La biblioteca más insana</p>
-        <a class="btn btn-custom-1" href=@Url.Action("Book", "List")>Ver libros</a>
+        <a class="btn btn-custom-1" href=@Url.Action("List", "Book")>Ver libros</a>
         @{
             if(ViewBag.RoleID >= 2)
             {
-                <a class="btn btn-secondary" href=@Url.Action("Book", "List")>Panel de administrador</a>
+                <a class="btn btn-secondary" href=@Url.Action("List", "Book")>Panel de administrador</a>
             }
         }
     </div>  

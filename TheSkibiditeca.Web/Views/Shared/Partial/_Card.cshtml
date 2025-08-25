@@ -8,6 +8,6 @@
         <p class="card-text">@Model.Description</p>
     </div>
     <div class="card-footer">
-        <a href="@Url.Action("Book", "Details", new {bookId = Model.IDBook})" class="btn btn-custom-1">Ver</a>
+        <a href="@Url.Action("Details", "Book", new { bookId = Model.IDBook })" class="btn btn-custom-1">Ver</a>
     </div>
 </div>

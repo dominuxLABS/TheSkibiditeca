@@ -1,0 +1,131 @@
+@model IEnumerable<TheSkibiditeca.Web.Models.Entities.Loan>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpectedReturnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualReturnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RenewalsCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxRenewals)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffMember)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanDetails)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fines)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOverdue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DaysOverdue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanRenew)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.LoanDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ExpectedReturnDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ActualReturnDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RenewalsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.MaxRenewals)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Observations)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.StaffMember)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.User)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.LoanDetails)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Fines)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsOverdue)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DaysOverdue)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CanRenew)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LoanId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LoanId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LoanId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
