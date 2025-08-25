@@ -57,8 +57,7 @@ namespace TheSkibiditeca.Web.Controllers {
             }
 
             db.SaveChanges();
-
-            return RedirectToAction("Book", "List");
+            return RedirectToAction("List", "Book");
         }
 
         public async Task<IActionResult> List(string? searchStr, int page = 1, int pageSize = 30) {
@@ -114,9 +113,10 @@ namespace TheSkibiditeca.Web.Controllers {
         }
 
         public async Task<IActionResult> AddCart(string bookId, bool? once = false) {
-            var aviableCopy = db.Copies.Where(e => e.BookId == int.Parse(bookId));
-            if(carro.copies.Count >= aviableCopy.Count()) return RedirectToAction("Details", "Book", new { bookId });
-            if(aviableCopy != null) {
+            var allCopies = db.Copies.Where(e => e.BookId == int.Parse(bookId));
+            var aviableCopy = db.Copies.Where(e => e.BookId == int.Parse(bookId) && !carro.copies.Select(e => e.ISBN).Contains(e.ISBN));
+            if(carro.copies.Count > allCopies.Count()) return RedirectToAction("Details", "Book", new { bookId });
+            if(aviableCopy != null && aviableCopy.Count() >= 1) {
                 carro.copies.Add(aviableCopy.First());
             }
 
