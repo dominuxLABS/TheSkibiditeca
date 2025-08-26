@@ -12,12 +12,7 @@ services:
       - sqlserver_data:/var/opt/mssql
     expose:
       - "1433"
-    healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "$SA_PASSWORD", "-Q", "SELECT 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 50
-      start_period: 10s
+
   app:
     build:
       context: .
@@ -26,8 +21,7 @@ services:
     ports:
       - "9090:8080"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
