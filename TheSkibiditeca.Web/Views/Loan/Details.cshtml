@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="book-container">
-                <!-- Encabezado con estado de confirmación -->
+                <!-- Encabezado con estado de confirmaciï¿½n -->
                 <div class="text-center mb-4">
                     <div class="icon-circle mx-auto mb-3" style="width: 80px; height: 80px; background: rgba(76, 175, 80, 0.15); color: greenyellow">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
@@ -13,13 +13,13 @@
                             <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5" />
                         </svg>
                     </div>
-                    <h1 class="mb-2">Recibo de préstamo</h1>
-                    <p class="text-muted">Información del préstamo.</p>
+                    <h1 class="mb-2">Recibo de prÃ©stamo</h1>
+                    <p class="text-muted">InformaciÃ³n del PrÃ©stamo.</p>
                 </div>
                 <hr />
 
-                <!-- Información del préstamo -->
-                <h4 class="section-title">Información del Préstamo</h4>
+                <!-- Informaciï¿½n del prï¿½stamo -->
+                <h4 class="section-title">InformaciÃ³n del PrÃ©stamo</h4>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="detail-item">
@@ -29,7 +29,7 @@
                                 </svg>
                             </div>
                             <div class="detail-content">
-                                <h5>Número de Préstamo</h5>
+                                <h5>NÃºmero de PrÃ©stamo</h5>
                                 <p>#@ViewBag.Loan.LoanId</p>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                 </svg>
                             </div>
                             <div class="detail-content">
-                                <h5>Fecha de Préstamo</h5>
+                                <h5>Fecha de PrÃ©stamo</h5>
                                 <p>@ViewBag.Loan.LoanDate.ToString("dd/MM/yyyy")</p>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                                 </svg>
                             </div>
                             <div class="detail-content">
-                                <h5>Fecha de Devolución Esperada</h5>
+                                <h5>Fecha de DevoluciÃ³n Esperada</h5>
                                 <p>@ViewBag.Loan.ExpectedReturnDate.ToString("dd/MM/yyyy")</p>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                     </svg>
                                 </div>
                                 <div class="detail-content">
-                                    <h5>Fecha de devolución Real</h5>
+                                    <h5>Fecha de devoluciï¿½n Real</h5>
                                     <p>@ViewBag.Loan.ActualReturnDate.ToString("dd/MM/yyyy")</p>
                                 </div>
                             </div>
@@ -137,8 +137,8 @@
                                     @{
                                         TimeSpan diff = DateTime.Now - ViewBag.Loan.ExpectedReturnDate;
                                     }
-                                    <p>Préstamo retrasado por  <strong>@(((int)(diff.TotalDays)))</strong> dias</p>
-                                    <p>Se aplicará una multa: @Fine.BaseFineAmount + @Fine.DailyIncrementAmount * @((int)(diff.TotalDays)) = S./ @(Fine.BaseFineAmount + Fine.DailyIncrementAmount * (int)(diff.TotalDays))</p>
+                                    <p>Prï¿½stamo retrasado por  <strong>@(((int)(diff.TotalDays)))</strong> dias</p>
+                                    <p>Se aplicarï¿½ una multa: @Fine.BaseFineAmount + @Fine.DailyIncrementAmount * @((int)(diff.TotalDays)) = S./ @(Fine.BaseFineAmount + Fine.DailyIncrementAmount * (int)(diff.TotalDays))</p>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                                     </div>
                                     <div>
                                         <h6 class="mb-0">@ViewBag.Books[i].Title</h6>
-                                        <small class="text-muted">Código de ejemplar: @ViewBag.Copies[i].ISBN</small>
+                                        <small class="text-muted">CÃ³digo de ejemplar: @ViewBag.Copies[i].ISBN</small>
                                         @if(!string.IsNullOrEmpty(ViewBag.LoanDetails[i].Notes)) {
                                             <div class="mt-1">
                                                 <small><strong>Notas:</strong> @ViewBag.LoanDetails[i].Notes)</small>
@@ -178,7 +178,7 @@
                     </div>
                 }
 
-                <!-- Botones de acción -->
+                <!-- Botones de acciï¿½n -->
                 <div class="d-flex justify-content-between mt-5">
                     <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
                         <i class="fas fa-home me-1"></i> Volver al Inicio
