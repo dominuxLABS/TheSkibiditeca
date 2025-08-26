@@ -14,8 +14,8 @@
                 <h4 class="section-title">Información del Préstamo</h4>
                 <!-- Información del préstamo -->
                 <form method="post" asp-action="Edit">
-                    <input type="hidden" asp-for="loan.LoanId" value="@Model.loan.LoanId" />
-                    <input type="hidden" asp-for="loan.UserId" value="@Model.loan.UserId" />
+                    <input type="hidden" asp-for="Loan.LoanId" value="@Model.Loan.LoanId" />
+                    <input type="hidden" asp-for="Loan.UserId" value="@Model.Loan.UserId" />
                     
                     <div class="row">
                         <div class="col-md-6">
@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="detail-content">
                                     <h5>Número de Préstamo</h5>
-                                    <p>#@Model.loan.LoanId</p>
+                                    <p>#@Model.Loan.LoanId</p>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="detail-content">
                                     <h5>Fecha de Préstamo</h5>
-                                    <input asp-for="loan.LoanDate" type="date" class="form-control" value="@Model.loan.LoanDate.ToString("yyyy-MM-dd")" />
+                                    <input asp-for="Loan.LoanDate" type="date" class="form-control" value="@Model.Loan.LoanDate.ToString("yyyy-MM-dd")" />
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="detail-content">
                                     <h5>Fecha de Devolución Esperada</h5>
-                                    <input asp-for="loan.ExpectedReturnDate" type="date" class="form-control" value="@Model.loan.ExpectedReturnDate.ToString("yyyy-MM-dd")">
+                                    <input asp-for="Loan.ExpectedReturnDate" type="date" class="form-control" value="@Model.Loan.ExpectedReturnDate.ToString("yyyy-MM-dd")">
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="detail-content">
                                     <h5>Estado</h5>
-                                    <select class="form-control" asp-for="loan.Status">
+                                    <select class="form-control" asp-for="Loan.Status">
                                         <option value="@LoanStatusType.Pending" class="badge">Pendiente</option>
                                         <option value="@LoanStatusType.Active"  class="badge">Activo</option>
                                         <option value="@LoanStatusType.Returned"  class="badge">Devuelto</option>
@@ -85,8 +85,8 @@
                     </div>
 
                     <h4 class="section-title mt-4">Observaciones</h4>
-                    <textarea class="form-control" asp-for="loan.Observations">
-                        @Model.loan.Observations
+                    <textarea class="form-control" asp-for="Loan.Observations">
+                        @Model.Loan.Observations
                     </textarea>
 
                     <!-- Botones de acción -->
