@@ -99,7 +99,7 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
         }
 
         this.ViewBag.User = user.FirstName;
-        var copies = this.shoppingCart.copies ?? new List<Copy>();
+        var copies = this.shoppingCart.Copies ?? new List<Copy>();
         this.ViewBag.ShoopingBooks = copies;
         foreach (Copy c in copies)
         {
@@ -140,7 +140,7 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
             return this.RedirectToAction("Lost", "Home");
         }
 
-        model.Copies = this.shoppingCart.copies;
+        model.Copies = this.shoppingCart.Copies;
         Loan nLoan = new()
         {
             UserId = user.Id,
@@ -174,7 +174,7 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
         }
 
         this.context.SaveChanges();
-        this.shoppingCart.copies.Clear();
+        this.shoppingCart.Copies.Clear();
         return this.RedirectToAction("Details", "Loan", new { loanid = currentLoan.LoanId });
     }
 
