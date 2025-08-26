@@ -60,8 +60,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Allow disabling HTTPS redirection inside container for healthcheck probes (use only for container env)
-var disableHttps = app.Configuration.GetValue<bool>("DisableHttpsRedirection", false);
+// Allow disabling HTTPS redirection when the reverse proxy (Traefik/Coolify) manages TLS.
+// Can be controlled via configuration key `DisableHttpsRedirection` or environment
+// variables `DISABLE_HTTPS_REDIRECT` / `DISABLE_HTTPS_REDIRECTION` set to "true".
+var disableHttps = app.Configuration.GetValue("DisableHttpsRedirection", false);
+
+// Respect common environment variable names as well (useful in containers/Coolify)
+var envDisable = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT")
+                 ?? Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECTION");
+if (!string.IsNullOrEmpty(envDisable) && bool.TryParse(envDisable, out var parsed))
+{
+    disableHttps = parsed;
+}
 
 if (!disableHttps)
 {
