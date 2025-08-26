@@ -24,21 +24,21 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="book.Title" class="control-label"><i class="fas fa-heading me-1"></i> T�tulo</label>
+                                <label asp-for="Book.Title" class="control-label"><i class="fas fa-heading me-1"></i> T�tulo</label>
                                 <div class="icon-input">
                                     <i class="fas fa-pencil-alt"></i>
-                                    <input required asp-for="book.Title" class="form-control" placeholder="Ingresa el t�tulo del libro" />
+                                    <input required asp-for="Book.Title" class="form-control" placeholder="Ingresa el t�tulo del libro" />
                                 </div>
-                                <span asp-validation-for="book.Title" class="text-danger"></span>
+                                <span asp-validation-for="Book.Title" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="book.CategoryId" class="control-label"><i class="fas fa-tag me-1"></i> Categor�a</label>
+                                <label asp-for="Book.CategoryId" class="control-label"><i class="fas fa-tag me-1"></i> Categor�a</label>
                                 <div class="icon-input">
                                     <i class="fas fa-list"></i>
-                                    <select required asp-for="book.CategoryId" class="form-control">
+                                    <select required asp-for="Book.CategoryId" class="form-control">
                                         <option value="" selected disabled>Selecciona una categor�a</option>
                                         @{
                                             foreach(Category cat in ViewBag.Categories) {
@@ -47,58 +47,58 @@
                                         }
                                     </select>
                                 </div>
-                                <span asp-validation-for="book.CategoryId" class="text-danger"></span>
+                                <span asp-validation-for="Book.CategoryId" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group my-3">
-                        <label asp-for="book.Description" class="control-label"><i class="fas fa-align-left me-1"></i> Descripci�n</label>
-                        <textarea asp-for="book.Description" class="form-control" rows="4" placeholder="Proporciona una descripci�n del libro"></textarea>
-                        <span asp-validation-for="book.Description" class="text-danger"></span>
+                        <label asp-for="Book.Description" class="control-label"><i class="fas fa-align-left me-1"></i> Descripci�n</label>
+                        <textarea asp-for="Book.Description" class="form-control" rows="4" placeholder="Proporciona una descripci�n del libro"></textarea>
+                        <span asp-validation-for="Book.Description" class="text-danger"></span>
                     </div>
 
                     <h4 class="section-title">Detalles Adicionales</h4>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group my-3">
-                                <label asp-for="book.CoverImageUrl" class="control-label"><i class="fas fa-image me-1"></i> URL de la portada</label>
+                                <label asp-for="Book.CoverImageUrl" class="control-label"><i class="fas fa-image me-1"></i> URL de la portada</label>
                                 <div class="icon-input">
                                     <i class="fas fa-link"></i>
-                                    <input required asp-for="book.CoverImageUrl" class="form-control" type="url" placeholder="https://ejemplo.com/imagen.jpg" />
+                                    <input required asp-for="Book.CoverImageUrl" class="form-control" type="url" placeholder="https://ejemplo.com/imagen.jpg" />
                                 </div>
-                                <span asp-validation-for="book.CoverImageUrl" class="text-danger"></span>
+                                <span asp-validation-for="Book.CoverImageUrl" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group my-3">
-                                <label asp-for="book.PublicationYear" class="control-label"><i class="fas fa-calendar-alt me-1"></i> A�o de Publicaci�n</label>
+                                <label asp-for="Book.PublicationYear" class="control-label"><i class="fas fa-calendar-alt me-1"></i> A�o de Publicaci�n</label>
                                 <div class="icon-input">
                                     <i class="fas fa-calendar"></i>
-                                    <input asp-for="book.PublicationYear" class="form-control" type="number"
+                                    <input asp-for="Book.PublicationYear" class="form-control" type="number"
                                            min="1000" max="@DateTime.Now.Year"
                                            placeholder="Ej: 2023" />
                                 </div>
-                                <span asp-validation-for="book.PublicationYear" class="text-danger"></span>
+                                <span asp-validation-for="Book.PublicationYear" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group my-3">
-                                <label asp-for="copies" class="control-label"><i class="fas fa-copy me-1"></i> Cantidad de copias</label>
+                                <label asp-for="Copies" class="control-label"><i class="fas fa-copy me-1"></i> Cantidad de copias</label>
                                 <div class="icon-input">
                                     <i class="fas fa-hashtag"></i>
-                                    <input required asp-for="copies" class="form-control" type="number" min="1" placeholder="Ej: 5" />
+                                    <input required asp-for="Copies" class="form-control" type="number" min="1" placeholder="Ej: 5" />
                                 </div>
-                                <span asp-validation-for="copies" class="text-danger"></span>
+                                <span asp-validation-for="Copies" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group my-3">
-                        <label asp-for="authors" class="control-label"><i class="fas fa-user-edit me-1"></i> Autores</label>
-                        <select required asp-for="authors" multiple class="form-select" size="5">
+                        <label asp-for="Authors" class="control-label"><i class="fas fa-user-edit me-1"></i> Autores</label>
+                        <select required asp-for="Authors" multiple class="form-select" size="5">
                             @{
                                 foreach(Author author in ViewBag.Authors) {
                                     <option value="@author.AuthorId">@author.FullName</option>
@@ -106,7 +106,7 @@
                             }
                         </select>
                         <small class="form-text text-muted">Mant�n presionada la tecla Ctrl para seleccionar m�ltiples autores.</small>
-                        <span asp-validation-for="authors" class="text-danger"></span>
+                        <span asp-validation-for="Authors" class="text-danger"></span>
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
