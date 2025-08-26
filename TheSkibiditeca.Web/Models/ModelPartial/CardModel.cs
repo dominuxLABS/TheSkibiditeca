@@ -25,6 +25,9 @@ namespace TheSkibiditeca.Web.Models.ModelPartial
         /// </summary>
         public required string Description { get; set; }
 
-        public required int IDBook { get; set; }
+        /// <summary>
+        /// Gets or sets the identifier of the related book.
+        /// </summary>
+        public required int IdBook { get; set; }
     }
 }
