@@ -20,14 +20,14 @@
                 <form asp-action="Create" asp-controller="Book" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <h4 class="section-title">Información Básica</h4>
+                    <h4 class="section-title">Informaciï¿½n Bï¿½sica</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="book.Title" class="control-label"><i class="fas fa-heading me-1"></i> Título</label>
+                                <label asp-for="book.Title" class="control-label"><i class="fas fa-heading me-1"></i> Tï¿½tulo</label>
                                 <div class="icon-input">
                                     <i class="fas fa-pencil-alt"></i>
-                                    <input required asp-for="book.Title" class="form-control" placeholder="Ingresa el título del libro" />
+                                    <input required asp-for="book.Title" class="form-control" placeholder="Ingresa el tï¿½tulo del libro" />
                                 </div>
                                 <span asp-validation-for="book.Title" class="text-danger"></span>
                             </div>
@@ -35,11 +35,11 @@
 
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="book.CategoryId" class="control-label"><i class="fas fa-tag me-1"></i> Categoría</label>
+                                <label asp-for="book.CategoryId" class="control-label"><i class="fas fa-tag me-1"></i> Categorï¿½a</label>
                                 <div class="icon-input">
                                     <i class="fas fa-list"></i>
                                     <select required asp-for="book.CategoryId" class="form-control">
-                                        <option value="" selected disabled>Selecciona una categoría</option>
+                                        <option value="" selected disabled>Selecciona una categorï¿½a</option>
                                         @{
                                             foreach(Category cat in ViewBag.Categories) {
                                                 <option value="@cat.CategoryId">@cat.Name</option>
@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="form-group my-3">
-                        <label asp-for="book.Description" class="control-label"><i class="fas fa-align-left me-1"></i> Descripción</label>
-                        <textarea asp-for="book.Description" class="form-control" rows="4" placeholder="Proporciona una descripción del libro"></textarea>
+                        <label asp-for="book.Description" class="control-label"><i class="fas fa-align-left me-1"></i> Descripciï¿½n</label>
+                        <textarea asp-for="book.Description" class="form-control" rows="4" placeholder="Proporciona una descripciï¿½n del libro"></textarea>
                         <span asp-validation-for="book.Description" class="text-danger"></span>
                     </div>
 
@@ -73,7 +73,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group my-3">
-                                <label asp-for="book.PublicationYear" class="control-label"><i class="fas fa-calendar-alt me-1"></i> Año de Publicación</label>
+                                <label asp-for="book.PublicationYear" class="control-label"><i class="fas fa-calendar-alt me-1"></i> Aï¿½o de Publicaciï¿½n</label>
                                 <div class="icon-input">
                                     <i class="fas fa-calendar"></i>
                                     <input asp-for="book.PublicationYear" class="form-control" type="number"
@@ -86,12 +86,12 @@
 
                         <div class="col-md-4">
                             <div class="form-group my-3">
-                                <label asp-for="Copies" class="control-label"><i class="fas fa-copy me-1"></i> Cantidad de copias</label>
+                                <label asp-for="copies" class="control-label"><i class="fas fa-copy me-1"></i> Cantidad de copias</label>
                                 <div class="icon-input">
                                     <i class="fas fa-hashtag"></i>
-                                    <input required asp-for="Copies" class="form-control" type="number" min="1" placeholder="Ej: 5" />
+                                    <input required asp-for="copies" class="form-control" type="number" min="1" placeholder="Ej: 5" />
                                 </div>
-                                <span asp-validation-for="Copies" class="text-danger"></span>
+                                <span asp-validation-for="copies" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                 }
                             }
                         </select>
-                        <small class="form-text text-muted">Mantén presionada la tecla Ctrl para seleccionar múltiples autores.</small>
+                        <small class="form-text text-muted">Mantï¿½n presionada la tecla Ctrl para seleccionar mï¿½ltiples autores.</small>
                         <span asp-validation-for="authors" class="text-danger"></span>
                     </div>
 
