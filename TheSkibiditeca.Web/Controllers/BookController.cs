@@ -194,15 +194,15 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
     {
         var bookIdInt = int.Parse(bookId, CultureInfo.InvariantCulture);
         var allCopies = this.db.Copies.Where(e => e.BookId == bookIdInt);
-        var aviableCopy = this.db.Copies.Where(e => e.BookId == bookIdInt && !this.carro.copies.Select(c => c.ISBN).Contains(e.ISBN));
-        if (this.carro.copies.Count > allCopies.Count())
+        var aviableCopy = this.db.Copies.Where(e => e.BookId == bookIdInt && !this.carro.Copies.Select(c => c.ISBN).Contains(e.ISBN));
+        if (this.carro.Copies.Count > allCopies.Count())
         {
             return this.RedirectToAction("Details", "Book", new { bookId });
         }
 
         if (aviableCopy != null && aviableCopy.Any())
         {
-            this.carro.copies.Add(aviableCopy.First());
+            this.carro.Copies.Add(aviableCopy.First());
         }
 
         if (once)
@@ -220,15 +220,15 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
     /// <returns>An <see cref="IActionResult"/> that redirects to the Loan creation action.</returns>
     public IActionResult RemoveCart(string bookId)
     {
-        if (this.carro.copies.Count == 0)
+        if (this.carro.Copies.Count == 0)
         {
             return this.RedirectToAction("Create", "Loan");
         }
 
-        var copiesIncar = this.carro.copies.FirstOrDefault(e => e.BookId == int.Parse(bookId, CultureInfo.InvariantCulture));
+        var copiesIncar = this.carro.Copies.FirstOrDefault(e => e.BookId == int.Parse(bookId, CultureInfo.InvariantCulture));
         if (copiesIncar != null)
         {
-            this.carro.copies.Remove(copiesIncar);
+            this.carro.Copies.Remove(copiesIncar);
         }
 
         return this.RedirectToAction("Create", "Loan");
@@ -240,7 +240,7 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
     /// <returns>An <see cref="IActionResult"/> that redirects to the Book list page.</returns>
     public IActionResult ClearCart()
     {
-        this.carro.copies.Clear();
+        this.carro.Copies.Clear();
         return this.RedirectToAction("List", "Book");
     }
 }
