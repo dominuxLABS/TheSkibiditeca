@@ -140,22 +140,22 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
             return this.RedirectToAction("Lost", "Home");
         }
 
-        model.copies = this.shoppingCart.copies;
+        model.Copies = this.shoppingCart.copies;
         Loan nLoan = new()
         {
             UserId = user.Id,
             Status = 0,
-            LoanDate = model.loan.LoanDate,
-            ExpectedReturnDate = model.loan.ExpectedReturnDate,
+            LoanDate = model.Loan.LoanDate,
+            ExpectedReturnDate = model.Loan.ExpectedReturnDate,
             RenewalsCount = 0,
             MaxRenewals = 5,
         };
-        model.loan = nLoan;
+        model.Loan = nLoan;
         this.context.Loans.Add(nLoan);
         this.context.SaveChanges();
 
         Loan currentLoan = this.context.Loans.Where(e => e.UserId == nLoan.UserId).OrderByDescending(x => x.LoanDate).First();
-        foreach (Copy c in model.copies)
+        foreach (Copy c in model.Copies)
         {
             Copy? db_book = this.context.Copies.Find(c.CopyId);
             if (db_book is not null)
@@ -167,7 +167,7 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
             {
                 LoanId = currentLoan.LoanId,
                 CopyId = c.CopyId,
-                Quantity = model.copies.Count,
+                Quantity = model.Copies.Count,
                 DateAdded = DateTime.Now,
             };
             this.context.LoanDetails.Add(detail);
@@ -206,7 +206,7 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
 
         var model = new EditLoanModel()
         {
-            loan = loan,
+            Loan = loan,
         };
         return this.View(model);
     }
@@ -223,10 +223,10 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
     {
         try
         {
-            if (model.loan.Status == LoanStatusType.Returned)
+            if (model.Loan.Status == LoanStatusType.Returned)
             {
-                model.loan.ActualReturnDate = DateTime.Now;
-                var details = this.context.LoanDetails.Where(e => e.LoanId == model.loan.LoanId);
+                model.Loan.ActualReturnDate = DateTime.Now;
+                var details = this.context.LoanDetails.Where(e => e.LoanId == model.Loan.LoanId);
                 foreach (LoanDetails item in details)
                 {
                     var copy = this.context.Copies.Find(item.CopyId);
@@ -237,12 +237,12 @@ public class LoanController(LibraryDbContext context, ShoppingCart cart, UserMan
                 }
             }
 
-            this.context.Update(model.loan);
+            this.context.Update(model.Loan);
             await this.context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!this.LoanExists(model.loan.LoanId))
+            if (!this.LoanExists(model.Loan.LoanId))
             {
                 return this.NotFound();
             }
