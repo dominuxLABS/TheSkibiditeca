@@ -5,7 +5,7 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: ${DB_PASSWORD}
-      MSSQL_PID: Express
+      MSSQL_PID: Developer
     volumes:
       - sqlserver_data:/var/opt/mssql
     expose:
