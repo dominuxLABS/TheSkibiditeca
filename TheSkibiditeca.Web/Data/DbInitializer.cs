@@ -31,7 +31,7 @@ public static class DbInitializer
             ?? Environment.GetEnvironmentVariable("DEFAULT_CONNECTION")
             ?? throw new InvalidOperationException("DefaultConnection not configured");
 
-        var maxAttempts = 30;
+        var maxAttempts = 60;
         var delayMs = 2000;
         var serverReady = false;
 
