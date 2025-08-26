@@ -111,6 +111,7 @@ public class LoanController : Controller
         }
 
         _context.SaveChanges();
+        shoppingCart.copies.Clear();
         return RedirectToAction("Details", "Loan", new { loanid = currentLoan.LoanId});
     }
 

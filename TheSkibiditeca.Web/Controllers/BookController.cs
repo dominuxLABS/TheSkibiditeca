@@ -230,4 +230,9 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
 
         return this.RedirectToAction("Create", "Loan");
     }
+
+    public IActionResult ClearCart() {
+        this.carro.copies.Clear();
+        return this.RedirectToAction("List", "Book");
+    }
 }
