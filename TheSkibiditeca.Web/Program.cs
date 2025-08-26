@@ -60,7 +60,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Allow disabling HTTPS redirection inside container for healthcheck probes (use only for container env)
+var disableHttps = app.Configuration.GetValue<bool>("DisableHttpsRedirection", false);
+
+if (!disableHttps)
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -71,5 +78,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Lightweight health endpoint used by container orchestrators
+app.MapGet("/Health", () => Results.Ok("ok"));
 
 app.Run();
