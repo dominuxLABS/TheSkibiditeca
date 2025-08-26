@@ -6,79 +6,72 @@ using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models.AuthorModels;
 using TheSkibiditeca.Web.Models.Entities;
 
-namespace TheSkibiditeca.Web.Controllers
+namespace TheSkibiditeca.Web.Controllers;
+
+/// <summary>
+/// Controller for managing authors.
+/// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="AuthorController"/> class.
+/// </remarks>
+/// <param name="userM">The user manager.</param>
+/// <param name="db">The library database context.</param>
+public class AuthorController(UserManager<User> userM, LibraryDbContext db) : Controller
 {
+    private readonly UserManager<User> userM = userM;
+    private readonly LibraryDbContext db = db;
+
     /// <summary>
-    /// Controller for managing authors.
+    /// Redirects to the Home controller's Index action.
     /// </summary>
-    public class AuthorController : Controller
+    /// <returns>A redirect result to Home/Index.</returns>
+    public IActionResult Index()
     {
-        private readonly UserManager<User> userM;
-        private readonly LibraryDbContext db;
+        return this.RedirectToAction("Index", "Home");
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorController"/> class.
-        /// </summary>
-        /// <param name="userM">The user manager.</param>
-        /// <param name="db">The library database context.</param>
-        public AuthorController(UserManager<User> userM, LibraryDbContext db)
+    /// <summary>
+    /// Displays the form to create a new author if the current user is authorized.
+    /// </summary>
+    /// <returns>The Create view or a redirect to Home/Lost if the user is not authorized or not found.</returns>
+    [HttpGet]
+    public async Task<IActionResult> Create()
+    {
+        var user = await this.userM.GetUserAsync(this.HttpContext.User);
+        if (user == null)
         {
-            this.userM = userM;
-            this.db = db;
+            return this.RedirectToAction("Lost", "Home");
         }
 
-        /// <summary>
-        /// Redirects to the Home controller's Index action.
-        /// </summary>
-        /// <returns>A redirect result to Home/Index.</returns>
-        public IActionResult Index()
+        if (user.UserTypeId < 2)
         {
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Lost", "Home");
         }
 
-        /// <summary>
-        /// Displays the form to create a new author if the current user is authorized.
-        /// </summary>
-        /// <returns>The Create view or a redirect to Home/Lost if the user is not authorized or not found.</returns>
-        [HttpGet]
-        public async Task<IActionResult> Create()
+        return this.View();
+    }
+
+    /// <summary>
+    /// Handles submission of a new author creation request if the current user is authorized.
+    /// </summary>
+    /// <param name="model">The author creation model.</param>
+    /// <returns>The Create view or a redirect to Home/Lost if the user is not authorized or not found.</returns>
+    [HttpPost]
+    public async Task<IActionResult> Create(AuthorCreateModel model)
+    {
+        var user = await this.userM.GetUserAsync(this.HttpContext.User);
+        if (user == null)
         {
-            var user = await this.userM.GetUserAsync(this.HttpContext.User);
-            if (user == null)
-            {
-                return this.RedirectToAction("Lost", "Home");
-            }
-
-            if (user.UserTypeId < 2)
-            {
-                return this.RedirectToAction("Lost", "Home");
-            }
-
-            return this.View();
+            return this.RedirectToAction("Lost", "Home");
         }
 
-        /// <summary>
-        /// Handles submission of a new author creation request if the current user is authorized.
-        /// </summary>
-        /// <param name="model">The author creation model.</param>
-        /// <returns>The Create view or a redirect to Home/Lost if the user is not authorized or not found.</returns>
-        [HttpPost]
-        public async Task<IActionResult> Create(AuthorCreateModel model)
+        if (user.UserTypeId < 2)
         {
-            var user = await this.userM.GetUserAsync(this.HttpContext.User);
-            if (user == null)
-            {
-                return this.RedirectToAction("Lost", "Home");
-            }
-
-            if (user.UserTypeId < 2)
-            {
-                return this.RedirectToAction("Lost", "Home");
-            }
-
-            this.db.Authors.Add(model.author);
-            this.db.SaveChanges();
-            return this.View();
+            return this.RedirectToAction("Lost", "Home");
         }
+
+        this.db.Authors.Add(model.author);
+        this.db.SaveChanges();
+        return this.View();
     }
 }
