@@ -7,7 +7,7 @@
                 </div>
                 
                 <div class="d-grid gap-2 mt-4">
-                    @if(ViewBag.Count == 0)
+                    @if(ViewBag.Count == 0 || !ViewBag.Signed)
                     {
                         <button class="btn btn-primary" disabled>
                             <i class="fas fa-book me-2"></i>Pedir préstamo
@@ -75,6 +75,15 @@
                                 <p>@ViewBag.Authors</p>
                             </div>
                         </div>
+
+                        @if(!ViewBag.Signed)
+                        {
+                            <div class="detail-item">
+                                <div class="detail-content">
+                                    <h5>Inicia sesión para pedir préstamo</h5>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

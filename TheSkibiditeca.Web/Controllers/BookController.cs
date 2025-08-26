@@ -128,8 +128,7 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
         var paginatedBooks = allBooks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
         this.ViewBag.AllBooks = paginatedBooks;
         var user = await this.userM.GetUserAsync(this.HttpContext.User);
-        if (user != null)
-        {
+        if(user != null) {
             this.ViewBag.RoleID = user.UserTypeId;
         }
 
@@ -148,6 +147,7 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
     /// <returns>An <see cref="IActionResult"/> that renders the Details view for the requested book or a NotFound result when the book does not exist.</returns>
     public async Task<IActionResult> Details(string? bookId)
     {
+        this.ViewBag.Signed = true;
         if (!int.TryParse(bookId, out var id))
         {
             id = 1;
@@ -157,9 +157,11 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
         if (user != null)
         {
             this.ViewBag.RoleID = user.UserTypeId;
+        } else {
+            this.ViewBag.Signed = false;
         }
 
-        var c = this.db.Books.Find(id);
+            var c = this.db.Books.Find(id);
         if (c == null)
         {
             return this.NotFound();
