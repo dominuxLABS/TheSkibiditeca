@@ -58,7 +58,7 @@ public class AuthController(LibraryDbContext context, UserManager<User> userM, S
     [HttpPost]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-        if (model.passwordConf != model.passwordStr)
+        if (model.PasswordConf != model.PasswordStr)
         {
             return this.View(model);
         }
@@ -67,15 +67,15 @@ public class AuthController(LibraryDbContext context, UserManager<User> userM, S
         {
             var user = new User()
             {
-                FirstName = model.user.FirstName,
-                LastName = model.user.LastName,
-                Email = model.user.Email,
-                UserName = model.user.Email,
-                Phone = model.user.PhoneNumber,
-                UserCode = GenerateUserCode(model.user),
+                FirstName = model.User.FirstName,
+                LastName = model.User.LastName,
+                Email = model.User.Email,
+                UserName = model.User.Email,
+                Phone = model.User.PhoneNumber,
+                UserCode = GenerateUserCode(model.User),
                 UserTypeId = 1,
             };
-            var result = await this.userM.CreateAsync(user, model.passwordStr);
+            var result = await this.userM.CreateAsync(user, model.PasswordStr);
             if (result.Succeeded)
             {
                 await this.singIn.SignInAsync(user, isPersistent: false);
@@ -120,16 +120,16 @@ public class AuthController(LibraryDbContext context, UserManager<User> userM, S
     {
         this.ViewBag.Falied = false;
 
-        if (model == null || string.IsNullOrEmpty(model.email))
+        if (model == null || string.IsNullOrEmpty(model.Email))
         {
             this.ViewBag.Falied = true;
             return this.View();
         }
 
-        User? signedUser = await this.userM.FindByEmailAsync(model.email);
+        User? signedUser = await this.userM.FindByEmailAsync(model.Email);
         if (signedUser != null)
         {
-            var result = await this.singIn.PasswordSignInAsync(signedUser.UserCode, model.password, false, lockoutOnFailure: true);
+            var result = await this.singIn.PasswordSignInAsync(signedUser.UserCode, model.Password, false, lockoutOnFailure: true);
             if (result.Succeeded)
             {
                 return this.RedirectToAction("Index", "Home");
