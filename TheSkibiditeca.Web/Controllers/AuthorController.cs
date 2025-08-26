@@ -70,7 +70,7 @@ public class AuthorController(UserManager<User> userM, LibraryDbContext db) : Co
             return this.RedirectToAction("Lost", "Home");
         }
 
-        this.db.Authors.Add(model.author);
+        this.db.Authors.Add(model.Author);
         this.db.SaveChanges();
         return this.View();
     }
