@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models.Entities;
 

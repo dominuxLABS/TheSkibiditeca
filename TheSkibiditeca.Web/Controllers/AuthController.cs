@@ -1,13 +1,7 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models.Auth;
 using TheSkibiditeca.Web.Models.Entities;

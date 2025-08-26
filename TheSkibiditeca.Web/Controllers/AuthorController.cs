@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models.AuthorModels;
 using TheSkibiditeca.Web.Models.Entities;
