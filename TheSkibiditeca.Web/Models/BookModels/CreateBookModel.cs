@@ -7,7 +7,7 @@ namespace TheSkibiditeca.Web.Models.BookModels;
 /// <summary>
 /// Model used to create a new book along with its authors and copy count.
 /// </summary>
-public class BookCreateModel
+public class CreateBookModel
 {
     /// <summary>
     /// Gets or sets the book entity to create.
