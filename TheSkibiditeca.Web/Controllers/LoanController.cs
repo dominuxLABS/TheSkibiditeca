@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models;
 using TheSkibiditeca.Web.Models.Entities;
+using TheSkibiditeca.Web.Models.Enums;
 using TheSkibiditeca.Web.Models.LoanModels;
 
 public class LoanController : Controller
@@ -65,8 +66,15 @@ public class LoanController : Controller
     }
 
     public async Task<IActionResult> List() {
-        var user = await _userManager.GetUserAsync(HttpContext.User);
-        if(user == null) return RedirectToAction("Lost", "Home");
+        var user = await this._userManager.GetUserAsync(this.HttpContext.User);
+        if(user == null) {
+            return this.RedirectToAction("Lost", "Home");
+        }
+
+        if(user.UserTypeId < 2) {
+            return this.RedirectToAction("Lost", "Home");
+        }
+
         ViewBag.Loans = _context.Loans.Where(e => e.UserId == user.Id).ToList();
         return View();
     }
@@ -126,21 +134,9 @@ public class LoanController : Controller
         {
             return NotFound();
         }
-        var loanDetails = _context.LoanDetails.Where(e => e.LoanId == loanid).ToList();
-        List<Book> bs = [];
-        List<Copy> cs = [];
-        foreach (LoanDetails ld in loanDetails) {
-            var copy = _context.Copies.Find(ld.CopyId);
-            if(copy != null) {
-                cs.Add(copy);
-                var book = _context.Books.Find(copy.BookId);
-                bs.Add(book);
-            }
-        }
+
         var model = new EditLoanModel() {
-            loan = loan,
-            copies = cs,
-            books = bs
+            loan = loan
         };
         return View(model);
     }
@@ -152,27 +148,33 @@ public class LoanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditLoanModel model)
     {
-        if (ModelState.IsValid)
+        try
         {
-            try
-            {
-                _context.Update(model.loan);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LoanExists(model.loan.LoanId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+            if(model.loan.Status == LoanStatusType.Returned) {
+                model.loan.ActualReturnDate = DateTime.Now;
+                var details = _context.LoanDetails.Where(e => e.LoanId == model.loan.LoanId);
+                foreach(LoanDetails item in details) {
+                    var copy = _context.Copies.Find(item.CopyId);
+                    copy.IsActive = true;
                 }
             }
-            return RedirectToAction(nameof(Index));
+
+            _context.Update(model.loan);
+            await _context.SaveChangesAsync();
         }
-        return View(model);
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!LoanExists(model.loan.LoanId))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+        
+        return RedirectToAction("List", "Loan");
     }
 
     // GET: LOANS/Delete/5

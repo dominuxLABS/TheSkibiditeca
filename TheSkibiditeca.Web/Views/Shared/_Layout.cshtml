@@ -40,17 +40,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-light hov-underline mx-2" asp-controller="Book" asp-action="List">Libros</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light hov-underline mx-2" asp-controller="Home" asp-action="Index">Categorías</a>
-                        </li>
                         @{
                             if(roleId >= 2)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-light hov-underline mx-2" asp-controller="Home" asp-action="Index">Admin</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link text-light hov-underline mx-2" asp-controller="Loan" asp-action="Admin">Préstamos</a>
+                                </li>
+                            }
+
+                            if(roleId >= 3)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light hov-underline mx-2" asp-controller="Home" asp-action="Index">Admin</a>
                                 </li>
                             }
                         }

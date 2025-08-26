@@ -14,6 +14,9 @@
                 <h4 class="section-title">Información del Préstamo</h4>
                 <!-- Información del préstamo -->
                 <form method="post" asp-action="Edit">
+                    <input type="hidden" asp-for="loan.LoanId" value="@Model.loan.LoanId" />
+                    <input type="hidden" asp-for="loan.UserId" value="@Model.loan.UserId" />
+                    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="detail-item">

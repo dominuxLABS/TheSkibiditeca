@@ -78,7 +78,6 @@ public class AuthController(LibraryDbContext context, UserManager<User> userM, S
             var result = await this.userM.CreateAsync(user, model.passwordStr);
             if (result.Succeeded)
             {
-                Console.WriteLine("hola");
                 await this.singIn.SignInAsync(user, isPersistent: false);
                 return this.RedirectToAction("Index", "Home");
             }
@@ -130,7 +129,7 @@ public class AuthController(LibraryDbContext context, UserManager<User> userM, S
         User? signedUser = await this.userM.FindByEmailAsync(model.email);
         if (signedUser != null)
         {
-            var result = await this.singIn.CheckPasswordSignInAsync(signedUser, model.password, lockoutOnFailure: true);
+            var result = await this.singIn.PasswordSignInAsync(signedUser.UserCode, model.password,false, lockoutOnFailure: true);
             if (result.Succeeded)
             {
                 return this.RedirectToAction("Index", "Home");
