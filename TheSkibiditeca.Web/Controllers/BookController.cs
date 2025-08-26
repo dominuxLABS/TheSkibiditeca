@@ -128,7 +128,8 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
         var paginatedBooks = allBooks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
         this.ViewBag.AllBooks = paginatedBooks;
         var user = await this.userM.GetUserAsync(this.HttpContext.User);
-        if(user != null) {
+        if (user != null)
+        {
             this.ViewBag.RoleID = user.UserTypeId;
         }
 
@@ -157,11 +158,13 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
         if (user != null)
         {
             this.ViewBag.RoleID = user.UserTypeId;
-        } else {
+        }
+        else
+        {
             this.ViewBag.Signed = false;
         }
 
-            var c = this.db.Books.Find(id);
+        var c = this.db.Books.Find(id);
         if (c == null)
         {
             return this.NotFound();
@@ -231,7 +234,12 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
         return this.RedirectToAction("Create", "Loan");
     }
 
-    public IActionResult ClearCart() {
+    /// <summary>
+    /// Clears all copies from the shopping cart and redirects to the book list.
+    /// </summary>
+    /// <returns>An <see cref="IActionResult"/> that redirects to the Book list page.</returns>
+    public IActionResult ClearCart()
+    {
         this.carro.copies.Clear();
         return this.RedirectToAction("List", "Book");
     }
