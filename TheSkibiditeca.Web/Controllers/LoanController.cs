@@ -67,7 +67,7 @@ public class LoanController : Controller
 
     public async Task<IActionResult> List() {
         var user = await this._userManager.GetUserAsync(this.HttpContext.User);
-        if(user == null) {
+        if (user == null) {
             return this.RedirectToAction("Lost", "Home");
         }
 
