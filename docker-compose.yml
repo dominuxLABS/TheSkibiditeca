@@ -25,6 +25,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
+      - DISABLE_HTTPS_REDIRECT=true
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=TheSkibiditeca;User=sa;Password=${DB_PASSWORD};TrustServerCertificate=true;
       - RUN_MIGRATIONS=true
 volumes:
