@@ -1,10 +1,10 @@
 ﻿@{
-    var allBooks = (List<BookMiniCardModel>)ViewBag.AllBooks;
-    int currentPage = (int)ViewData["CurrentPage"];
-    int totalPages = (int)ViewData["TotalPages"];
-    int pageSize = (int)ViewData["PageSize"];
-    string currentFilter = (string)ViewData["CurrentFilter"];
-    int totalItems = ViewBag.TotalItems != null ? Convert.ToInt32(ViewBag.TotalItems) : 0;
+    var allBooks = ViewBag.AllBooks as List<BookMiniCardModel> ?? new List<BookMiniCardModel>();
+    int currentPage = ViewData["CurrentPage"] is not null ? Convert.ToInt32(ViewData["CurrentPage"]) : 1;
+    int totalPages = ViewData["TotalPages"] is not null ? Convert.ToInt32(ViewData["TotalPages"]) : 1;
+    int pageSize = ViewData["PageSize"] is not null ? Convert.ToInt32(ViewData["PageSize"]) : 10;
+    string currentFilter = ViewData["CurrentFilter"] as string ?? string.Empty;
+    int totalItems = ViewBag.TotalItems is not null ? Convert.ToInt32(ViewBag.TotalItems) : 0;
 
     // Calcular los rangos para mostrar
     int startItem = (currentPage - 1) * pageSize + 1;
