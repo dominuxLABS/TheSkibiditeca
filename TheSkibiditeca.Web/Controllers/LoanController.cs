@@ -71,10 +71,6 @@ public class LoanController : Controller
             return this.RedirectToAction("Lost", "Home");
         }
 
-        if(user.UserTypeId < 2) {
-            return this.RedirectToAction("Lost", "Home");
-        }
-
         ViewBag.Loans = _context.Loans.Where(e => e.UserId == user.Id).ToList();
         return View();
     }
