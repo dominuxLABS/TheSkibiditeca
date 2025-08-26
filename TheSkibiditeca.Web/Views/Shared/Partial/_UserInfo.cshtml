@@ -1,0 +1,27 @@
+﻿@{
+}
+@{
+    if (!string.IsNullOrEmpty(Context?.User?.Identity?.Name))
+    {
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="pageSizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+               Mi cuenta
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="pageSizeDropdown">
+            <li><a class="dropdown-item border-danger" asp-action="List" asp-controller="Loan">Mis préstamos</a></li>
+                <li><a class="dropdown-item border-danger" asp-action="Logout" asp-controller="Auth">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    } else
+    {
+    <ul class="navbar-nav justify-content-end">
+        <li class="nav-item">
+            <button class="btn btn-custom m-1 p-0"><a class="nav-link text-light" asp-controller="Auth" asp-action="Login">Iniciar sesión</a></button>
+        </li>
+        <li>
+            <button class="btn btn-outline-custom  m-1 p-0"><a class="nav-link text-light" asp-controller="Auth" asp-action="Register">Regístrate</a></button>
+        </li>
+    </ul>
+
+    }
+}

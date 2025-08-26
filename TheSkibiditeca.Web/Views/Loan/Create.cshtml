@@ -1,0 +1,119 @@
+@model TheSkibiditeca.Web.Models.LoanModels.CreateLoanModel
+@using TheSkibiditeca.Web.Models.Entities
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="book-container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Nuevo Pr�stamo</h4>
+                    <span class="badge-custom">@(ViewBag.ShoopingBooks?.Count ?? 0) libros seleccionados</span>
+                </div>
+
+                <hr />
+                <form method="post" asp-action="Create">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="summary-card mb-4">
+                                <h5 class="mb-3">Resumen del Pr�stamo</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Usuario</label>
+                                    <input class="form-control" readonly value="@ViewBag.User" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Fecha de Pr�stamo</label>
+                                    <input asp-for="Loan.LoanDate" type="date" class="form-control" readonly value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Fecha de Devoluci�n</label>
+                                    <input asp-for="Loan.ExpectedReturnDate" type="date" class="form-control" value="@DateTime.Now.AddDays(2).ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(20).ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="book-list-container">
+                                <h5 class="mb-3"><i class="fas fa-books me-2"></i>Libros Seleccionados</h5>
+
+                                <div class="book-list">
+                                    @if(ViewBag.ShoopingBooks != null && ViewBag.ShoopingBooks.Count > 0) {
+                                        foreach(Copy c in ViewBag.ShoopingBooks) {
+                                            <div class="book-item d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon-circle">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                                                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                @(c.Book?.Title ?? "Título desconocido") (@(c.ISBN ?? "N/A"))
+                                                <a class="btn btn-sm btn-outline-danger" href="@Url.Action("RemoveCart", "Book", new { bookId = c.BookId })">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        }
+                                    } else {
+                                        <div class="text-center py-4">
+                                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted">No hay libros seleccionados</p>
+                                            <a class="btn btn-outline-primary" href="@Url.Action("List", "Book")">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                                </svg>
+                                                Agregar libros
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+
+                                @if(ViewBag.ShoopingBooks != null && ViewBag.ShoopingBooks.Count > 0) {
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            <strong>Total: @(ViewBag.ShoopingBooks?.Count ?? 0) libros</strong>
+                                        </div>
+                                        <button class="btn btn-outline-primary">
+                                            <i class="fas fa-plus me-1"></i> Agregar m�s libros
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="d-flex justify-content-between mt-4">
+                        <a class="btn btn-outline-danger align-content-center" href="@Url.Action("List", "Book")">Cancelar</a>
+                        <div>
+                            @if(ViewBag.ShoopingBooks?.Count == 0)
+                            {
+                                <button class="btn btn-primary" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
+                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+                                    </svg>
+                                Confirmar Pr�stamo
+                                </button>
+                            }else
+                            {
+                                <button class="btn btn-primary" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
+                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+                                    </svg> Confirmar Pr�stamo
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

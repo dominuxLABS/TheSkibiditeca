@@ -1,4 +1,5 @@
-﻿@{
+﻿@using TheSkibiditeca.Web.Models.ModelPartial
+@{
     ViewData["Title"] = "Home | The Skibiditeca";
 }
 
@@ -6,31 +7,33 @@
     <div class="text-center text-white">
         <h2 class="display-2">@await Html.PartialAsync("Partial/_TypingText", "The Skibiditeca")</h2>
         <p>La biblioteca más insana</p>
-        <button class="btn btn-custom-1 ">Ver libros</button>
-    </div>
-    
+        <a class="btn btn-custom-1" href=@Url.Action("List", "Book")>Ver libros</a>
+    </div>  
 </div>
 <div class="container pb-2">
     <div class="row justify-content-between">
         <div class="col scrolled">
             @await Html.PartialAsync("Partial/_Card", new CardModel(){
-                Title = "Libro aleatorio",
-                Description = "Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. ",
-                Image = "https://i.pinimg.com/736x/13/ed/c5/13edc586280bdd1685f596f83625a9a0.jpg"
+                Title = ViewBag.Random.Title,
+                Description = ViewBag.Random.Description,
+                Image = ViewBag.Random.CoverImageUrl,
+                IdBook = ViewBag.Random.BookId
             })
         </div>
         <div class="col scrolled">
             @await Html.PartialAsync("Partial/_Card", new CardModel(){
-                Title = "Sexo 2 (Lo nuevo)",
-                Description = "Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. ",
-                Image = "https://i.pinimg.com/564x/33/32/ee/3332ee7f8caae724d38bb8d2bc73e581.jpg"
+                Title = ViewBag.Newest.Title,
+                Description = ViewBag.Newest.Description,
+                Image = ViewBag.Newest.CoverImageUrl,
+                IdBook = ViewBag.Newest.BookId
             })
         </div>
         <div class="col scrolled">
             @await Html.PartialAsync("Partial/_Card", new CardModel(){
-                    Title = "Biblia 2 (Lo más popular)",
-                    Description = "Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. Ramirez al enterarse. ",
-                    Image = "https://m.media-amazon.com/images/I/51n4B7p6cML._SY250_.jpg"
+                Title = ViewBag.Popular.Title,
+                Description = ViewBag.Popular.Description,
+                Image = ViewBag.Popular.CoverImageUrl,
+                IdBook = ViewBag.Popular.BookId
             })
         </div>
     </div>

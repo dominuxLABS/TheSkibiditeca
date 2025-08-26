@@ -1,0 +1,138 @@
+﻿@{
+    var allBooks = ViewBag.AllBooks as List<BookMiniCardModel> ?? new List<BookMiniCardModel>();
+    int currentPage = ViewData["CurrentPage"] is not null ? Convert.ToInt32(ViewData["CurrentPage"]) : 1;
+    int totalPages = ViewData["TotalPages"] is not null ? Convert.ToInt32(ViewData["TotalPages"]) : 1;
+    int pageSize = ViewData["PageSize"] is not null ? Convert.ToInt32(ViewData["PageSize"]) : 10;
+    string currentFilter = ViewData["CurrentFilter"] as string ?? string.Empty;
+    int totalItems = ViewBag.TotalItems is not null ? Convert.ToInt32(ViewBag.TotalItems) : 0;
+
+    // Calcular los rangos para mostrar
+    int startItem = (currentPage - 1) * pageSize + 1;
+    int endItem = Math.Min(currentPage * pageSize, totalItems);
+}
+@using TheSkibiditeca.Web.Models.ModelPartial
+
+<div class="container">
+    <div class="main-container">
+        <div class="header-section">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h1><i class="fas fa-book me-2"></i>Lista de Libros</h1>
+                    <p class="results-count">Mostrando @startItem-@endItem de @totalItems resultados</p>
+                </div>
+
+                <div class="d-flex align-items-center mt-3 mt-md-0">
+                    <form asp-action="List" method="get" class="d-flex search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" name="searchStr" value="@currentFilter" class="form-control me-2" placeholder="Buscar por título..." style="width: 250px;">
+                        <button type="submit" class="btn btn-custom-1">Buscar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="pageSizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-list me-1"></i>Mostrar @pageSize
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="pageSizeDropdown">
+                    <li><a class="dropdown-item" href="?page=1&pageSize=10&searchStr=@currentFilter">10</a></li>
+                    <li><a class="dropdown-item" href="?page=1&pageSize=30&searchStr=@currentFilter">30</a></li>
+                    <li><a class="dropdown-item" href="?page=1&pageSize=50&searchStr=@currentFilter">50</a></li>
+                    <li><a class="dropdown-item" href="?page=1&pageSize=100&searchStr=@currentFilter">100</a></li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                @if(ViewBag.RoleID >= 2) {
+                    <a class="btn btn-custom-1" asp-action="Create" asp-controller="Book">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-arrow-up" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 11a.5.5 0 0 0 .5-.5V6.707l1.146 1.147a.5.5 0 0 0 .708-.708l-2-2a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L7.5 6.707V10.5a.5.5 0 0 0 .5.5" />
+                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+                        </svg>
+                        Agregar Libro
+                    </a>
+                    <a class="btn btn-custom-1" asp-action="Create" asp-controller="Author">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-person-fill" viewBox="0 0 16 16">
+                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0m2 5.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-.245S4 12 8 12s5 1.755 5 1.755" />
+                        </svg>
+                        Agregar Autores
+                    </a>
+                }
+            </div>
+        </div>
+
+        @if(allBooks.Count <= 0) {
+            <div class="no-results">
+                <i class="fas fa-book-open"></i>
+                <h4>No se encontraron libros</h4>
+                <p>Intenta con otros términos de búsqueda o agrega nuevos libros al sistema.</p>
+                @if(ViewBag.RoleID >= 2) {
+                    <a class="btn btn-custom-1 mt-3" asp-action="Create" asp-controller="Book">
+                        <i class="fas fa-plus-circle me-1"></i>Agregar Primer Libro
+                    </a>
+                }
+            </div>
+        } else {
+            <div class="row">
+                @foreach(var book in allBooks) {
+                    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                        @await Html.PartialAsync("Partial/_BookMiniCard", book)
+                    </div>
+                }
+            </div>
+
+            <nav class="py-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+                        <a class="page-link" href="?page=@(currentPage - 1)&pageSize=@pageSize&searchStr=@currentFilter">
+                            <i class="fas fa-chevron-left me-1"></i>Anterior
+                        </a>
+                    </li>
+
+                    @{
+                        int startPage = Math.Max(1, currentPage - 2);
+                        int endPage = Math.Min(totalPages, startPage + 4);
+                        startPage = Math.Max(1, endPage - 4);
+
+                        if(startPage > 1) {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1&pageSize=@pageSize&searchStr=@currentFilter">1</a>
+                            </li>
+                            if(startPage > 2) {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                        }
+
+                        for(int i = startPage; i <= endPage; i++) {
+                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                <a class="page-link" href="?page=@i&pageSize=@pageSize&searchStr=@currentFilter">@i</a>
+                            </li>
+                        }
+
+                        if(endPage < totalPages) {
+                            if(endPage < totalPages - 1) {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@totalPages&pageSize=@pageSize&searchStr=@currentFilter">@totalPages</a>
+                            </li>
+                        }
+                    }
+
+                    <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+                        <a class="page-link" href="?page=@(currentPage + 1)&pageSize=@pageSize&searchStr=@currentFilter">
+                            Siguiente<i class="fas fa-chevron-right ms-1"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
+</div>

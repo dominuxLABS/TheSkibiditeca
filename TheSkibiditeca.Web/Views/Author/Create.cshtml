@@ -1,0 +1,84 @@
+﻿@model TheSkibiditeca.Web.Models.AuthorModels.AuthorCreateModel
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="book-container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="mb-0"><i class="fas fa-user-edit me-2"></i>Agregar Nuevo Autor</h1>
+                </div>
+                <hr />
+
+                <form asp-action="Create" asp-controller="Author" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <h4 class="section-title">Información Básica</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="Author.FirstName" class="control-label"><i class="fas fa-signature me-1"></i> Nombre</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-font"></i>
+                                    <input required asp-for="Author.FirstName" class="form-control" placeholder="Ingresa el nombre del autor" />
+                                </div>
+                                <span asp-validation-for="Author.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="Author.LastName" class="control-label"><i class="fas fa-signature me-1"></i> Apellido</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-font"></i>
+                                    <input required asp-for="Author.LastName" class="form-control" placeholder="Ingresa el apellido del autor" />
+                                </div>
+                                <span asp-validation-for="Author.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="Author.Nationality" class="control-label"><i class="fas fa-globe me-1"></i> Nacionalidad</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-flag"></i>
+                                    <input asp-for="Author.Nationality" class="form-control" placeholder="Ej: Colombiano" />
+                                </div>
+                                <span asp-validation-for="Author.Nationality" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group my-3">
+                                <label asp-for="Author.BirthDate" class="control-label"><i class="fas fa-calendar-alt me-1"></i> Fecha de Nacimiento</label>
+                                <div class="icon-input">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <input asp-for="Author.BirthDate" class="form-control" type="date" />
+                                </div>
+                                <span asp-validation-for="Author.BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="section-title">Información Adicional</h4>
+                    <div class="form-group my-3">
+                        <label asp-for="Author.Biography" class="control-label"><i class="fas fa-book-open me-1"></i> Biografía</label>
+                        <textarea asp-for="Author.Biography" class="form-control" rows="5" placeholder="Proporciona una biografía del autor"></textarea>
+                        <span asp-validation-for="Author.Biography" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="@Url.Action("Index", "Author")" class="btn btn-outline-secondary align-content-center">
+                            <i class="fas fa-arrow-left me-1"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Agregar Autor
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

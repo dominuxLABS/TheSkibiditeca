@@ -1,6 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-namespace TheSkibiditeca.Web.Models
+namespace TheSkibiditeca.Web.Models.ModelPartial
 {
     /// <summary>
     /// Represents a card with an image, title, and description.
@@ -24,5 +24,10 @@ namespace TheSkibiditeca.Web.Models
         /// Gets or sets the description text displayed on the card.
         /// </summary>
         public required string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the related book.
+        /// </summary>
+        public required int IdBook { get; set; }
     }
 }

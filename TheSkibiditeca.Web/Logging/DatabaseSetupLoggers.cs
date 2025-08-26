@@ -1,7 +1,5 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-using Microsoft.Extensions.Logging;
-
 namespace TheSkibiditeca.Web.Logging
 {
     /// <summary>
@@ -16,7 +14,7 @@ namespace TheSkibiditeca.Web.Logging
         [LoggerMessage(
             EventId = 1001,
             Level = LogLevel.Information,
-            Message = "🗄️ Applying database migrations...")]
+            Message = "Applying database migrations...")]
         public static partial void ApplyingMigrations(ILogger logger);
 
         /// <summary>
@@ -25,7 +23,7 @@ namespace TheSkibiditeca.Web.Logging
         [LoggerMessage(
             EventId = 1002,
             Level = LogLevel.Information,
-            Message = "✅ Database migrations applied successfully")]
+            Message = "Database migrations applied successfully")]
         public static partial void MigrationsApplied(ILogger logger);
 
         /// <summary>
@@ -34,7 +32,7 @@ namespace TheSkibiditeca.Web.Logging
         [LoggerMessage(
             EventId = 1003,
             Level = LogLevel.Information,
-            Message = "🌱 Seeding database data...")]
+            Message = "Seeding database data...")]
         public static partial void SeedingData(ILogger logger);
 
         /// <summary>
@@ -43,7 +41,7 @@ namespace TheSkibiditeca.Web.Logging
         [LoggerMessage(
             EventId = 1004,
             Level = LogLevel.Information,
-            Message = "✅ Database seeded successfully")]
+            Message = "Database seeded successfully")]
         public static partial void DataSeeded(ILogger logger);
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace TheSkibiditeca.Web.Logging
         [LoggerMessage(
             EventId = 1005,
             Level = LogLevel.Error,
-            Message = "❌ Error during database setup")]
+            Message = "Error during database setup")]
         public static partial void DatabaseSetupError(ILogger logger, Exception exception);
     }
 }

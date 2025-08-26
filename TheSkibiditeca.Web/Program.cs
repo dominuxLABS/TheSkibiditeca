@@ -1,75 +1,55 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheSkibiditeca.Web.Data;
-using TheSkibiditeca.Web.Logging;
+using TheSkibiditeca.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure database provider based on environment
-if (builder.Environment.IsDevelopment())
+// Register Identity services using our User entity and integer keys
+builder.Services.AddIdentity<TheSkibiditeca.Web.Models.Entities.User, IdentityRole<int>>(options =>
 {
-    // DEVELOPMENT: SQL Server LocalDB
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
-    builder.Services.AddDbContext<LibraryDbContextSqlServer>(options =>
-        options.UseSqlServer(connectionString));
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredLength = 6;
+})
+    .AddEntityFrameworkStores<LibraryDbContext>()
+    .AddDefaultTokenProviders();
 
-    Console.WriteLine("Using SQL Server LocalDB for development");
-}
-else
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    // PRODUCTION: PostgreSQL (URL provided by Coolify resource)
-    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
-        ?? throw new InvalidOperationException("DATABASE_URL environment variable not found");
+    options.LoginPath = "/Auth/Login";
+    options.LogoutPath = "/Auth/Logout";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
+    options.Cookie.Name = "skibi.auth";
+    options.Cookie.HttpOnly = true;
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+});
 
-    // Convert postgres:// URI to a safe Npgsql connection string
-    var npgsqlConnectionString = ConnectionStrings.BuildNpgsqlFromUrl(databaseUrl);
+// Configure database provider: use SQL Server for both development and production
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? Environment.GetEnvironmentVariable("DEFAULT_CONNECTION")
+    ?? throw new InvalidOperationException("DefaultConnection not configured");
 
-    builder.Services.AddDbContext<LibraryDbContextNpgsql>(options =>
-        options.UseNpgsql(npgsqlConnectionString, npgsql =>
-        {
-            npgsql.EnableRetryOnFailure(5);
-        }));
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure(5)));
 
-    Console.WriteLine("Using PostgreSQL from Coolify resource");
-}
+builder.Services.AddSingleton<ShoppingCart>();
+
+Console.WriteLine("Using SQL Server for database provider");
 
 var app = builder.Build();
 
-// Seed the database and apply migrations
-using (var scope = app.Services.CreateScope())
-{
-    // Resolve the proper DbContext based on environment
-    var context = app.Environment.IsDevelopment()
-        ? scope.ServiceProvider.GetRequiredService<LibraryDbContextSqlServer>() as DbContext
-        : scope.ServiceProvider.GetRequiredService<LibraryDbContextNpgsql>() as DbContext;
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-
-    try
-    {
-        DatabaseSetupLoggers.ApplyingMigrations(logger);
-        await context.Database.MigrateAsync();
-        DatabaseSetupLoggers.MigrationsApplied(logger);
-
-        DatabaseSetupLoggers.SeedingData(logger);
-
-    // DbSeeder expects LibraryDbContext; cast when running in dev
-        if (context is LibraryDbContextSqlServer lib)
-        {
-            DbSeeder.SeedData(lib);
-        }
-
-        DatabaseSetupLoggers.DataSeeded(logger);
-    }
-    catch (Exception ex)
-    {
-        DatabaseSetupLoggers.DatabaseSetupError(logger, ex);
-        throw; // Re-throw to prevent app startup with corrupted database
-    }
-}
+// Seed the database and apply migrations (moved to DatabaseInitializer extension)
+await app.Services.MigrateAndSeedAsync();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -80,15 +60,36 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Allow disabling HTTPS redirection when the reverse proxy (Traefik/Coolify) manages TLS.
+// Can be controlled via configuration key `DisableHttpsRedirection` or environment
+// variables `DISABLE_HTTPS_REDIRECT` / `DISABLE_HTTPS_REDIRECTION` set to "true".
+var disableHttps = app.Configuration.GetValue("DisableHttpsRedirection", false);
+
+// Respect common environment variable names as well (useful in containers/Coolify)
+var envDisable = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT")
+                 ?? Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECTION");
+if (!string.IsNullOrEmpty(envDisable) && bool.TryParse(envDisable, out var parsed))
+{
+    disableHttps = parsed;
+}
+
+if (!disableHttps)
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Lightweight health endpoint used by container orchestrators
+app.MapGet("/Health", () => Results.Ok("ok"));
 
 app.Run();

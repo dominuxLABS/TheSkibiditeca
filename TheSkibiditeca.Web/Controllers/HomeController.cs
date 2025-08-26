@@ -1,53 +1,70 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
-using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TheSkibiditeca.Web.Models;
+using TheSkibiditeca.Web.Data;
+using TheSkibiditeca.Web.Models.Entities;
 
-namespace TheSkibiditeca.Web.Controllers
+namespace TheSkibiditeca.Web.Controllers;
+
+/// <summary>
+/// The main site controller for top-level pages.
+/// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="HomeController"/> class.
+/// </remarks>
+/// <param name="context">The library database context.</param>
+/// <param name="userM">User manager for application users.</param>
+public class HomeController(LibraryDbContext context, UserManager<User> userM) : Controller
 {
+    private readonly UserManager<User> userMgr = userM;
+    private readonly LibraryDbContext dbContext = context;
+
     /// <summary>
-    /// Controller for handling home page requests and basic application functionality.
+    /// Shows the home/index page.
     /// </summary>
-    public class HomeController : Controller
+    /// <returns>The Index view.</returns>
+    public async Task<IActionResult> Index()
     {
-        private readonly ILogger<HomeController> logger;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HomeController"/> class.
-        /// </summary>
-        /// <param name="logger">The logger instance for this controller.</param>
-        public HomeController(ILogger<HomeController> logger)
+        var user = await this.userMgr.GetUserAsync(this.HttpContext.User);
+        if (user != null)
         {
-            this.logger = logger;
+            this.ViewBag.RoleID = user.UserTypeId;
         }
 
-        /// <summary>
-        /// Displays the home page.
-        /// </summary>
-        /// <returns>The index view.</returns>
-        public IActionResult Index()
-        {
-            return this.View();
-        }
+        var random = new Random();
+        int index = random.Next(this.dbContext.Books.Count());
+        this.ViewBag.Newest = this.dbContext.Books.ToList().OrderByDescending(b => b.CreatedAt).FirstOrDefault();
+        this.ViewBag.Random = this.dbContext.Books.ToArray()[index];
+        this.ViewBag.Popular = this.dbContext.Books.ToList().OrderByDescending(b => b.TotalCopies).FirstOrDefault();
 
-        /// <summary>
-        /// Displays the privacy policy page.
-        /// </summary>
-        /// <returns>The privacy view.</returns>
-        public IActionResult Privacy()
-        {
-            return this.View();
-        }
+        return this.View();
+    }
 
-        /// <summary>
-        /// Displays the error page with diagnostic information.
-        /// </summary>
-        /// <returns>The error view with error details.</returns>
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
-        }
+    /// <summary>
+    /// Shows the privacy page.
+    /// </summary>
+    /// <returns>The Privacy view.</returns>
+    public IActionResult Privacy()
+    {
+        return this.View();
+    }
+
+    /// <summary>
+    /// Shows the lost page.
+    /// </summary>
+    /// <returns>The Lost view.</returns>
+    public IActionResult Lost()
+    {
+        return this.View();
+    }
+
+    /// <summary>
+    /// Shows the credits page.
+    /// </summary>
+    /// <returns>The Credits view.</returns>
+    public IActionResult Credits()
+    {
+        return this.View();
     }
 }

@@ -1,0 +1,32 @@
+---
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: theskibiditeca_sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${DB_PASSWORD}
+      MSSQL_PID: Developer
+      MSSQL_COLLATION: "Latin1_General_100_CI_AS_SC_UTF8"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    expose:
+      - "1433"
+
+  app:
+    build:
+      context: .
+      dockerfile: TheSkibiditeca.Web/Dockerfile
+    image: theskibiditeca_app:latest
+    ports:
+      - "9090:8080"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - DISABLE_HTTPS_REDIRECT=true
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=TheSkibiditeca;User=sa;Password=${DB_PASSWORD};TrustServerCertificate=true;
+      - RUN_MIGRATIONS=true
+volumes:
+  sqlserver_data:

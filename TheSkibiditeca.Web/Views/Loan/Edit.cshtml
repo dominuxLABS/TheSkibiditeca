@@ -1,0 +1,106 @@
+﻿@model TheSkibiditeca.Web.Models.LoanModels.EditLoanModel
+@using TheSkibiditeca.Web.Models.Entities
+@using TheSkibiditeca.Web.Models.Enums
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="book-container">
+                <!-- Encabezado con estado de confirmación -->
+                <div class="text-center mb-4">
+                    <h1 class="mb-2">Modificar Préstamo</h1>
+                </div>
+                <hr />
+                <h4 class="section-title">Información del Préstamo</h4>
+                <!-- Información del préstamo -->
+                <form method="post" asp-action="Edit">
+                    <input type="hidden" asp-for="Loan.LoanId" value="@Model.Loan.LoanId" />
+                    <input type="hidden" asp-for="Loan.UserId" value="@Model.Loan.UserId" />
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hash" viewBox="0 0 16 16">
+                                        <path d="M8.39 12.648a1 1 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1 1 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.51.51 0 0 0-.523-.516.54.54 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532s.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531s.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z" />
+                                    </svg>
+                                </div>
+                                <div class="detail-content">
+                                    <h5>Número de Préstamo</h5>
+                                    <p>#@Model.Loan.LoanId</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
+                                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                                    </svg>
+                                </div>
+                                <div class="detail-content">
+                                    <h5>Fecha de Préstamo</h5>
+                                    <input asp-for="Loan.LoanDate" type="date" class="form-control" value="@Model.Loan.LoanDate.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-minus" viewBox="0 0 16 16">
+                                        <path d="M5.5 9.5A.5.5 0 0 1 6 9h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                                    </svg>
+                                </div>
+                                <div class="detail-content">
+                                    <h5>Fecha de Devolución Esperada</h5>
+                                    <input asp-for="Loan.ExpectedReturnDate" type="date" class="form-control" value="@Model.Loan.ExpectedReturnDate.ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                                    </svg>
+                                </div>
+                                <div class="detail-content">
+                                    <h5>Estado</h5>
+                                    <select class="form-control" asp-for="Loan.Status">
+                                        <option value="@LoanStatusType.Pending" class="badge">Pendiente</option>
+                                        <option value="@LoanStatusType.Active"  class="badge">Activo</option>
+                                        <option value="@LoanStatusType.Returned"  class="badge">Devuelto</option>
+                                        <option value="@LoanStatusType.Overdue"  class="badge">Vencido</option>
+                                        <option value="@LoanStatusType.Lost" class="badge">Perdido</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="section-title mt-4">Observaciones</h4>
+                    <textarea class="form-control" asp-for="Loan.Observations">
+                        @Model.Loan.Observations
+                    </textarea>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between mt-5">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+                            Volver al Inicio
+                        </a>
+                        <button type="submit" class="btn btn-custom-1">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

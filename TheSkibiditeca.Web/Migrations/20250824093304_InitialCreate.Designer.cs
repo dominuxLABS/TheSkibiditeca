@@ -11,8 +11,8 @@ using TheSkibiditeca.Web.Data;
 
 namespace TheSkibiditeca.Web.Migrations
 {
-    [DbContext(typeof(LibraryDbContextSqlServer))]
-    [Migration("20250814125649_InitialCreate")]
+    [DbContext(typeof(LibraryDbContext))]
+    [Migration("20250824093304_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,10 +20,143 @@ namespace TheSkibiditeca.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.AuditLog", b =>
                 {
@@ -122,15 +255,6 @@ namespace TheSkibiditeca.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
 
-                    b.Property<DateTime?>("AcquisitionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("AcquisitionPrice")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("AvailableQuantity")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
@@ -146,38 +270,13 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("ISBN")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("NumberOfPages")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PhysicalLocation")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int?>("PublicationYear")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PublisherId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
-
-                    b.Property<int>("TotalQuantity")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -187,12 +286,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.HasKey("BookId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ISBN")
-                        .IsUnique()
-                        .HasFilter("[ISBN] IS NOT NULL");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
                 });
@@ -247,6 +340,43 @@ namespace TheSkibiditeca.Web.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
+                {
+                    b.Property<int>("CopyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CopyId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ISBN")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhysicalLocation")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PublisherName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("CopyId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("ISBN")
+                        .IsUnique()
+                        .HasFilter("[ISBN] IS NOT NULL");
+
+                    b.ToTable("Copies");
+                });
+
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Fine", b =>
                 {
                     b.Property<int>("FineId")
@@ -270,9 +400,6 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<DateTime>("FineDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FineTypeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
@@ -290,41 +417,11 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.HasKey("FineId");
 
-                    b.HasIndex("FineTypeId");
-
                     b.HasIndex("LoanId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Fines");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.FineType", b =>
-                {
-                    b.Property<int>("FineTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FineTypeId"));
-
-                    b.Property<decimal>("BaseAmount")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("FineTypeId");
-
-                    b.ToTable("FineTypes");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
@@ -337,9 +434,6 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.Property<DateTime?>("ActualReturnDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -354,9 +448,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("LoanStatusId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaxRenewals")
                         .HasColumnType("int");
 
@@ -370,6 +461,9 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -380,81 +474,56 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.HasKey("LoanId");
 
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("LoanStatusId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Loans");
                 });
 
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanStatus", b =>
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanDetails", b =>
                 {
-                    b.Property<int>("LoanStatusId")
+                    b.Property<int>("LoanDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanStatusId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanDetailId"));
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("LoanStatusId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("LoanStatuses");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
-                {
-                    b.Property<int>("PublisherId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CopyId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublisherId"));
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<DateTime>("DateAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("LoanId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Website")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
-                    b.HasKey("PublisherId");
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.ToTable("Publishers");
+                    b.HasKey("LoanDetailId");
+
+                    b.HasIndex("CopyId");
+
+                    b.HasIndex("LoanId");
+
+                    b.ToTable("LoanDetails");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
@@ -465,7 +534,7 @@ namespace TheSkibiditeca.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<int>("BookId")
+                    b.Property<int>("CopyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -488,7 +557,7 @@ namespace TheSkibiditeca.Web.Migrations
 
                     b.HasKey("ReservationId");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("CopyId");
 
                     b.HasIndex("UserId");
 
@@ -497,11 +566,15 @@ namespace TheSkibiditeca.Web.Migrations
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .HasMaxLength(300)
@@ -510,6 +583,10 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Property<string>("CareerDepartment")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -520,6 +597,9 @@ namespace TheSkibiditeca.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -534,40 +614,78 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<DateTime?>("MembershipExpirationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("PasswordHash");
+
+                    b.Property<string>("PhoneNumber")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("Phone");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("UserCode")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("UserCode");
 
                     b.Property<int>("UserTypeId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("UserCode")
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.HasIndex("UserTypeId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.UserType", b =>
@@ -609,6 +727,57 @@ namespace TheSkibiditeca.Web.Migrations
                     b.ToTable("UserTypes");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Book", b =>
                 {
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.Category", "Category")
@@ -616,14 +785,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Category");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.BookAuthor", b =>
@@ -645,14 +807,19 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Fine", b =>
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.FineType", "FineType")
-                        .WithMany("Fines")
-                        .HasForeignKey("FineTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                        .WithMany("Copies")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Fine", b =>
+                {
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.Loan", "Loan")
                         .WithMany("Fines")
                         .HasForeignKey("LoanId")
@@ -664,8 +831,6 @@ namespace TheSkibiditeca.Web.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("FineType");
-
                     b.Navigation("Loan");
 
                     b.Navigation("User");
@@ -673,36 +838,39 @@ namespace TheSkibiditeca.Web.Migrations
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
-                        .WithMany("Loans")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.LoanStatus", "LoanStatus")
-                        .WithMany("Loans")
-                        .HasForeignKey("LoanStatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TheSkibiditeca.Web.Models.Entities.User", "User")
                         .WithMany("Loans")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("LoanStatus");
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanDetails", b =>
+                {
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("CopyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Loan", "Loan")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Copy");
+
+                    b.Navigation("Loan");
+                });
+
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Reservation", b =>
                 {
-                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Book", "Book")
+                    b.HasOne("TheSkibiditeca.Web.Models.Entities.Copy", "Copy")
                         .WithMany("Reservations")
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("CopyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -712,7 +880,7 @@ namespace TheSkibiditeca.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("Copy");
 
                     b.Navigation("User");
                 });
@@ -737,9 +905,7 @@ namespace TheSkibiditeca.Web.Migrations
                 {
                     b.Navigation("BookAuthors");
 
-                    b.Navigation("Loans");
-
-                    b.Navigation("Reservations");
+                    b.Navigation("Copies");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Category", b =>
@@ -747,24 +913,18 @@ namespace TheSkibiditeca.Web.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.FineType", b =>
+            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Copy", b =>
                 {
-                    b.Navigation("Fines");
+                    b.Navigation("LoanDetails");
+
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Loan", b =>
                 {
                     b.Navigation("Fines");
-                });
 
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.LoanStatus", b =>
-                {
-                    b.Navigation("Loans");
-                });
-
-            modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.Publisher", b =>
-                {
-                    b.Navigation("Books");
+                    b.Navigation("LoanDetails");
                 });
 
             modelBuilder.Entity("TheSkibiditeca.Web.Models.Entities.User", b =>

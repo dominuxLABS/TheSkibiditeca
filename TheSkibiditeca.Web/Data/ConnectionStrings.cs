@@ -1,7 +1,6 @@
 // Copyright (c) dominuxLABS. All rights reserved.
 
 using System.Net;
-using Npgsql;
 
 namespace TheSkibiditeca.Web.Data;
 
@@ -37,17 +36,18 @@ public static class ConnectionStrings
         var username = WebUtility.UrlDecode(userInfo[0]);
         var password = userInfo.Length > 1 ? WebUtility.UrlDecode(userInfo[1]) : string.Empty;
 
-        var builder = new NpgsqlConnectionStringBuilder
+        // Construct a simple key=value connection string in a provider-agnostic style.
+        // Caller may adapt or replace parts to match their provider (e.g., SqlServer).
+        var builder = new System.Text.StringBuilder();
+        builder.Append("Host=").Append(uri.Host).Append(';');
+        if (uri.Port > 0)
         {
-            Host = uri.Host,
-            Port = uri.Port > 0 ? uri.Port : 5432,
-            Database = uri.AbsolutePath.TrimStart('/'),
-            Username = username,
-            Password = password,
+            builder.Append("Port=").Append(uri.Port).Append(';');
+        }
 
-            // Default when URL has dangling ?sslmode without value
-            SslMode = SslMode.Prefer,
-        };
+        builder.Append("Database=").Append(uri.AbsolutePath.TrimStart('/')).Append(';');
+        builder.Append("Username=").Append(username).Append(';');
+        builder.Append("Password=").Append(password).Append(';');
 
         // Parse query parameters (?sslmode=require&timeout=15...)
         var query = uri.Query?.TrimStart('?');
@@ -70,47 +70,12 @@ public static class ConnectionStrings
                     continue;
                 }
 
-                switch (key)
-                {
-                    case "sslmode":
-                        if (Enum.TryParse<SslMode>(value, ignoreCase: true, out var mode))
-                        {
-                            builder.SslMode = mode;
-                        }
-
-                        break;
-
-                    case "timeout":
-                        if (int.TryParse(value, out var timeout))
-                        {
-                            builder.Timeout = timeout;
-                        }
-
-                        break;
-
-                    case "commandtimeout":
-                        if (int.TryParse(value, out var cmdTimeout))
-                        {
-                            builder.CommandTimeout = cmdTimeout;
-                        }
-
-                        break;
-
-                    case "pooling":
-                        if (bool.TryParse(value, out var pooling))
-                        {
-                            builder.Pooling = pooling;
-                        }
-
-                        break;
-
-                    // ignore unknown keys to avoid KeyNotFoundException
-                    default:
-                        break;
-                }
+                // Append known or unknown query parameters as key=value pairs
+                // so the caller can parse or pass them through to their provider.
+                builder.Append(key).Append('=').Append(value).Append(';');
             }
         }
 
-        return builder.ConnectionString;
+        return builder.ToString();
     }
 }
