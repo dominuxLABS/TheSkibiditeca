@@ -16,23 +16,23 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="author.FirstName" class="control-label"><i class="fas fa-signature me-1"></i> Nombre</label>
+                                <label asp-for="Author.FirstName" class="control-label"><i class="fas fa-signature me-1"></i> Nombre</label>
                                 <div class="icon-input">
                                     <i class="fas fa-font"></i>
-                                    <input required asp-for="author.FirstName" class="form-control" placeholder="Ingresa el nombre del autor" />
+                                    <input required asp-for="Author.FirstName" class="form-control" placeholder="Ingresa el nombre del autor" />
                                 </div>
-                                <span asp-validation-for="author.FirstName" class="text-danger"></span>
+                                <span asp-validation-for="Author.FirstName" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="author.LastName" class="control-label"><i class="fas fa-signature me-1"></i> Apellido</label>
+                                <label asp-for="Author.LastName" class="control-label"><i class="fas fa-signature me-1"></i> Apellido</label>
                                 <div class="icon-input">
                                     <i class="fas fa-font"></i>
-                                    <input required asp-for="author.LastName" class="form-control" placeholder="Ingresa el apellido del autor" />
+                                    <input required asp-for="Author.LastName" class="form-control" placeholder="Ingresa el apellido del autor" />
                                 </div>
-                                <span asp-validation-for="author.LastName" class="text-danger"></span>
+                                <span asp-validation-for="Author.LastName" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -40,32 +40,32 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="author.Nationality" class="control-label"><i class="fas fa-globe me-1"></i> Nacionalidad</label>
+                                <label asp-for="Author.Nationality" class="control-label"><i class="fas fa-globe me-1"></i> Nacionalidad</label>
                                 <div class="icon-input">
                                     <i class="fas fa-flag"></i>
-                                    <input asp-for="author.Nationality" class="form-control" placeholder="Ej: Colombiano" />
+                                    <input asp-for="Author.Nationality" class="form-control" placeholder="Ej: Colombiano" />
                                 </div>
-                                <span asp-validation-for="author.Nationality" class="text-danger"></span>
+                                <span asp-validation-for="Author.Nationality" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group my-3">
-                                <label asp-for="author.BirthDate" class="control-label"><i class="fas fa-calendar-alt me-1"></i> Fecha de Nacimiento</label>
+                                <label asp-for="Author.BirthDate" class="control-label"><i class="fas fa-calendar-alt me-1"></i> Fecha de Nacimiento</label>
                                 <div class="icon-input">
                                     <i class="fas fa-birthday-cake"></i>
-                                    <input asp-for="author.BirthDate" class="form-control" type="date" />
+                                    <input asp-for="Author.BirthDate" class="form-control" type="date" />
                                 </div>
-                                <span asp-validation-for="author.BirthDate" class="text-danger"></span>
+                                <span asp-validation-for="Author.BirthDate" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <h4 class="section-title">Información Adicional</h4>
                     <div class="form-group my-3">
-                        <label asp-for="author.Biography" class="control-label"><i class="fas fa-book-open me-1"></i> Biografía</label>
-                        <textarea asp-for="author.Biography" class="form-control" rows="5" placeholder="Proporciona una biografía del autor"></textarea>
-                        <span asp-validation-for="author.Biography" class="text-danger"></span>
+                        <label asp-for="Author.Biography" class="control-label"><i class="fas fa-book-open me-1"></i> Biografía</label>
+                        <textarea asp-for="Author.Biography" class="form-control" rows="5" placeholder="Proporciona una biografía del autor"></textarea>
+                        <span asp-validation-for="Author.Biography" class="text-danger"></span>
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
