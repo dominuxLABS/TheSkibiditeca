@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TheSkibiditeca.Web.Data;
 using TheSkibiditeca.Web.Models;
 using TheSkibiditeca.Web.Models.Entities;
@@ -28,7 +29,6 @@ public class LoanController : Controller
     public async Task<IActionResult> Details(int? loanid) {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         if(user == null) return RedirectToAction("Lost", "Home");
-        
         if(loanid == null) return RedirectToAction("Index", "Home");
         var currentLoan = _context.Loans.Find(loanid);
         if(user.Id != currentLoan.UserId) return RedirectToAction("Lost", "Home");
@@ -52,6 +52,7 @@ public class LoanController : Controller
         return View();
     }
 
+    [HttpGet]
     public async Task<IActionResult> Create()
     {
         ViewBag.User = (await _userManager.GetUserAsync(HttpContext.User)).FirstName;
@@ -110,8 +111,11 @@ public class LoanController : Controller
     }
 
     // GET: LOANS/Edit/5
+    [HttpGet]
     public async Task<IActionResult> Edit(int? loanid)
     {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        ViewBag.User = user.FullName;
         if (loanid == null)
         {
             return NotFound();
@@ -122,7 +126,23 @@ public class LoanController : Controller
         {
             return NotFound();
         }
-        return View(loan);
+        var loanDetails = _context.LoanDetails.Where(e => e.LoanId == loanid).ToList();
+        List<Book> bs = [];
+        List<Copy> cs = [];
+        foreach (LoanDetails ld in loanDetails) {
+            var copy = _context.Copies.Find(ld.CopyId);
+            if(copy != null) {
+                cs.Add(copy);
+                var book = _context.Books.Find(copy.BookId);
+                bs.Add(book);
+            }
+        }
+        var model = new EditLoanModel() {
+            loan = loan,
+            copies = cs,
+            books = bs
+        };
+        return View(model);
     }
 
     // POST: LOANS/Edit/5
@@ -130,23 +150,18 @@ public class LoanController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? loanid, [Bind("ID,Title,ReleaseDate,Genre,Price")] Loan loan)
+    public async Task<IActionResult> Edit(EditLoanModel model)
     {
-        if (loanid != loan.LoanId)
-        {
-            return NotFound();
-        }
-
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Update(loan);
+                _context.Update(model.loan);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LoanExists(loan.LoanId))
+                if (!LoanExists(model.loan.LoanId))
                 {
                     return NotFound();
                 }
@@ -157,7 +172,7 @@ public class LoanController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        return View(loan);
+        return View(model);
     }
 
     // GET: LOANS/Delete/5
@@ -176,6 +191,11 @@ public class LoanController : Controller
         }
 
         return View(loan);
+    }
+
+    public async Task<IActionResult> Admin() {
+        ViewBag.Loans = _context.Loans.ToList();
+        return View();
     }
 
     // POST: LOANS/Delete/5
