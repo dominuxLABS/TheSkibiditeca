@@ -68,9 +68,9 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
     /// <param name="bookModel">The BookCreateModel containing the book entity, number of copies and associated author ids.</param>
     /// <returns>Redirects to the Book list view after successful creation.</returns>
     [HttpPost]
-    public IActionResult Create(BookCreateModel bookModel)
+    public IActionResult Create(CreateBookModel bookModel)
     {
-        Book nbook = bookModel.book;
+        Book nbook = bookModel.Book;
         this.db.Books.Add(nbook);
         this.db.SaveChanges();
         Book lastAdded = this.db.Books.OrderBy(e => e.BookId).LastOrDefault() ?? nbook;
@@ -86,7 +86,7 @@ public class BookController(LibraryDbContext dbo, UserManager<User> user, Shoppi
             });
         }
 
-        foreach (string authorId in bookModel.authors)
+        foreach (string authorId in bookModel.Authors)
         {
             this.db.BookAuthors.Add(new BookAuthor()
             {
