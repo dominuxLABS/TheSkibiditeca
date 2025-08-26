@@ -27,11 +27,5 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=TheSkibiditeca;User=sa;Password=${DB_PASSWORD};TrustServerCertificate=true;
       - RUN_MIGRATIONS=true
-    healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/Health || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
 volumes:
   sqlserver_data:
