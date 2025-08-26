@@ -4,6 +4,14 @@ A modern library management system built with ASP.NET Core for the Applied Progr
 
 > 📖 **[Versión en Español](README.es.md)** | **[English Version](README.md)**
 
+## Team Members:
+
+- Díaz Rodríguez, Carlo Franco (@dom1nux)
+- Mejía Irigoin, Luis Gerardo (@GalaxyM4)
+- Ramos Callirgos, Harold Armando (@Jacob22wdf)
+- Ruiz Loaysa, Deniss Jesus
+- Vilca Ocas, María Belén
+
 ## Overview
 
 TheSkibiditeca is a comprehensive library management platform that streamlines library operations including book loans, returns, and fine management. This project demonstrates modern web development practices using Microsoft technologies and follows industry-standard patterns and conventions.
@@ -20,7 +28,7 @@ TheSkibiditeca is a comprehensive library management platform that streamlines l
 
 ## Technology Stack
 
-- **Backend**: ASP.NET Core 8.0
+- **Backend**: ASP.NET Core 9.0
 - **Frontend**: HTML5, CSS3, JavaScript
 - **UI Framework**: Bootstrap 5
 - **Development Environment**: Visual Studio 2022
@@ -39,7 +47,7 @@ TheSkibiditeca is a comprehensive library management platform that streamlines l
 
 ### Prerequisites
 
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) (optional)
 

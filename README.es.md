@@ -4,6 +4,15 @@ Un sistema moderno de gestión bibliotecaria construido con ASP.NET Core para el
 
 > 📖 **[Versión en Español](README.es.md)** | **[English Version](README.md)**
 
+## Miembros del Equipo:
+
+- Díaz Rodríguez, Carlo Franco (@dom1nux)
+- Mejía Irigoin, Luis Gerardo (@GalaxyM4)
+- Ramos Callirgos, Harold Armando (@Jacob22wdf)
+- Ruiz Loaysa, Deniss Jesus
+- Vilca Ocas, María Belén
+
+
 ## Descripción General
 
 TheSkibiditeca es una plataforma integral de gestión bibliotecaria que optimiza las operaciones de biblioteca incluyendo préstamos de libros, devoluciones y gestión de multas. Este proyecto demuestra prácticas modernas de desarrollo web usando tecnologías de Microsoft y sigue patrones y convenciones estándar de la industria.
@@ -20,7 +29,7 @@ TheSkibiditeca es una plataforma integral de gestión bibliotecaria que optimiza
 
 ## Stack Tecnológico
 
-- **Backend**: ASP.NET Core 8.0
+- **Backend**: ASP.NET Core 9.0
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Framework UI**: Bootstrap 5
 - **Entorno de Desarrollo**: Visual Studio 2022
@@ -39,7 +48,7 @@ TheSkibiditeca es una plataforma integral de gestión bibliotecaria que optimiza
 
 ### Requisitos Previos
 
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/) o [Visual Studio Code](https://code.visualstudio.com/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) (opcional)
 
