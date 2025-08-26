@@ -129,7 +129,7 @@ public class AuthController(LibraryDbContext context, UserManager<User> userM, S
         User? signedUser = await this.userM.FindByEmailAsync(model.email);
         if (signedUser != null)
         {
-            var result = await this.singIn.PasswordSignInAsync(signedUser.UserCode, model.password,false, lockoutOnFailure: true);
+            var result = await this.singIn.PasswordSignInAsync(signedUser.UserCode, model.password, false, lockoutOnFailure: true);
             if (result.Succeeded)
             {
                 return this.RedirectToAction("Index", "Home");
