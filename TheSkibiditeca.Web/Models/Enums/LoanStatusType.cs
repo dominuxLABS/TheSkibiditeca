@@ -8,6 +8,11 @@ namespace TheSkibiditeca.Web.Models.Enums
     public enum LoanStatusType
     {
         /// <summary>
+        /// The loan is currently pending.
+        /// </summary>
+        Pending = 0,
+
+        /// <summary>
         /// The loan is currently active.
         /// </summary>
         Active = 1,

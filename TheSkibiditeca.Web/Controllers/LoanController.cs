@@ -23,28 +23,36 @@ public class LoanController : Controller
     // GET: LOANS
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.Loans.ToListAsync());
+        return RedirectToAction("List", "Loan");
     }
 
-    // GET: LOANS/Details/5
-    public async Task<IActionResult> Details(int? loanid)
-    {
-        if (loanid == null)
-        {
-            return NotFound();
+    public async Task<IActionResult> Details(int? loanid) {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if(user == null) return RedirectToAction("Lost", "Home");
+        
+        if(loanid == null) return RedirectToAction("Index", "Home");
+        var currentLoan = _context.Loans.Find(loanid);
+        if(user.Id != currentLoan.UserId) return RedirectToAction("Lost", "Home");
+        if(currentLoan == null) return RedirectToAction("Index", "Home");
+        var loanDetails = _context.LoanDetails.Where(e => e.LoanId == currentLoan.LoanId).ToList();
+
+        ViewBag.Loan = currentLoan;
+        ViewBag.LoanDetails = loanDetails;
+        ViewBag.Copies = new List<Copy>();
+        ViewBag.Books = new List<Book>();
+
+        foreach(LoanDetails ld in loanDetails) {
+            var copy = _context.Copies.Find(ld.CopyId);
+            if(copy != null) {
+                ViewBag.Copies.Add(copy);
+                var book = _context.Books.Find(copy.BookId);
+                ViewBag.Books.Add(book);
+            }
         }
 
-        var loan = await _context.Loans
-            .FirstOrDefaultAsync(m => m.LoanId == loanid);
-        if (loan == null)
-        {
-            return NotFound();
-        }
-
-        return View(loan);
+        return View();
     }
 
-    // GET: LOANS/Create
     public async Task<IActionResult> Create()
     {
         ViewBag.User = (await _userManager.GetUserAsync(HttpContext.User)).FirstName;
@@ -53,6 +61,13 @@ public class LoanController : Controller
             c.Book = _context.Books.Find(c.BookId);
         }
 
+        return View();
+    }
+
+    public async Task<IActionResult> List() {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if(user == null) return RedirectToAction("Lost", "Home");
+        ViewBag.Loans = _context.Loans.Where(e => e.UserId == user.Id).ToList();
         return View();
     }
 
@@ -74,8 +89,25 @@ public class LoanController : Controller
             MaxRenewals = 5,
         };
         model.loan = nLoan;
+        _context.Loans.Add(nLoan);
+        _context.SaveChanges();
 
-        return View(model);
+        Loan currentLoan = _context.Loans.Where(e => e.UserId == nLoan.UserId).OrderByDescending(x => x.LoanDate).First();
+        foreach (Copy c in model.copies) {
+            Copy db_book = _context.Copies.Find(c.CopyId);
+            db_book.IsActive = false;
+
+            LoanDetails detail = new() {
+                LoanId = currentLoan.LoanId,
+                CopyId = c.CopyId,
+                Quantity = model.copies.Count,
+                DateAdded = DateTime.Now,
+            };
+            _context.LoanDetails.Add(detail);
+        }
+
+        _context.SaveChanges();
+        return RedirectToAction("Details", "Loan", new { loanid = currentLoan.LoanId});
     }
 
     // GET: LOANS/Edit/5
